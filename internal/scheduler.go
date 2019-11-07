@@ -1,5 +1,10 @@
 package internal
 
-func GetFullName() string {
-	return "Hello GOOO!!!"
+import (
+	"github.com/carlescere/scheduler"
+	"miya/api/bitbucket"
+)
+
+func Schedule() {
+	scheduler.Every(5).Seconds().Run(bitbucket.Listen)
 }

@@ -1,10 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"miya/internal"
+	"runtime"
 )
 
 func main() {
-	fmt.Println(internal.GetFullName())
+
+	internal.Schedule()
+
+	runtime.Goexit()
 }
