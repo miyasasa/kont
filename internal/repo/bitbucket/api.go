@@ -1,19 +1,19 @@
 package bitbucket
 
 import (
-	"miya/api"
-	"miya/api/bitbucket/model"
 	"miya/init/env"
+	"miya/internal/client"
+	"miya/internal/common"
 	"net/http"
 )
 
 // ignored pagination request cause of pageSize equals 25
-func fetchPRs() []model.PullRequest {
+func fetchPRs() []common.PullRequest {
 	req, _ := http.NewRequest("GET", env.BitbucketFetchPrListUrl, nil)
 	req.Header.Add("Authorization", env.BitbucketToken)
 
-	page := model.Pagination{}
-	api.Send(req, &page)
+	page := common.Pagination{}
+	client.Send(req, &page)
 
 	return page.Values
 }

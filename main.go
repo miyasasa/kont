@@ -1,13 +1,13 @@
 package main
 
 import (
-	"miya/internal"
+	"miya/internal/scheduler"
 	"runtime"
 )
 
 func main() {
 
-	internal.Schedule()
+	scheduler.Schedule()
 
 	runtime.Goexit()
 }

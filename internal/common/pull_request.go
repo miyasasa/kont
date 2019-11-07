@@ -1,4 +1,4 @@
-package model
+package common
 
 type PullRequest struct {
 	Id          int32

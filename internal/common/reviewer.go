@@ -1,4 +1,4 @@
-package model
+package common
 
 type Reviewer struct {
 	User User

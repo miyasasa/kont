@@ -3,7 +3,7 @@ package bitbucket
 import (
 	"fmt"
 	"log"
-	"miya/api/bitbucket/model"
+	"miya/internal/common"
 )
 
 func Listen() {
@@ -16,8 +16,8 @@ func Listen() {
 }
 
 // An array of pull requests has not have any reviewer
-func getLatestPullRequests(prList []model.PullRequest) []model.PullRequest {
-	prs := make([]model.PullRequest, 0)
+func getLatestPullRequests(prList []common.PullRequest) []common.PullRequest {
+	prs := make([]common.PullRequest, 0)
 
 	for _, v := range prList {
 		if !v.DoesHaveAnyReviewer() {
