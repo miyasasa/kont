@@ -3,22 +3,27 @@ package bitbucket
 import (
 	"fmt"
 	"log"
-	"miya/api"
 	"miya/api/bitbucket/model"
-	"miya/init/env"
-	"net/http"
 )
 
 func Listen() {
 	fmt.Println("Bitbucket-PR is listening....")
-	fetchPRs()
+	pullRequests := fetchPRs()
+
+	requests := getLatestPullRequests(pullRequests)
+
+	log.Printf("getLatestPullRequests : %d", len(requests))
 }
 
-func fetchPRs() {
-	req, _ := http.NewRequest("GET", env.BitbucketFetchPrListUrl, nil)
-	req.Header.Add("Authorization", env.BitbucketToken)
+// An array of pull requests has not have any reviewer
+func getLatestPullRequests(prList []model.PullRequest) []model.PullRequest {
+	prs := make([]model.PullRequest, 0)
 
-	page := model.Pagination{}
-	api.Send(req, &page)
-	log.Printf("Response... %s", page.ToString())
+	for _, v := range prList {
+		if !v.DoesHaveAnyReviewer() {
+			prs = append(prs, v)
+		}
+	}
+
+	return prs
 }
