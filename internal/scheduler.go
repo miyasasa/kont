@@ -1,10 +1,8 @@
 package internal
 
-import (
-	"github.com/carlescere/scheduler"
-	"miya/api/bitbucket"
-)
+import "miya/api/bitbucket"
 
 func Schedule() {
-	scheduler.Every(5).Seconds().Run(bitbucket.Listen)
+	//	scheduler.Every(5).Seconds().Run(bitbucket.Listen)
+	bitbucket.Listen()
 }
