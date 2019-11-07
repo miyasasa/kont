@@ -7,3 +7,7 @@ type PullRequest struct {
 	Description string
 	Reviewers   []Reviewer
 }
+
+func (pr *PullRequest) DoesHaveAnyReviewer() bool {
+	return len(pr.Reviewers) != 0
+}
