@@ -1,11 +1,11 @@
 package common
 
 type PullRequest struct {
-	Id          int32
-	Version     int32
-	Title       string
-	Description string
-	Reviewers   []Reviewer
+	Id          int32      `json:"id"`
+	Version     int32      `json:"version"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	Reviewers   []Reviewer `json:"reviewers"`
 }
 
 func (pr *PullRequest) DoesHaveAnyReviewer() bool {

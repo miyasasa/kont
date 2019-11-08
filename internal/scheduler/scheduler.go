@@ -5,14 +5,20 @@ import (
 	"miya/internal/repository"
 )
 
-func Schedule() {
+func ListenRepositories() {
+	repositories := repository.GetAllRepositories()
 
-	// get projects ,start to listen, then assignment
+	if len(repositories) != 0 {
+		schedule(repositories[0])
+	}
+}
 
-	//	scheduler.Every(5).Seconds().Run(bitbucket.Listen)
+func schedule(repo repository.Repository) {
 
-	repository.InitProject()
+	// scheduler.Every(5).Seconds().Run(bitbucket.Listen)
 
-	bitbucket.Listen()
+	if repo.Provider == repository.BITBUCKET {
+		bitbucket.Listen(repo)
+	}
 
 }

@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	scheduler.Schedule()
+	scheduler.ListenRepositories()
 
 	runtime.Goexit()
 }

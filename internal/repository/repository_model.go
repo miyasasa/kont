@@ -18,4 +18,5 @@ type Repository struct {
 	Provider    string
 	Users       []string
 	Reviewers   map[string][]common.Reviewer
+	PR          []common.PullRequest
 }

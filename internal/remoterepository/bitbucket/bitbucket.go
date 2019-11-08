@@ -2,14 +2,24 @@ package bitbucket
 
 import (
 	"fmt"
+	"log"
+	"miya/internal/assignment"
 	"miya/internal/common"
+	"miya/internal/repository"
 )
 
-func Listen() {
+func Listen(repo repository.Repository) {
 	fmt.Println("Bitbucket-PR is listening....")
-	pullRequests := fetchPRs()
+	pullRequests := fetchPRs(repo)
 
-	getLatestPullRequests(pullRequests)
+	lp := getLatestPullRequests(pullRequests)
+	log.Printf("LatestPRCounts: %d", len(lp))
+
+	// refactor : update repo over pointer
+	rp := assignment.Assign(repo, lp)
+
+	updatePRsForAddingReviewers(rp)
+
 }
 
 // An array of pull requests has not have any reviewer
