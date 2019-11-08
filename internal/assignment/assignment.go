@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// move this method to Repository page
 func Assign(repo repository.Repository, prs []common.PullRequest) repository.Repository {
 
 	for i := range prs {
