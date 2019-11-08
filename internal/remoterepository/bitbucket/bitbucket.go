@@ -2,7 +2,6 @@ package bitbucket
 
 import (
 	"fmt"
-	"log"
 	"miya/internal/common"
 )
 
@@ -10,9 +9,7 @@ func Listen() {
 	fmt.Println("Bitbucket-PR is listening....")
 	pullRequests := fetchPRs()
 
-	requests := getLatestPullRequests(pullRequests)
-
-	log.Printf("getLatestPullRequests : %d", len(requests))
+	getLatestPullRequests(pullRequests)
 }
 
 // An array of pull requests has not have any reviewer
