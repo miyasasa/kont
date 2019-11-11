@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"miya/internal/assignment"
 	"miya/internal/common"
 )
 
@@ -19,4 +20,14 @@ type Repository struct {
 	Users       []string
 	Reviewers   map[string][]common.Reviewer
 	PR          []common.PullRequest
+}
+
+func (repo *Repository) Assign() {
+	for i := range repo.PR {
+		first := assignment.GetRandomReviewer(repo.Reviewers[STAGE1])
+		second := assignment.GetFirst(repo.Reviewers[STAGE2])
+		third := assignment.GetFirst(repo.Reviewers[STAGE3])
+
+		repo.PR[i].Reviewers = []common.Reviewer{first, second, third}
+	}
 }

@@ -3,7 +3,6 @@ package bitbucket
 import (
 	"fmt"
 	"log"
-	"miya/internal/assignment"
 	"miya/internal/common"
 	"miya/internal/repository"
 )
@@ -15,7 +14,7 @@ func Listen(repo *repository.Repository) {
 	filterToGetLatestPullRequests(repo)
 	log.Printf("LatestPRCount: %d", len(repo.PR))
 
-	assignment.Assign(repo)
+	repo.Assign()
 
 	updatePRs(repo)
 }
