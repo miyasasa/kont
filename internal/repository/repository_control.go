@@ -13,10 +13,10 @@ const (
 
 // get all repositories
 func GetAllRepositories() []Repository {
-	return []Repository{getRepository()}
+	return []Repository{*getRepository()}
 }
 
-func getRepository() Repository {
+func getRepository() *Repository {
 	repo := new(Repository)
 	repo.FetchPrURL = env.BitbucketFetchPrListUrl
 	repo.Token = env.BitbucketToken
@@ -25,7 +25,7 @@ func getRepository() Repository {
 	repo.Name = "core-network"
 	repo.Reviewers = getReviewers()
 
-	return *repo
+	return repo
 }
 
 //it will initial from remote-repository not manually

@@ -8,29 +8,27 @@ import (
 	"miya/internal/repository"
 )
 
-func Listen(repo repository.Repository) {
+func Listen(repo *repository.Repository) {
 	fmt.Println("Bitbucket-PR is listening....")
-	pullRequests := fetchPRs(repo)
+	fetchPRs(repo)
 
-	lp := getLatestPullRequests(pullRequests)
-	log.Printf("LatestPRCounts: %d", len(lp))
+	filterToGetLatestPullRequests(repo)
+	log.Printf("LatestPRCount: %d", len(repo.PR))
 
-	// refactor : update repo over pointer
-	rp := assignment.Assign(repo, lp)
+	assignment.Assign(repo)
 
-	updatePRsForAddingReviewers(rp)
-
+	updatePRs(repo)
 }
 
-// An array of pull requests has not have any reviewer
-func getLatestPullRequests(prList []common.PullRequest) []common.PullRequest {
+// An array of pull requests have not have any reviewer
+func filterToGetLatestPullRequests(repo *repository.Repository) {
 	prs := make([]common.PullRequest, 0)
 
-	for _, v := range prList {
+	for _, v := range repo.PR {
 		if !v.DoesHaveAnyReviewer() {
 			prs = append(prs, v)
 		}
 	}
 
-	return prs
+	repo.PR = prs
 }

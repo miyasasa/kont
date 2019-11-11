@@ -13,18 +13,17 @@ import (
 )
 
 // ignored pagination request cause of pageSize equals 25
-// return repo ?
-func fetchPRs(repo repository.Repository) []common.PullRequest {
+func fetchPRs(repo *repository.Repository) {
 	req, _ := http.NewRequest("GET", repo.FetchPrURL, nil)
 	req.Header.Add("Authorization", repo.Token)
 
 	page := common.Pagination{}
 	client.GET(req, &page)
 
-	return page.Values
+	repo.PR = page.Values
 }
 
-func updatePRsForAddingReviewers(repo repository.Repository) {
+func updatePRs(repo *repository.Repository) {
 
 	for _, pr := range repo.PR {
 
@@ -41,6 +40,6 @@ func updatePRsForAddingReviewers(repo repository.Repository) {
 
 		fmt.Printf("%+v\n", pr)
 
-		client.PUT(req)
+		//	client.PUT(req)
 	}
 }

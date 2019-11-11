@@ -9,11 +9,11 @@ func ListenRepositories() {
 	repositories := repository.GetAllRepositories()
 
 	if len(repositories) != 0 {
-		schedule(repositories[0])
+		schedule(&repositories[0])
 	}
 }
 
-func schedule(repo repository.Repository) {
+func schedule(repo *repository.Repository) {
 
 	// scheduler.Every(5).Seconds().Run(bitbucket.Listen)
 
