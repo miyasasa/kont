@@ -3,7 +3,6 @@ package bitbucket
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"miya/internal/client"
 	"miya/internal/common"
@@ -40,6 +39,6 @@ func updatePRs(repo *repository.Repository) {
 
 		//client.PUT(req)
 
-		fmt.Printf("%+v\n", pr)
+		log.Printf("%+v\n", pr)
 	}
 }

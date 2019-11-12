@@ -1,14 +1,13 @@
 package bitbucket
 
 import (
-	"fmt"
 	"log"
 	"miya/internal/common"
 	"miya/internal/repository"
 )
 
 func Listen(repo *repository.Repository) {
-	fmt.Println("Bitbucket-PR is listening....")
+	log.Println("Bitbucket-PR is listening....")
 	fetchPRs(repo)
 
 	filterToGetLatestPullRequests(repo)
