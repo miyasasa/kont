@@ -37,7 +37,7 @@ func updatePRs(repo *repository.Repository) {
 		req.Header.Add("Authorization", repo.Token)
 		req.Header.Add("Content-Type", "application/json")
 
-		//client.PUT(req)
+		client.PUT(req)
 
 		log.Printf("%+v\n", pr)
 	}
