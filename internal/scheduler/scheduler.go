@@ -1,24 +1,15 @@
 package scheduler
 
 import (
-	"miya/internal/remoterepository/bitbucket"
-	"miya/internal/repository"
+	"github.com/carlescere/scheduler"
+	"log"
+	"miya/internal/remoterepository"
 )
 
-func ListenRepositories() {
-	repositories := repository.GetAllRepositories()
+func ScheduleRemoteRepositories() {
+	_, e := scheduler.Every(10).Seconds().Run(remoterepository.ListenRemoteRepositories)
 
-	if len(repositories) != 0 {
-		schedule(&repositories[0])
+	if e != nil {
+		log.Printf("ScheduleRemoteRepositories:: An Error accoured to scheduler for remote repositories")
 	}
-}
-
-func schedule(repo *repository.Repository) {
-
-	// scheduler.Every(5).Seconds().Run(bitbucket.Listen)
-
-	if repo.Provider == repository.BITBUCKET {
-		bitbucket.Listen(repo)
-	}
-
 }
