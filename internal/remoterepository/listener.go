@@ -14,9 +14,7 @@ func ListenRemoteRepositories() {
 }
 
 func listenRepo(repo *repository.Repository) {
-
 	if repo.Provider == repository.BITBUCKET {
 		bitbucket.Listen(repo)
 	}
-
 }
