@@ -4,6 +4,8 @@ FROM golang:alpine3.10
 LABEL maintainer="Yasin Kızılkaya <vyasinw@gmail.com>"
 
 WORKDIR $GOPATH/src/miya
+
+# Exclude .env file
 COPY . .
 
 RUN export GO111MODULE=on
