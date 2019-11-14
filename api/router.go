@@ -11,6 +11,7 @@ func InitRouter() *gin.Engine {
 
 	router := gin.Default()
 	router.HTMLRender = gintemplate.Default()
+	router.Static("/assets", "./assets")
 
 	router.GET("/ping", ping.Ping)
 
