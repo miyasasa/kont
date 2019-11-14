@@ -1,13 +1,13 @@
 package main
 
 import (
-	"miya/internal/scheduler"
-	"runtime"
+	"miya/api"
 )
 
 func main() {
 
-	scheduler.ScheduleRemoteRepositories()
+	// scheduler.ScheduleRemoteRepositories()
+	// runtime.Goexit()
 
-	runtime.Goexit()
+	api.InitRouter().Run()
 }
