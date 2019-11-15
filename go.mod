@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.4.0
 	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/google/shlex v0.0.0-20181106134648-c34317bd91bf // indirect
+	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.8 // indirect
 	github.com/kardianos/govendor v1.0.9 // indirect
 	github.com/mattn/go-isatty v0.0.10 // indirect

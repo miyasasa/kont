@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var BitBucket = "bitbucket"
+var BitBucket = []byte("bitbucket")
 var Storage = initStorage()
 
 type Store struct {
@@ -30,7 +30,7 @@ func initStorage() *Store {
 
 func initBuckets(db *bolt.DB) error {
 	if err := db.Update(func(tx *bolt.Tx) error {
-		_, _ = tx.CreateBucketIfNotExists([]byte(BitBucket))
+		_, _ = tx.CreateBucketIfNotExists(BitBucket)
 		return nil
 	}); err != nil {
 		return err
