@@ -1,7 +1,8 @@
 package main
 
 import (
-	"miya/api"
+	"log"
+	"miya/storage"
 )
 
 func main() {
@@ -9,5 +10,11 @@ func main() {
 	// scheduler.ScheduleRemoteRepositories()
 	// runtime.Goexit()
 
-	api.InitRouter().Run()
+	// api.InitRouter().Run()
+
+	err := storage.Storage.Ping()
+
+	if err == nil {
+		log.Println("PONG PONG")
+	}
 }
