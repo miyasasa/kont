@@ -2,8 +2,8 @@ package storage
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/boltdb/bolt"
+	"github.com/pkg/errors"
 )
 
 func (s *Store) Ping() error {
@@ -37,12 +37,12 @@ func (s *Store) GET(key string, i interface{}) error {
 
 		encoded := bucket.Get([]byte(key))
 		if encoded == nil {
-			return fmt.Errorf("Record not available")
+			return errors.New("Record not available")
 		}
 
 		err := json.Unmarshal(encoded, i)
 		if err != nil {
-			return fmt.Errorf("Record can not mapped to given interface")
+			return errors.New("Record can not mapped to given interface")
 		}
 
 		return nil
@@ -55,7 +55,7 @@ func (s *Store) Delete(key string) error {
 
 		encoded := bucket.Get([]byte(key))
 		if encoded == nil {
-			return fmt.Errorf("Record not available")
+			return errors.New("Record not available")
 		}
 
 		err := bucket.Delete([]byte(key))
