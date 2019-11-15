@@ -47,5 +47,17 @@ func (s *Store) GET(key string, i interface{}) error {
 
 		return nil
 	})
+}
 
+func (s *Store) ForEach(fn func(k, v []byte) error) error {
+	return s.db.View(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket(BitBucket)
+
+		err := bucket.ForEach(fn)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 }
