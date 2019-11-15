@@ -49,6 +49,24 @@ func (s *Store) GET(key string, i interface{}) error {
 	})
 }
 
+func (s *Store) Delete(key string) error {
+	return s.db.Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket(BitBucket)
+
+		encoded := bucket.Get([]byte(key))
+		if encoded == nil {
+			return fmt.Errorf("Record not available")
+		}
+
+		err := bucket.Delete([]byte(key))
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+}
+
 func (s *Store) ForEach(fn func(k, v []byte) error) error {
 	return s.db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket(BitBucket)
