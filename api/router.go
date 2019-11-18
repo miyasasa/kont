@@ -4,19 +4,18 @@ import (
 	"github.com/foolin/gin-template"
 	"github.com/gin-gonic/gin"
 	"miya/api/ping"
-	"miya/api/repository"
 	"net/http"
 )
 
-func InitRouter() *gin.Engine {
+var Router = initRouter()
+
+func initRouter() *gin.Engine {
 
 	router := gin.Default()
 	router.HTMLRender = gintemplate.Default()
 	router.Static("/assets", "./assets")
 
 	router.GET("/ping", ping.Ping)
-
-	repository.InitRepository(router)
 
 	// pages dummy APIs
 	router.GET("/", func(ctx *gin.Context) {
