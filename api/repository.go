@@ -10,6 +10,7 @@ import (
 func init() {
 	group := Router.Group("/repository")
 	group.POST("/", saveRepository)
+	group.GET("/:name", getRepository)
 	group.GET("/", getRepositories)
 	group.DELETE("/:name", deleteRepository)
 }
@@ -30,9 +31,23 @@ func saveRepository(c *gin.Context) {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
 		})
+	} else {
+		c.JSON(200, repo)
 	}
+}
 
-	c.JSON(200, repo)
+func getRepository(c *gin.Context) {
+	name := c.Param("name")
+
+	var repo repository.Repository
+	err := storage.Storage.GET(name, &repo)
+	if err != nil {
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+	} else {
+		c.JSON(200, repo)
+	}
 }
 
 func deleteRepository(c *gin.Context) {
@@ -43,12 +58,11 @@ func deleteRepository(c *gin.Context) {
 		c.JSON(404, gin.H{
 			"error": err.Error(),
 		})
+	} else {
+		c.JSON(204, gin.H{
+			"message": "Repository deleted ...",
+		})
 	}
-
-	c.JSON(204, gin.H{
-		"message": "Repository deleted ...",
-	})
-
 }
 
 func getRepositories(c *gin.Context) {
