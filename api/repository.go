@@ -2,6 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
+	"miya/internal/repository"
 )
 
 func init() {
@@ -11,9 +13,17 @@ func init() {
 }
 
 func saveRepository(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"Repository": "saved ....",
-	})
+	var repo repository.Repository
+
+	err := c.BindJSON(&repo)
+	if err != nil {
+		log.Printf("repository::saveRepository bind exception")
+	}
+
+	// get provider
+	// init users
+
+	c.JSON(200, repo)
 }
 
 func getRepositories(c *gin.Context) {
