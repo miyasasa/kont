@@ -4,6 +4,7 @@ import (
 	"github.com/foolin/gin-template"
 	"github.com/gin-gonic/gin"
 	"miya/api/ping"
+	"miya/api/repository"
 	"net/http"
 )
 
@@ -15,6 +16,9 @@ func InitRouter() *gin.Engine {
 
 	router.GET("/ping", ping.Ping)
 
+	repository.InitRepositories(router)
+
+	// pages dummy APIs
 	router.GET("/", func(ctx *gin.Context) {
 		//render with master
 		ctx.HTML(http.StatusOK, "index", gin.H{
