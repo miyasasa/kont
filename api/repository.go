@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"miya/internal/repository"
+	"miya/storage"
 )
 
 func init() {
@@ -23,11 +24,17 @@ func saveRepository(c *gin.Context) {
 	// get provider
 	// init users
 
+	err = storage.Storage.PUT(repo.Name, repo)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": err,
+		})
+	}
+
 	c.JSON(200, repo)
 }
 
 func getRepositories(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"repositories": "repos are coming.....",
-	})
+	repos := storage.Storage.GetAllRepositories()
+	c.JSON(200, repos)
 }
