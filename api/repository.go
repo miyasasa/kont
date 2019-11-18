@@ -27,13 +27,8 @@ func saveRepository(c *gin.Context) {
 	// init users
 
 	err = storage.Storage.PUT(repo.Name, repo)
-	if err != nil {
-		c.JSON(500, gin.H{
-			"error": err.Error(),
-		})
-	} else {
-		c.JSON(200, repo)
-	}
+
+	okOrElse500(err, c, repo)
 }
 
 func getRepository(c *gin.Context) {
@@ -41,31 +36,19 @@ func getRepository(c *gin.Context) {
 
 	var repo repository.Repository
 	err := storage.Storage.GET(name, &repo)
-	if err != nil {
-		c.JSON(404, gin.H{
-			"error": err.Error(),
-		})
-	} else {
-		c.JSON(200, repo)
-	}
+
+	okOrElse404(err, c, repo)
 }
 
 func deleteRepository(c *gin.Context) {
 	name := c.Param("name")
 
 	err := storage.Storage.Delete(name)
-	if err != nil {
-		c.JSON(404, gin.H{
-			"error": err.Error(),
-		})
-	} else {
-		c.JSON(204, gin.H{
-			"message": "Repository deleted ...",
-		})
-	}
+
+	noContentOrElse404(err, c)
 }
 
 func getRepositories(c *gin.Context) {
 	repos := storage.Storage.GetAllRepositories()
-	c.JSON(200, repos)
+	ok(c, repos)
 }
