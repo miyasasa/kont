@@ -16,7 +16,7 @@ func InitRouter() *gin.Engine {
 
 	router.GET("/ping", ping.Ping)
 
-	repository.InitRepositories(router)
+	repository.InitRepository(router)
 
 	// pages dummy APIs
 	router.GET("/", func(ctx *gin.Context) {
