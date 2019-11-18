@@ -2,7 +2,7 @@ package repository
 
 import "github.com/gin-gonic/gin"
 
-func InitRepositories(router *gin.Engine) {
+func InitRepository(router *gin.Engine) {
 	group := router.Group("/repository")
 	group.GET("/", getRepositories)
 
