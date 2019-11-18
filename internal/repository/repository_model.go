@@ -12,9 +12,9 @@ const (
 )
 
 type Repository struct {
-	FetchPrURL  string                       `json:"fetch_pr_url"`
-	Token       string                       `json:"token"`
-	ProjectName string                       `json:"project_name"`
+	Url         string                       `json:"url"`
+	Token       string                       `json:"-"`
+	ProjectName string                       `json:"projectName"`
 	Name        string                       `json:"name"`
 	Provider    string                       `json:"provider"`
 	Users       []string                     `json:"users"`
