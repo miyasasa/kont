@@ -7,7 +7,7 @@ import (
 
 func (s *Store) GetAllRepositories() []repository.Repository {
 
-	var repositories []repository.Repository
+	var repositories = make([]repository.Repository, 0)
 
 	_ = Storage.ForEach(func(k, v []byte) error {
 		var repo repository.Repository
