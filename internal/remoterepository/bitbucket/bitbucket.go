@@ -11,22 +11,37 @@ func Listen(repo *repository.Repository) {
 	fetchPRs(repo)
 
 	filterToGetLatestPullRequests(repo)
-	log.Printf("LatestPRCount: %d", len(repo.PR))
+	log.Printf("LatestPRCount: %d", len(repo.PRs))
 
 	repo.Assign()
 
 	updatePRs(repo)
 }
 
+func UpdateUsers(repo *repository.Repository) {
+	users := make(map[string]common.User, 0)
+
+	projectUsers := fetchProjectUsers(repo)
+	repoUsers := fetchRepositoryUsers(repo)
+
+	projectUsers = append(projectUsers, repoUsers...)
+
+	for _, u := range projectUsers {
+		users[u.Name] = u
+	}
+
+	repo.Users = users
+}
+
 // An array of pull requests have not have any reviewer
 func filterToGetLatestPullRequests(repo *repository.Repository) {
 	prs := make([]common.PullRequest, 0)
 
-	for _, v := range repo.PR {
+	for _, v := range repo.PRs {
 		if !v.DoesHaveAnyReviewer() {
 			prs = append(prs, v)
 		}
 	}
 
-	repo.PR = prs
+	repo.PRs = prs
 }
