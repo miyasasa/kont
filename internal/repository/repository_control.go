@@ -18,7 +18,7 @@ func GetAllRepositories() []Repository {
 
 func getRepository() *Repository {
 	repo := new(Repository)
-	repo.FetchPrURL = env.BitbucketFetchPrListUrl
+	repo.Url = env.BitbucketFetchPrListUrl
 	repo.Token = env.BitbucketToken
 	repo.Provider = BITBUCKET
 	repo.ProjectName = "BESG"

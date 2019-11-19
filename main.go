@@ -1,13 +1,20 @@
 package main
 
 import (
-	"miya/internal/scheduler"
-	"runtime"
+	"log"
+	"miya/storage"
 )
 
 func main() {
 
-	scheduler.ScheduleRemoteRepositories()
+	// scheduler.ScheduleRemoteRepositories()
+	// runtime.Goexit()
 
-	runtime.Goexit()
+	// api.InitRouter().Run()
+
+	err := storage.Storage.Ping()
+
+	if err == nil {
+		log.Println("PONG PONG")
+	}
 }
