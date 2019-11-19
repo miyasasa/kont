@@ -7,33 +7,34 @@ import (
 	"sync"
 )
 
-var BitbucketFetchRepositoryUsersURL = bitbucketFetchRepoUsersURL()
-var BitbucketFetchProjectUsersURL = bitbucketFetchProjectUsersURL()
-var BitbucketFetchPRURL = bitbucketFetchPrListURL()
 var BitbucketToken = getEnv("BITBUCKET_TOKEN")
-
 var doOnce sync.Once
 
 // get project name & repo name dynamically from repo
-func bitbucketFetchRepoUsersURL() string {
+func BitbucketFetchRepoUsersURL(projetName string, repoName string) string {
 	return getEnv("BITBUCKET_BASE_URL") +
 		getEnv("BITBUCKET_PROJECT_PATH") +
+		projetName +
 		getEnv("BITBUCKET_REPOSITORY_PATH") +
+		repoName +
 		getEnv("BITBUCKET_USER_PATH")
 
 }
 
 // get project name dynamically from repo
-func bitbucketFetchProjectUsersURL() string {
+func BitbucketFetchProjectUsersURL(projetName string) string {
 	return getEnv("BITBUCKET_BASE_URL") +
 		getEnv("BITBUCKET_PROJECT_PATH") +
+		projetName +
 		getEnv("BITBUCKET_USER_PATH")
 }
 
-func bitbucketFetchPrListURL() string {
+func BitbucketFetchPrListURL(projetName string, repoName string) string {
 	return getEnv("BITBUCKET_BASE_URL") +
 		getEnv("BITBUCKET_PROJECT_PATH") +
+		projetName +
 		getEnv("BITBUCKET_REPOSITORY_PATH") +
+		repoName +
 		getEnv("BITBUCKET_PR_PATH")
 }
 
