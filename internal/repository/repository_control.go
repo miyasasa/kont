@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"miya/init/env"
 	"miya/internal/common"
 )
 
@@ -10,25 +9,6 @@ const (
 	STAGE2 = "STAGE2"
 	STAGE3 = "STAGE3"
 )
-
-// get all repositories
-func GetAllRepositories() []Repository {
-	return []Repository{*getRepository()}
-}
-
-func getRepository() *Repository {
-	repo := new(Repository)
-	repo.FetchRepoUsersUrl = env.BitbucketFetchRepositoryUsersURL
-	repo.FetchProjectUsersUrl = env.BitbucketFetchProjectUsersURL
-	repo.FetchPrsUrl = env.BitbucketFetchPRURL
-	repo.Token = env.BitbucketToken
-	repo.Provider = BITBUCKET
-	repo.ProjectName = "BESG"
-	repo.Name = "core-network"
-	repo.Reviewers = getReviewers()
-
-	return repo
-}
 
 //it will initial from remote-repository not manually
 func getReviewers() map[string][]common.Reviewer {
