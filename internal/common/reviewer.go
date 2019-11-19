@@ -5,5 +5,6 @@ type Reviewer struct {
 }
 
 type User struct {
-	Name string `json:"name"`
+	Name        string `json:"name"`
+	DisplayName string `json:"displayName"`
 }
