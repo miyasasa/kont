@@ -1,23 +1,29 @@
 package common
 
-import (
-	"encoding/json"
-	"log"
-)
-
-type Pagination struct {
+type PRPagination struct {
 	Size       int
 	Limit      int
 	IsLastPage bool
 	Values     []PullRequest
 }
 
-func (page *Pagination) ToString() string {
-	s, e := json.Marshal(page)
+type UserPagination struct {
+	Size       int
+	Limit      int
+	IsLastPage bool
+	Values     []UserValues
+}
 
-	if e != nil {
-		log.Println("Pagination::ToString, Page can not converted json")
+func (p *UserPagination) GetUsers() []User {
+	users := make([]User, 0)
+
+	for _, v := range p.Values {
+		users = append(users, v.User)
 	}
 
-	return string(s)
+	return users
+}
+
+type UserValues struct {
+	User User `json:"user"`
 }
