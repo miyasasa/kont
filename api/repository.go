@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"log"
+	"miya/internal/remoterepository/bitbucket"
 	"miya/internal/repository"
 	"miya/storage"
 )
@@ -16,15 +17,15 @@ func init() {
 }
 
 func saveRepository(c *gin.Context) {
-	var repo repository.Repository
+	var repo = &repository.Repository{}
 
 	err := c.BindJSON(&repo)
 	if err != nil {
 		log.Printf("repository::saveRepository bind exception")
 	}
 
-	// get provider
-	// init users
+	repo.Initialize()
+	bitbucket.UpdateUsers(repo)
 
 	err = storage.Storage.PUT(repo.Name, repo)
 

@@ -3,10 +3,11 @@ package remoterepository
 import (
 	"miya/internal/remoterepository/bitbucket"
 	"miya/internal/repository"
+	"miya/storage"
 )
 
 func ListenRemoteRepositories() {
-	repositories := repository.GetAllRepositories()
+	repositories := storage.Storage.GetAllRepositories()
 
 	if len(repositories) != 0 {
 		listenRepo(&repositories[0])

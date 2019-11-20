@@ -11,22 +11,50 @@ import (
 	"strconv"
 )
 
-// ignored pagination request cause of pageSize equals 25
-func fetchPRs(repo *repository.Repository) {
-	req, _ := http.NewRequest("GET", repo.FetchPrURL, nil)
+func fetchProjectUsers(repo *repository.Repository, start int) []common.User {
+	req, _ := http.NewRequest("GET", repo.FetchProjectUsersUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
 
-	page := common.Pagination{}
+	page := common.UserPagination{}
 	client.GET(req, &page)
 
-	repo.PR = page.Values
+	if page.IsLastPage {
+		return page.GetUsers()
+	}
+
+	return append(fetchProjectUsers(repo, page.NextPageStart), page.GetUsers()...)
+}
+
+func fetchRepositoryUsers(repo *repository.Repository, start int) []common.User {
+	req, _ := http.NewRequest("GET", repo.FetchRepoUsersUrl+"?start="+strconv.Itoa(start), nil)
+	req.Header.Add("Authorization", repo.Token)
+
+	page := common.UserPagination{}
+	client.GET(req, &page)
+
+	if page.IsLastPage {
+		return page.GetUsers()
+	}
+
+	return append(fetchRepositoryUsers(repo, page.NextPageStart), page.GetUsers()...)
+}
+
+// ignored pagination request cause of pageSize equals 25
+func fetchPRs(repo *repository.Repository) {
+	req, _ := http.NewRequest("GET", repo.FetchPrsUrl, nil)
+	req.Header.Add("Authorization", repo.Token)
+
+	page := common.PRPagination{}
+	client.GET(req, &page)
+
+	repo.PRs = page.Values
 }
 
 func updatePRs(repo *repository.Repository) {
 
-	for _, pr := range repo.PR {
+	for _, pr := range repo.PRs {
 
-		url := repo.FetchPrURL + "/" + strconv.FormatInt(int64(pr.Id), 10)
+		url := repo.FetchPrsUrl + "/" + strconv.FormatInt(int64(pr.Id), 10)
 		body, err := json.Marshal(pr)
 
 		if err != nil {
@@ -37,7 +65,7 @@ func updatePRs(repo *repository.Repository) {
 		req.Header.Add("Authorization", repo.Token)
 		req.Header.Add("Content-Type", "application/json")
 
-		client.PUT(req)
+		//client.PUT(req)
 
 		log.Printf("%+v\n", pr)
 	}
