@@ -25,7 +25,6 @@ func fetchUsers(url string, token string, start int) []common.User {
 	return append(fetchUsers(url, token, page.NextPageStart), page.GetUsers()...)
 }
 
-// ignored pagination request cause of pageSize equals 25
 func fetchPRs(repo *repository.Repository, start int) []common.PullRequest {
 	req, _ := http.NewRequest("GET", repo.FetchPrsUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
