@@ -16,7 +16,7 @@ type Repository struct {
 	FetchRepoUsersUrl    string                       `json:"fetchRepoUsersUrl"`
 	FetchProjectUsersUrl string                       `json:"fetchProjectUsersUrl"`
 	FetchPrsUrl          string                       `json:"fetchPrsUrl"`
-	Token                string                       `json:"-"`
+	Token                string                       `json:"token"`
 	ProjectName          string                       `json:"projectName"`
 	Name                 string                       `json:"name"`
 	Provider             string                       `json:"provider"`
@@ -30,7 +30,6 @@ func (repo *Repository) Initialize() {
 	repo.FetchRepoUsersUrl = env.BitbucketFetchRepoUsersURL(repo.ProjectName, repo.Name)
 	repo.FetchProjectUsersUrl = env.BitbucketFetchProjectUsersURL(repo.ProjectName)
 	repo.FetchPrsUrl = env.BitbucketFetchPrListURL(repo.ProjectName, repo.Name)
-	repo.Token = env.BitbucketToken
 }
 
 func (repo *Repository) Assign() {

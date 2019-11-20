@@ -8,19 +8,20 @@ import (
 
 func Listen(repo *repository.Repository) {
 	log.Println("Bitbucket-PR is listening....")
-	fetchPRs(repo)
+	prs := fetchPRs(repo, 0)
 
-	filterToGetLatestPullRequests(repo)
-	log.Printf("LatestPRCount: %d", len(repo.PRs))
+	newPrs := filterPullRequestsHasNotReviewer(prs)
+	log.Printf("LatestPRCount: %v", len(newPrs))
 
+	repo.PRs = newPrs
 	repo.Assign()
 
 	updatePRs(repo)
 }
 
 func UpdateUsers(repo *repository.Repository) {
-	projectUsers := fetchProjectUsers(repo, 0)
-	repoUsers := fetchRepositoryUsers(repo, 0)
+	projectUsers := fetchUsers(repo.FetchProjectUsersUrl, repo.Token, 0)
+	repoUsers := fetchUsers(repo.FetchRepoUsersUrl, repo.Token, 0)
 
 	projectUsers = append(projectUsers, repoUsers...)
 
@@ -32,15 +33,14 @@ func UpdateUsers(repo *repository.Repository) {
 	repo.Users = users
 }
 
-// An array of pull requests have not have any reviewer
-func filterToGetLatestPullRequests(repo *repository.Repository) {
+func filterPullRequestsHasNotReviewer(prList []common.PullRequest) []common.PullRequest {
 	prs := make([]common.PullRequest, 0)
 
-	for _, v := range repo.PRs {
+	for _, v := range prList {
 		if !v.DoesHaveAnyReviewer() {
 			prs = append(prs, v)
 		}
 	}
 
-	repo.PRs = prs
+	return prs
 }

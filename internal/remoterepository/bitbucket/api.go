@@ -11,43 +11,33 @@ import (
 	"strconv"
 )
 
-func fetchProjectUsers(repo *repository.Repository, start int) []common.User {
-	req, _ := http.NewRequest("GET", repo.FetchProjectUsersUrl+"?start="+strconv.Itoa(start), nil)
-	req.Header.Add("Authorization", repo.Token)
+func fetchUsers(url string, token string, start int) []common.User {
+	req, _ := http.NewRequest("GET", url+"?start="+strconv.Itoa(start), nil)
+	req.Header.Add("Authorization", token)
 
 	page := common.UserPagination{}
 	client.GET(req, &page)
 
-	if page.IsLastPage {
+	if page.IsLastPage || page.NextPageStart == 0 {
 		return page.GetUsers()
 	}
 
-	return append(fetchProjectUsers(repo, page.NextPageStart), page.GetUsers()...)
-}
-
-func fetchRepositoryUsers(repo *repository.Repository, start int) []common.User {
-	req, _ := http.NewRequest("GET", repo.FetchRepoUsersUrl+"?start="+strconv.Itoa(start), nil)
-	req.Header.Add("Authorization", repo.Token)
-
-	page := common.UserPagination{}
-	client.GET(req, &page)
-
-	if page.IsLastPage {
-		return page.GetUsers()
-	}
-
-	return append(fetchRepositoryUsers(repo, page.NextPageStart), page.GetUsers()...)
+	return append(fetchUsers(url, token, page.NextPageStart), page.GetUsers()...)
 }
 
 // ignored pagination request cause of pageSize equals 25
-func fetchPRs(repo *repository.Repository) {
-	req, _ := http.NewRequest("GET", repo.FetchPrsUrl, nil)
+func fetchPRs(repo *repository.Repository, start int) []common.PullRequest {
+	req, _ := http.NewRequest("GET", repo.FetchPrsUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
 
 	page := common.PRPagination{}
 	client.GET(req, &page)
 
-	repo.PRs = page.Values
+	if page.IsLastPage || page.NextPageStart == 0 {
+		return page.Values
+	}
+
+	return append(fetchPRs(repo, page.NextPageStart), page.Values...)
 }
 
 func updatePRs(repo *repository.Repository) {

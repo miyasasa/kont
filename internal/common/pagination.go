@@ -1,18 +1,20 @@
 package common
 
-type PRPagination struct {
-	Size       int
-	Limit      int
-	IsLastPage bool
-	Values     []PullRequest
-}
-
-type UserPagination struct {
+type Pagination struct {
 	Size          int
 	Limit         int
 	IsLastPage    bool
-	Values        []UserValues
 	NextPageStart int
+}
+
+type PRPagination struct {
+	Pagination
+	Values []PullRequest
+}
+
+type UserPagination struct {
+	Pagination
+	Values []UserValues
 }
 
 func (p *UserPagination) GetUsers() []User {
