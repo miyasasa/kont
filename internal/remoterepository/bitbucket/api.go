@@ -11,24 +11,32 @@ import (
 	"strconv"
 )
 
-func fetchProjectUsers(repo *repository.Repository) []common.User {
-	req, _ := http.NewRequest("GET", repo.FetchProjectUsersUrl, nil)
+func fetchProjectUsers(repo *repository.Repository, start int) []common.User {
+	req, _ := http.NewRequest("GET", repo.FetchProjectUsersUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
 
 	page := common.UserPagination{}
 	client.GET(req, &page)
 
-	return page.GetUsers()
+	if page.IsLastPage {
+		return page.GetUsers()
+	}
+
+	return append(fetchProjectUsers(repo, page.NextPageStart), page.GetUsers()...)
 }
 
-func fetchRepositoryUsers(repo *repository.Repository) []common.User {
-	req, _ := http.NewRequest("GET", repo.FetchRepoUsersUrl, nil)
+func fetchRepositoryUsers(repo *repository.Repository, start int) []common.User {
+	req, _ := http.NewRequest("GET", repo.FetchRepoUsersUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
 
 	page := common.UserPagination{}
 	client.GET(req, &page)
 
-	return page.GetUsers()
+	if page.IsLastPage {
+		return page.GetUsers()
+	}
+
+	return append(fetchRepositoryUsers(repo, page.NextPageStart), page.GetUsers()...)
 }
 
 // ignored pagination request cause of pageSize equals 25

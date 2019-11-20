@@ -19,13 +19,12 @@ func Listen(repo *repository.Repository) {
 }
 
 func UpdateUsers(repo *repository.Repository) {
-	users := make(map[string]common.User, 0)
-
-	projectUsers := fetchProjectUsers(repo)
-	repoUsers := fetchRepositoryUsers(repo)
+	projectUsers := fetchProjectUsers(repo, 0)
+	repoUsers := fetchRepositoryUsers(repo, 0)
 
 	projectUsers = append(projectUsers, repoUsers...)
 
+	users := make(map[string]common.User, 0)
 	for _, u := range projectUsers {
 		users[u.Name] = u
 	}
