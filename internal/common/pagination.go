@@ -8,10 +8,11 @@ type PRPagination struct {
 }
 
 type UserPagination struct {
-	Size       int
-	Limit      int
-	IsLastPage bool
-	Values     []UserValues
+	Size          int
+	Limit         int
+	IsLastPage    bool
+	Values        []UserValues
+	NextPageStart int
 }
 
 func (p *UserPagination) GetUsers() []User {
