@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// check status code != 200 situation
 func GET(req *http.Request, i interface{}) interface{} {
 
 	resp := send(req)
