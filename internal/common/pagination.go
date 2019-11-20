@@ -1,10 +1,11 @@
 package common
 
 type PRPagination struct {
-	Size       int
-	Limit      int
-	IsLastPage bool
-	Values     []PullRequest
+	Size          int
+	Limit         int
+	IsLastPage    bool
+	Values        []PullRequest
+	NextPageStart int
 }
 
 type UserPagination struct {
