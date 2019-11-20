@@ -30,7 +30,6 @@ func (repo *Repository) Initialize() {
 	repo.FetchRepoUsersUrl = env.BitbucketFetchRepoUsersURL(repo.ProjectName, repo.Name)
 	repo.FetchProjectUsersUrl = env.BitbucketFetchProjectUsersURL(repo.ProjectName)
 	repo.FetchPrsUrl = env.BitbucketFetchPrListURL(repo.ProjectName, repo.Name)
-	repo.Token = env.BitbucketToken
 }
 
 func (repo *Repository) Assign() {
