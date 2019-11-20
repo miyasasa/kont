@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"kont/internal/remoterepository/bitbucket"
+	"kont/internal/repository"
+	"kont/storage"
 	"log"
-	"miya/internal/remoterepository/bitbucket"
-	"miya/internal/repository"
-	"miya/storage"
 )
 
 func init() {

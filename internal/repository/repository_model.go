@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"miya/init/env"
-	"miya/internal/assignment"
-	"miya/internal/common"
+	"kont/init/env"
+	"kont/internal/assignment"
+	"kont/internal/common"
 )
 
 const (

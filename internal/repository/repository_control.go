@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"miya/internal/common"
+	"kont/internal/common"
 )
 
 const (

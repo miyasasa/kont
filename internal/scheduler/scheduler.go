@@ -2,8 +2,8 @@ package scheduler
 
 import (
 	"github.com/carlescere/scheduler"
+	"kont/internal/remoterepository"
 	"log"
-	"miya/internal/remoterepository"
 )
 
 func ScheduleRemoteRepositories() {
