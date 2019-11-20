@@ -16,7 +16,7 @@ type Repository struct {
 	FetchRepoUsersUrl    string                       `json:"fetchRepoUsersUrl"`
 	FetchProjectUsersUrl string                       `json:"fetchProjectUsersUrl"`
 	FetchPrsUrl          string                       `json:"fetchPrsUrl"`
-	Token                string                       `json:"-"`
+	Token                string                       `json:"token"`
 	ProjectName          string                       `json:"projectName"`
 	Name                 string                       `json:"name"`
 	Provider             string                       `json:"provider"`
