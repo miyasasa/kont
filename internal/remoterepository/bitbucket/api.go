@@ -3,10 +3,10 @@ package bitbucket
 import (
 	"bytes"
 	"encoding/json"
+	"kont/internal/client"
+	"kont/internal/common"
+	"kont/internal/repository"
 	"log"
-	"miya/internal/client"
-	"miya/internal/common"
-	"miya/internal/repository"
 	"net/http"
 	"strconv"
 )

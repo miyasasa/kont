@@ -1,6 +1,6 @@
 package main
 
-import "miya/api"
+import "kont/api"
 
 func main() {
 

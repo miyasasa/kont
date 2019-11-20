@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/foolin/gin-template"
 	"github.com/gin-gonic/gin"
-	"miya/api/ping"
+	"kont/api/ping"
 	"net/http"
 )
 

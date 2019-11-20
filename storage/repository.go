@@ -2,7 +2,7 @@ package storage
 
 import (
 	"encoding/json"
-	"miya/internal/repository"
+	"kont/internal/repository"
 )
 
 func (s *Store) GetAllRepositories() []repository.Repository {

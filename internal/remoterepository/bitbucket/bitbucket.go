@@ -1,9 +1,9 @@
 package bitbucket
 
 import (
+	"kont/internal/common"
+	"kont/internal/repository"
 	"log"
-	"miya/internal/common"
-	"miya/internal/repository"
 )
 
 func Listen(repo *repository.Repository) {

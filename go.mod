@@ -1,8 +1,9 @@
-module miya
+module kont
 
 require (
 	github.com/Bowery/prompt v0.0.0-20190916142128-fa8279994f75 // indirect
 	github.com/boltdb/bolt v1.3.1
+	github.com/carlescere/scheduler v0.0.0-20170109141437-ee74d2f83d82 // indirect
 	github.com/dchest/safefile v0.0.0-20151022103144-855e8d98f185 // indirect
 	github.com/foolin/gin-template v0.0.0-20190415034731-41efedfb393b
 	github.com/gin-contrib/sse v0.1.0 // indirect

@@ -1,8 +1,8 @@
 package assignment
 
 import (
+	"kont/internal/common"
 	"math/rand"
-	"miya/internal/common"
 	"time"
 )
 

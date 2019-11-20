@@ -1,9 +1,9 @@
 package remoterepository
 
 import (
-	"miya/internal/remoterepository/bitbucket"
-	"miya/internal/repository"
-	"miya/storage"
+	"kont/internal/remoterepository/bitbucket"
+	"kont/internal/repository"
+	"kont/storage"
 )
 
 func ListenRemoteRepositories() {
