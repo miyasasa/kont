@@ -19,8 +19,8 @@ func Listen(repo *repository.Repository) {
 }
 
 func UpdateUsers(repo *repository.Repository) {
-	projectUsers := fetchProjectUsers(repo, 0)
-	repoUsers := fetchRepositoryUsers(repo, 0)
+	projectUsers := fetchUsers(repo.FetchProjectUsersUrl, 0)
+	repoUsers := fetchUsers(repo.FetchRepoUsersUrl, 0)
 
 	projectUsers = append(projectUsers, repoUsers...)
 

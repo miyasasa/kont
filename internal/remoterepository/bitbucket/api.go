@@ -3,6 +3,7 @@ package bitbucket
 import (
 	"bytes"
 	"encoding/json"
+	"kont/init/env"
 	"kont/internal/client"
 	"kont/internal/common"
 	"kont/internal/repository"
@@ -11,9 +12,9 @@ import (
 	"strconv"
 )
 
-func fetchProjectUsers(repo *repository.Repository, start int) []common.User {
-	req, _ := http.NewRequest("GET", repo.FetchProjectUsersUrl+"?start="+strconv.Itoa(start), nil)
-	req.Header.Add("Authorization", repo.Token)
+func fetchUsers(url string, start int) []common.User {
+	req, _ := http.NewRequest("GET", url+"?start="+strconv.Itoa(start), nil)
+	req.Header.Add("Authorization", env.BitbucketToken)
 
 	page := common.UserPagination{}
 	client.GET(req, &page)
@@ -22,21 +23,7 @@ func fetchProjectUsers(repo *repository.Repository, start int) []common.User {
 		return page.GetUsers()
 	}
 
-	return append(fetchProjectUsers(repo, page.NextPageStart), page.GetUsers()...)
-}
-
-func fetchRepositoryUsers(repo *repository.Repository, start int) []common.User {
-	req, _ := http.NewRequest("GET", repo.FetchRepoUsersUrl+"?start="+strconv.Itoa(start), nil)
-	req.Header.Add("Authorization", repo.Token)
-
-	page := common.UserPagination{}
-	client.GET(req, &page)
-
-	if page.IsLastPage {
-		return page.GetUsers()
-	}
-
-	return append(fetchRepositoryUsers(repo, page.NextPageStart), page.GetUsers()...)
+	return append(fetchUsers(url, page.NextPageStart), page.GetUsers()...)
 }
 
 // ignored pagination request cause of pageSize equals 25
