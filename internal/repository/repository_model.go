@@ -3,6 +3,8 @@ package repository
 import (
 	"kont/init/env"
 	"kont/internal/common"
+	"kont/internal/util"
+	"log"
 )
 
 const (
@@ -31,8 +33,18 @@ func (repo *Repository) Initialize() {
 	repo.FetchPrsUrl = env.BitbucketFetchPrListURL(repo.ProjectName, repo.Name)
 }
 
-func (repo *Repository) Assign() {
-	for i := range repo.PRs {
+func (repo *Repository) AssignReviewersToPrs() {
+
+	newPrs := util.FilterPullRequestsHasNotReviewer(repo.PRs)
+	log.Printf("LatestPRCount: %v", len(newPrs))
+
+	busyReviewers := util.GetAssignedAndDoesNotApproveReviewers(repo.PRs)
+	log.Printf("BusyReviewers: %v", busyReviewers)
+
+	//assign reviewers to per pr
+	// filter owner of Pr from reviewer
+
+	for i := range newPrs {
 		for _, s := range repo.Stages {
 			repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.GetReviewer())
 		}
