@@ -2,7 +2,6 @@ package repository
 
 import (
 	"kont/init/env"
-	"kont/internal/assignment"
 	"kont/internal/common"
 )
 
@@ -39,11 +38,12 @@ func (repo *Repository) Initialize() {
 }
 
 func (repo *Repository) Assign() {
-	for i := range repo.PRs {
+	/*for i := range repo.PRs {
 		first := assignment.GetRandomReviewer(repo.Reviewers[STAGE1])
 		second := assignment.GetFirst(repo.Reviewers[STAGE2])
 		third := assignment.GetFirst(repo.Reviewers[STAGE3])
 
 		repo.PRs[i].Reviewers = []common.Reviewer{first, second, third}
 	}
+	*/
 }
