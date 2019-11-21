@@ -13,16 +13,16 @@ const (
 )
 
 type Repository struct {
-	FetchRepoUsersUrl    string                       `json:"fetchRepoUsersUrl"`
-	FetchProjectUsersUrl string                       `json:"fetchProjectUsersUrl"`
-	FetchPrsUrl          string                       `json:"fetchPrsUrl"`
-	Token                string                       `json:"token"`
-	ProjectName          string                       `json:"projectName"`
-	Name                 string                       `json:"name"`
-	Provider             string                       `json:"provider"`
-	Users                map[string]common.User       `json:"users"`
-	Reviewers            map[string][]common.Reviewer `json:"reviewers"`
-	PRs                  []common.PullRequest         `json:"prs"`
+	FetchRepoUsersUrl    string                 `json:"fetchRepoUsersUrl"`
+	FetchProjectUsersUrl string                 `json:"fetchProjectUsersUrl"`
+	FetchPrsUrl          string                 `json:"fetchPrsUrl"`
+	Token                string                 `json:"token"`
+	ProjectName          string                 `json:"projectName"`
+	Name                 string                 `json:"name"`
+	Provider             string                 `json:"provider"`
+	Users                map[string]common.User `json:"users"`
+	Stages               []Stage                `json:"stages"`
+	PRs                  []common.PullRequest   `json:"prs"`
 }
 
 type Stage struct {
