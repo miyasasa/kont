@@ -25,6 +25,12 @@ type Repository struct {
 	PRs                  []common.PullRequest         `json:"prs"`
 }
 
+type Stage struct {
+	Name      string
+	Reviewers []common.Reviewer
+	// added policy for assignment
+}
+
 func (repo *Repository) Initialize() {
 	// choose according provider Bitbucket
 	repo.FetchRepoUsersUrl = env.BitbucketFetchRepoUsersURL(repo.ProjectName, repo.Name)
