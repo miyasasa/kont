@@ -1,7 +1,8 @@
 package common
 
 type Reviewer struct {
-	User User `json:"user"`
+	User     User `json:"user"`
+	Approved bool `json:"approved"`
 }
 
 type User struct {
