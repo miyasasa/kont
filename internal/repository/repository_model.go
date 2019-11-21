@@ -24,12 +24,6 @@ type Repository struct {
 	PRs                  []common.PullRequest   `json:"prs"`
 }
 
-type Stage struct {
-	Name      string
-	Reviewers []common.Reviewer
-	// added policy for assignment
-}
-
 func (repo *Repository) Initialize() {
 	// choose according provider Bitbucket
 	repo.FetchRepoUsersUrl = env.BitbucketFetchRepoUsersURL(repo.ProjectName, repo.Name)
@@ -38,12 +32,9 @@ func (repo *Repository) Initialize() {
 }
 
 func (repo *Repository) Assign() {
-	/*for i := range repo.PRs {
-		first := assignment.GetRandomReviewer(repo.Reviewers[STAGE1])
-		second := assignment.GetFirst(repo.Reviewers[STAGE2])
-		third := assignment.GetFirst(repo.Reviewers[STAGE3])
-
-		repo.PRs[i].Reviewers = []common.Reviewer{first, second, third}
+	for i := range repo.PRs {
+		for _, s := range repo.Stages {
+			repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.GetReviewer())
+		}
 	}
-	*/
 }
