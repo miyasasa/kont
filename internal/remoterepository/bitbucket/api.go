@@ -25,18 +25,19 @@ func fetchUsers(url string, token string, start int) []common.User {
 	return append(fetchUsers(url, token, page.NextPageStart), page.GetUsers()...)
 }
 
-func fetchPRs(repo *repository.Repository, start int) []common.PullRequest {
+func fetchPRs(repo *repository.Repository, start int) {
 	req, _ := http.NewRequest("GET", repo.FetchPrsUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
 
 	page := common.PRPagination{}
 	client.GET(req, &page)
 
-	if page.IsLastPage || page.NextPageStart == 0 {
-		return page.Values
+	repo.PRs = append(repo.PRs, page.Values...)
+
+	if !page.IsLastPage && page.NextPageStart != 0 {
+		fetchPRs(repo, page.NextPageStart)
 	}
 
-	return append(fetchPRs(repo, page.NextPageStart), page.Values...)
 }
 
 func updatePRs(repo *repository.Repository) {
@@ -56,6 +57,6 @@ func updatePRs(repo *repository.Repository) {
 
 		//client.PUT(req)
 
-		log.Printf("%+v\n", pr)
+		//log.Printf("%+v\n", pr)
 	}
 }
