@@ -1,11 +1,16 @@
 package main
 
-import "kont/api"
+import (
+	"kont/internal/remoterepository"
+)
 
 func main() {
 
 	// scheduler.ScheduleRemoteRepositories()
 	// runtime.Goexit()
 
-	api.Router.Run()
+	remoterepository.ListenRemoteRepositories()
+
+	//api.Router.Run()
+
 }
