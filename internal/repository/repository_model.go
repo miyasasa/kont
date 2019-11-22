@@ -1,10 +1,9 @@
 package repository
 
 import (
+	"github.com/deckarep/golang-set"
 	"kont/init/env"
 	"kont/internal/common"
-	"kont/internal/util"
-	"log"
 )
 
 const (
@@ -35,18 +34,37 @@ func (repo *Repository) Initialize() {
 
 func (repo *Repository) AssignReviewersToPrs() {
 
-	newPrs := util.FilterPullRequestsHasNotReviewer(repo.PRs)
-	log.Printf("LatestPRCount: %v", len(newPrs))
+	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
 
-	busyReviewers := util.GetAssignedAndDoesNotApproveReviewers(repo.PRs)
-	log.Printf("BusyReviewers: %v", busyReviewers)
+	//newPrs := repo.filterPullRequestsHasNotReviewer()
+	//log.Printf("LatestPRCount: %v", len(newPrs))
 
-	//assign reviewers to per pr
-	// filter owner of Pr from reviewer
-
-	for i := range newPrs {
+	for i, pr := range repo.PRs {
+		owner := pr.Author.GetAuthorAsReviewer()
 		for _, s := range repo.Stages {
-			repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.GetReviewer())
+			repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.GetReviewerExcludesBusyReviewersAndOwner(busyReviewers, owner))
 		}
 	}
+}
+
+func (repo *Repository) filterPullRequestsHasNotReviewer() []common.PullRequest {
+	prs := make([]common.PullRequest, 0)
+
+	for _, v := range repo.PRs {
+		if !v.IsAssignedAnyReviewer() {
+			prs = append(prs, v)
+		}
+	}
+
+	return prs
+}
+
+// which reviewers are busy :)
+func (repo *Repository) getAssignedAndDoesNotApproveReviewers() mapset.Set {
+	reviewers := mapset.NewSet()
+	for _, pr := range repo.PRs {
+		reviewers = reviewers.Union(pr.GetReviewersByUnApproved())
+	}
+
+	return reviewers
 }
