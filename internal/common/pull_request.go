@@ -8,6 +8,6 @@ type PullRequest struct {
 	Reviewers   []Reviewer `json:"reviewers"`
 }
 
-func (pr *PullRequest) DoesHaveAnyReviewer() bool {
+func (pr *PullRequest) IsAssignedAnyReviewer() bool {
 	return len(pr.Reviewers) != 0
 }

@@ -9,7 +9,7 @@ func FilterPullRequestsHasNotReviewer(prList []common.PullRequest) []common.Pull
 	prs := make([]common.PullRequest, 0)
 
 	for _, v := range prList {
-		if !v.DoesHaveAnyReviewer() {
+		if !v.IsAssignedAnyReviewer() {
 			prs = append(prs, v)
 		}
 	}
