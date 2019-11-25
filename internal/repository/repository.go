@@ -34,15 +34,18 @@ func (repo *Repository) Initialize() {
 
 func (repo *Repository) AssignReviewersToPrs() {
 
-	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
-
 	//newPrs := repo.filterPullRequestsHasNotReviewer()
 	//log.Printf("LatestPRCount: %v", len(newPrs))
 
 	for i, pr := range repo.PRs {
-		owner := pr.Author.GetAuthorAsReviewer()
 		for _, s := range repo.Stages {
-			repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.GetReviewerExcludesBusyReviewersAndOwner(busyReviewers, owner))
+			if s.Policy == RANDOMINAVALABLE {
+				busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
+				owner := pr.Author.GetAuthorAsReviewer()
+				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.getRandomInAvailableReviewers(busyReviewers, owner))
+			} else {
+				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.GetReviewer())
+			}
 		}
 	}
 }
