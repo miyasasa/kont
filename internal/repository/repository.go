@@ -34,23 +34,47 @@ func (repo *Repository) Initialize() {
 
 func (repo *Repository) AssignReviewersToPrs() {
 
+	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
+
 	//newPrs := repo.filterPullRequestsHasNotReviewer()
 	//log.Printf("LatestPRCount: %v", len(newPrs))
 
 	for i, pr := range repo.PRs {
+		ownerAndReviewers := mapset.NewSet(pr.Author.GetAuthorAsReviewer())
 		for _, s := range repo.Stages {
-			if s.Policy == RANDOMINAVALABLE {
-				busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
-				owner := pr.Author.GetAuthorAsReviewer()
-				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.getRandomInAvailableReviewers(busyReviewers, owner))
-			} else {
-				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, s.GetReviewer())
+			reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
+			if reviewer == nil {
+				// get reviewer from next stage. if is last stage go to first
 			}
+
+			// add reviewer to owner and reviewer
+			repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, reviewer)
 		}
 	}
 }
 
-func (repo *Repository) filterPullRequestsHasNotReviewer() []common.PullRequest {
+/*
+func (repo *Repository) getReviewer(index int, busyReviewers mapset.Set, ownerAndReviewers mapset.Set) {
+
+	stages := append(repo.Stages[index:], repo.Stages[0:index]...)
+	for i, s := range stages {
+
+	}
+
+	for _, s := range repo.Stages {
+		reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
+		if reviewer == nil {
+			// get reviewer from next stage. if is last stage go to first
+		}
+
+		// add reviewer to owner and reviewer
+		repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, *reviewer)
+	}
+
+}
+*/
+
+func (repo *Repository) filterPullRequestsHasNotReviewer() {
 	prs := make([]common.PullRequest, 0)
 
 	for _, v := range repo.PRs {
@@ -59,7 +83,7 @@ func (repo *Repository) filterPullRequestsHasNotReviewer() []common.PullRequest 
 		}
 	}
 
-	return prs
+	repo.PRs = prs
 }
 
 // which reviewers are busy :)
