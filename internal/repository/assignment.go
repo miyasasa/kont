@@ -17,6 +17,7 @@ type Stage struct {
 	Policy    string
 }
 
+// For getting Difference over map-set, items have to same pointer-address to compare
 func (s *Stage) GetReviewer(busyReviewers mapset.Set, ownerAndReviewers mapset.Set) *common.Reviewer {
 	availableReviewers := mapset.NewSetFromSlice(s.getReviewers()).Difference(busyReviewers).Difference(ownerAndReviewers)
 
