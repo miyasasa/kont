@@ -11,8 +11,8 @@ func TestStageNotNilAndNilFields(t *testing.T) {
 	stage := new(Stage)
 
 	assert.NotNil(t, stage)
-	assert.Equal(t, stage.Name, "")
-	assert.Equal(t, stage.Policy, "")
+	assert.Equal(t, "", stage.Name)
+	assert.Equal(t, "", stage.Policy)
 	assert.Nil(t, stage.Reviewers)
 }
 
