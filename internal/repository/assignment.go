@@ -3,46 +3,44 @@ package repository
 import (
 	"github.com/deckarep/golang-set"
 	"kont/internal/common"
-	"log"
-	"math/rand"
-	"time"
+	"kont/internal/util"
 )
 
 const (
-	FIRST            = "FIRST"
-	RANDOM           = "RANDOM"
-	RANDOMINAVALABLE = "RANDOMINAVALABLE"
+	BYORDERINAVAILABLE = "BYORDERINAVAILABLE"
+	RANDOMINAVAILABLE  = "RANDOMINAVAILABLE"
 )
 
 type Stage struct {
 	Name      string
-	Reviewers []common.Reviewer
+	Reviewers []*common.Reviewer
 	Policy    string
-	// added policy for assignment
 }
 
-func (s *Stage) GetReviewer() common.Reviewer {
-	switch s.Policy {
-	case FIRST:
-		return s.getFirst()
-	case RANDOM:
-		return s.getRandomReviewer()
-	default:
-		return s.getRandomReviewer()
+func (s *Stage) GetReviewer(busyReviewers mapset.Set, ownerAndReviewers mapset.Set) *common.Reviewer {
+	availableReviewers := mapset.NewSetFromSlice(s.getReviewers()).Difference(busyReviewers).Difference(ownerAndReviewers)
+
+	if availableReviewers.Cardinality() == 0 {
+		reviewers := busyReviewers.Difference(ownerAndReviewers)
+		if reviewers.Cardinality() == 0 {
+			return nil // Reviewers are assigned already PR's reviewer-or-owner
+		}
+
+		return util.GetReviewerRandomly(reviewers)
 	}
+
+	if s.Policy == BYORDERINAVAILABLE {
+		return util.GetFirstAvailableReviewerByOrder(availableReviewers)
+	}
+
+	return util.GetReviewerRandomly(availableReviewers)
 }
 
-func (s *Stage) getRandomInAvailableReviewers(busyReviewers mapset.Set, owner common.Reviewer) common.Reviewer {
-	log.Printf("BusyReviewers for per PR --> : %v and Owner--> %v", busyReviewers.ToSlice(), owner)
-	return common.Reviewer{}
-}
+func (s *Stage) getReviewers() []interface{} {
+	rv := make([]interface{}, len(s.Reviewers))
+	for i, v := range s.Reviewers {
+		rv[i] = v
+	}
 
-func (s *Stage) getRandomReviewer() common.Reviewer {
-	rand.Seed(time.Now().UnixNano())
-	index := rand.Intn(len(s.Reviewers))
-	return s.Reviewers[index]
-}
-
-func (s *Stage) getFirst() common.Reviewer {
-	return s.Reviewers[0]
+	return rv
 }
