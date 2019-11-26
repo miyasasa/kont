@@ -3,12 +3,12 @@ package common
 import "github.com/deckarep/golang-set"
 
 type PullRequest struct {
-	Id          int32      `json:"id"`
-	Version     int32      `json:"version"`
-	Title       string     `json:"title"`
-	Description string     `json:"description"`
-	Reviewers   []Reviewer `json:"reviewers"`
-	Author      Author     `json:"author"`
+	Id          int32       `json:"id"`
+	Version     int32       `json:"version"`
+	Title       string      `json:"title"`
+	Description string      `json:"description"`
+	Reviewers   []*Reviewer `json:"reviewers"`
+	Author      Author      `json:"author"`
 }
 
 type Reviewer struct {
