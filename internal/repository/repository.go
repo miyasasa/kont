@@ -4,6 +4,7 @@ import (
 	"github.com/deckarep/golang-set"
 	"kont/init/env"
 	"kont/internal/common"
+	"log"
 )
 
 const (
@@ -36,11 +37,12 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
 
-	//newPrs := repo.filterPullRequestsHasNotReviewer()
-	//log.Printf("LatestPRCount: %v", len(newPrs))
+	repo.filterPullRequestsHasNotReviewer()
+
+	log.Printf("LatestPRCount: %v", len(repo.PRs))
 
 	for i, pr := range repo.PRs {
-		ownerAndReviewers := mapset.NewSet(pr.Author.GetAuthorAsReviewer())
+		ownerAndReviewers := mapset.NewSet(repo.findUserInReviewers(pr.Author.User))
 		for _, s := range repo.Stages {
 			reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
 			if reviewer == nil {
@@ -94,4 +96,15 @@ func (repo *Repository) getAssignedAndDoesNotApproveReviewers() mapset.Set {
 	}
 
 	return reviewers
+}
+
+func (repo *Repository) findUserInReviewers(user common.User) *common.Reviewer {
+
+	for _, s := range repo.Stages {
+		if reviewer := s.getReviewerByUser(user); reviewer != nil {
+			return reviewer
+		}
+	}
+
+	return nil
 }
