@@ -12,6 +12,7 @@ type PullRequest struct {
 }
 
 type Reviewer struct {
+	Order    int  `json:"order"`
 	User     User `json:"user"`
 	Approved bool `json:"approved"`
 }
