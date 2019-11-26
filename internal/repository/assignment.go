@@ -44,3 +44,13 @@ func (s *Stage) getReviewers() []interface{} {
 
 	return rv
 }
+
+func (s *Stage) getReviewerByUser(user common.User) *common.Reviewer {
+	for _, r := range s.Reviewers {
+		if user == r.User {
+			return r
+		}
+	}
+
+	return nil
+}

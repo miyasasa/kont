@@ -227,6 +227,25 @@ func TestStageGetReviewerByOrderIn2StageReviewer2BusiesAlsoTheSame2ExistReviewer
 	assert.False(t, ownerAndReviewers.Contains(reviewer))
 }
 
+func TestStage_GetReviewerByUser_GivenUserOfTheReviewer_ExpectReviewer(t *testing.T) {
+
+	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers()}
+
+	reviewerByUser := stage.getReviewerByUser(getDummyReviewers()[0].User)
+
+	assert.NotNil(t, reviewerByUser)
+	assert.NotEqual(t, getDummyReviewers()[0].User, reviewerByUser)
+}
+
+func TestStage_GetReviewerByUser_GivenUserNotAReviewer_ExpectNil(t *testing.T) {
+
+	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers()}
+
+	reviewerByUser := stage.getReviewerByUser(common.User{Name: "necip", DisplayName: "Necip Uysal"})
+
+	assert.Nil(t, reviewerByUser)
+}
+
 func getDummyReviewers() []*common.Reviewer {
 	reviewer1 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Order: 1}
 	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Order: 2}
