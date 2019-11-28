@@ -291,6 +291,35 @@ func TestRepository_AssignReviewersToPrs_With1StageAnd4DummyReviewerAnd1BusyRevi
 	assert.Equal(t, getDummyReviewers()[2], repo.PRs[0].Reviewers[0])
 }
 
+func TestRepository_AssignReviewersToPrs_With2Stage_2AvailableReviewerInFirstStageAnd1ReviewerInSecondAsAlsoOwner_ExpectFirstStagesReviewersToPR(t *testing.T) {
+	repo := new(Repository)
+
+	dummies := getDummyReviewers()
+
+	owner := dummies[2]
+	stage1Reviewers := []*common.Reviewer{dummies[0], dummies[1]}
+	stage2Reviewers := []*common.Reviewer{owner}
+	stage3Reviewers := []*common.Reviewer{dummies[0]}
+
+	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
+	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
+	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
+
+	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}}
+
+	repo.Stages = []Stage{stage1, stage2, stage3}
+	repo.PRs = []common.PullRequest{pr}
+
+	repo.AssignReviewersToPrs()
+
+	assert.NotNil(t, repo.PRs)
+	assert.True(t, len(repo.PRs) == 1)
+	assert.NotNil(t, repo.PRs[0].Reviewers)
+	assert.True(t, len(repo.PRs[0].Reviewers) == 2)
+	assert.Equal(t, getDummyReviewers()[0], repo.PRs[0].Reviewers[0])
+	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[1])
+}
+
 func setMockEnvironmentVariables() {
 	_ = os.Setenv("BITBUCKET_BASE_URL", "http://localhost/rest/api/1.0")
 	_ = os.Setenv("BITBUCKET_PROJECT_PATH", "/projects/")

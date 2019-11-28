@@ -43,38 +43,34 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	for i, pr := range repo.PRs {
 		ownerAndReviewers := mapset.NewSet(repo.findUserInReviewers(pr.Author.User))
-		for _, s := range repo.Stages {
+		for j, s := range repo.Stages {
 			reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
 			if reviewer == nil {
-				// get reviewer from next stage. if is last stage go to first
+				log.Printf("Reviewer not found in the stage")
+				reviewer = repo.getReviewer(j, busyReviewers, ownerAndReviewers)
 			}
 
-			// add reviewer to owner and reviewer
-			repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, reviewer)
+			if reviewer != nil {
+				ownerAndReviewers.Add(reviewer)
+				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, reviewer)
+			}
 		}
 	}
 }
 
-/*
-func (repo *Repository) getReviewer(index int, busyReviewers mapset.Set, ownerAndReviewers mapset.Set) {
+func (repo *Repository) getReviewer(index int, busyReviewers mapset.Set, ownerAndReviewers mapset.Set) *common.Reviewer {
 
-	stages := append(repo.Stages[index:], repo.Stages[0:index]...)
-	for i, s := range stages {
-
-	}
-
-	for _, s := range repo.Stages {
+	stages := append(repo.Stages[index+1:], repo.Stages[0:index]...)
+	for _, s := range stages {
 		reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
-		if reviewer == nil {
-			// get reviewer from next stage. if is last stage go to first
-		}
 
-		// add reviewer to owner and reviewer
-		repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, *reviewer)
+		if reviewer != nil {
+			return reviewer
+		}
 	}
 
+	return nil
 }
-*/
 
 func (repo *Repository) filterPullRequestsHasNotReviewer() {
 	prs := make([]common.PullRequest, 0)
