@@ -43,29 +43,23 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	for i, pr := range repo.PRs {
 		ownerAndReviewers := mapset.NewSet(repo.findUserInReviewers(pr.Author.User))
-		for j, s := range repo.Stages {
-			reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
-			if reviewer == nil {
-				log.Printf("Reviewer not found in the stage")
-				reviewer = repo.getReviewer(j, busyReviewers, ownerAndReviewers)
-			}
-
-			if reviewer != nil {
-				ownerAndReviewers.Add(reviewer)
-				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, reviewer)
-			}
-		}
+		repo.assignReviewer(0, i, busyReviewers, ownerAndReviewers)
 	}
 }
 
-func (repo *Repository) getReviewer(index int, busyReviewers mapset.Set, ownerAndReviewers mapset.Set) *common.Reviewer {
+func (repo *Repository) assignReviewer(index int, prIndex int, busyReviewers mapset.Set, ownerAndReviewers mapset.Set) *common.Reviewer {
 
-	stages := append(repo.Stages[index+1:], repo.Stages[0:index]...)
-	for _, s := range stages {
+	stages := append(repo.Stages[index:], repo.Stages[0:index]...)
+	for i, s := range stages {
 		reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
 
+		if reviewer == nil && index < len(repo.Stages)-1 {
+			reviewer = repo.assignReviewer(i+1, prIndex, busyReviewers, ownerAndReviewers)
+		}
+
 		if reviewer != nil {
-			return reviewer
+			ownerAndReviewers.Add(reviewer)
+			repo.PRs[prIndex].Reviewers = append(repo.PRs[prIndex].Reviewers, reviewer)
 		}
 	}
 
