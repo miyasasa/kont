@@ -40,7 +40,7 @@ func TestRepository_Initialize_WithoutEnvVariables(t *testing.T) {
 	assert.Equal(t, "BJKtransfer", repo.FetchPrsUrl)
 }
 
-func TestRepository_Initialize(t *testing.T) {
+func TestRepository_Initialize_ExpectSuccess(t *testing.T) {
 	repo := new(Repository)
 	repo.ProjectName = "BJK"
 	repo.Name = "transfer"
@@ -246,8 +246,8 @@ func Test_FindUserInReviewers_WithUnAvailableReviewerGivenUserInStages_ExpectNil
 }
 
 // AssignReviewersToPrs area
-
-func TestRepository_AssignReviewersToPrs_With1StageAnd4DummyReviewerAndOBusyReviewerAndAssignSecondAsOwner_ExpectFirstInDummy(t *testing.T) {
+//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: second-reviewer), BusyReviewers: 0
+func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing.T) {
 	repo := new(Repository)
 
 	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers(), Policy: BYORDERINAVAILABLE}
@@ -266,7 +266,8 @@ func TestRepository_AssignReviewersToPrs_With1StageAnd4DummyReviewerAndOBusyRevi
 	assert.Equal(t, getDummyReviewers()[0], repo.PRs[0].Reviewers[0])
 }
 
-func TestRepository_AssignReviewersToPrs_With1StageAnd4DummyReviewerAnd1BusyReviewerAndAssignFirstAsOwner_ExpectThirdInDummy(t *testing.T) {
+//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: first-reviewer), BusyReviewers: 1(second reviewer)
+func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 	repo := new(Repository)
 
 	dummies := getDummyReviewers()
@@ -350,7 +351,7 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[2])
 }
 
-func TestRepository_AssignReviewersToPrs_With1Stage_0AvailableReviewerAlsoAsOwner_ExpectNoReviewersToPR(t *testing.T) {
+func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0AvailableReviewer_ExpectNoReviewersToPR(t *testing.T) {
 	repo := new(Repository)
 
 	dummies := getDummyReviewers()
@@ -372,7 +373,7 @@ func TestRepository_AssignReviewersToPrs_With1Stage_0AvailableReviewerAlsoAsOwne
 	assert.Nil(t, repo.PRs[0].Reviewers)
 }
 
-func TestRepository_AssignReviewersToPrsWithBusyReviewer(t *testing.T) {
+func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *testing.T) {
 	repo := new(Repository)
 
 	dummies := getDummyReviewers()
