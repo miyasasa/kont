@@ -5,6 +5,7 @@ import (
 	"kont/init/env"
 	"kont/internal/common"
 	"log"
+	"math"
 )
 
 const (
@@ -53,7 +54,8 @@ func (repo *Repository) assignReviewer(index int, prIndex int, busyReviewers map
 	for i, s := range stages {
 		reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
 
-		if reviewer == nil && index < len(repo.Stages)-1 {
+		deep := math.Min(float64(len(repo.Stages)-1), 2)
+		if reviewer == nil && index < int(deep) {
 			reviewer = repo.assignReviewer(i+1, prIndex, busyReviewers, ownerAndReviewers)
 		}
 
