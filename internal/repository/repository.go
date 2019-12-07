@@ -5,7 +5,6 @@ import (
 	"kont/init/env"
 	"kont/internal/common"
 	"log"
-	"math"
 )
 
 const (
@@ -38,7 +37,7 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
 
-	repo.filterPullRequestsHasNotReviewer()
+	//repo.filterPullRequestsHasNotReviewer()
 
 	log.Printf("LatestPRCount: %v", len(repo.PRs))
 
@@ -54,8 +53,7 @@ func (repo *Repository) assignReviewer(index int, prIndex int, busyReviewers map
 	for i, s := range stages {
 		reviewer := s.GetReviewer(busyReviewers, ownerAndReviewers)
 
-		deep := math.Min(float64(len(repo.Stages)-1), 2)
-		if reviewer == nil && index < int(deep) {
+		if reviewer == nil && index == 0 {
 			reviewer = repo.assignReviewer(i+1, prIndex, busyReviewers, ownerAndReviewers)
 		}
 
