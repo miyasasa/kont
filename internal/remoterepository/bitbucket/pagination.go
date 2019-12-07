@@ -1,4 +1,4 @@
-package common
+package bitbucket
 
 type Pagination struct {
 	Size          int

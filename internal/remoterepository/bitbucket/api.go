@@ -4,18 +4,17 @@ import (
 	"bytes"
 	"encoding/json"
 	"kont/internal/client"
-	"kont/internal/common"
 	"kont/internal/repository"
 	"log"
 	"net/http"
 	"strconv"
 )
 
-func fetchUsers(url string, token string, start int) []common.User {
+func fetchUsers(url string, token string, start int) []User {
 	req, _ := http.NewRequest("GET", url+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", token)
 
-	page := common.UserPagination{}
+	page := UserPagination{}
 	client.GET(req, &page)
 
 	if page.IsLastPage || page.NextPageStart == 0 {
@@ -29,15 +28,14 @@ func fetchPRs(repo *repository.Repository, start int) {
 	req, _ := http.NewRequest("GET", repo.FetchPrsUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
 
-	page := common.PRPagination{}
+	page := PRPagination{}
 	client.GET(req, &page)
 
-	repo.PRs = append(repo.PRs, page.Values...)
+	AppendPullRequestToRepo(page.Values, repo)
 
 	if !page.IsLastPage && page.NextPageStart != 0 {
 		fetchPRs(repo, page.NextPageStart)
 	}
-
 }
 
 func updatePRs(repo *repository.Repository) {

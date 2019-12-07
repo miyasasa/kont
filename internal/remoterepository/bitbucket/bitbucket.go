@@ -12,6 +12,7 @@ func Listen(repo *repository.Repository) {
 
 	repo.AssignReviewersToPrs()
 
+	log.Printf("PR's ....%v", repo.PRs)
 	updatePRs(repo)
 }
 
@@ -23,9 +24,9 @@ func UpdateUsers(repo *repository.Repository) {
 	projectUsers = append(projectUsers, repoUsers...)
 
 	users := make(map[string]common.User, 0)
-	for _, u := range projectUsers {
-		users[u.Name] = u
+	/*for _, u := range projectUsers {
+		//users[u.Name] = u
 	}
-
+	*/
 	repo.Users = users
 }

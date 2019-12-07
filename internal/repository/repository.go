@@ -24,7 +24,7 @@ type Repository struct {
 	Provider             string                 `json:"provider"`
 	Users                map[string]common.User `json:"users"`
 	Stages               []Stage                `json:"stages"`
-	PRs                  []common.PullRequest   `json:"prs"`
+	PRs                  []common.PR            `json:"prs"`
 }
 
 func (repo *Repository) Initialize() {
@@ -38,7 +38,7 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
 
-	repo.filterPullRequestsHasNotReviewer()
+	//repo.filterPullRequestsHasNotReviewer()
 
 	log.Printf("LatestPRCount: %v", len(repo.PRs))
 
@@ -69,23 +69,24 @@ func (repo *Repository) assignReviewer(index int, prIndex int, busyReviewers map
 }
 
 func (repo *Repository) filterPullRequestsHasNotReviewer() {
-	prs := make([]common.PullRequest, 0)
+	prs := make([]common.PR, 0)
 
-	for _, v := range repo.PRs {
+	/*for _, v := range repo.PRs {
 		if !v.IsAssignedAnyReviewer() {
 			prs = append(prs, v)
 		}
 	}
-
+	*/
 	repo.PRs = prs
 }
 
 // which reviewers are busy :)
 func (repo *Repository) getAssignedAndDoesNotApproveReviewers() mapset.Set {
 	reviewers := mapset.NewSet()
-	for _, pr := range repo.PRs {
-		reviewers = reviewers.Union(pr.GetReviewersByUnApproved())
+	/*for _, pr := range repo.PRs {
+		//reviewers = reviewers.Union(pr.GetReviewersByUnApproved())
 	}
+	*/
 
 	return reviewers
 }
@@ -93,7 +94,7 @@ func (repo *Repository) getAssignedAndDoesNotApproveReviewers() mapset.Set {
 func (repo *Repository) findUserInReviewers(user common.User) *common.Reviewer {
 
 	for _, s := range repo.Stages {
-		if reviewer := s.getReviewerByUser(user); reviewer != nil {
+		if reviewer := s.GetReviewerByUserName(user.Name); reviewer != nil {
 			return reviewer
 		}
 	}

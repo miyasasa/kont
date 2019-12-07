@@ -1,6 +1,8 @@
-package common
+package bitbucket
 
-type PR struct {
+import "github.com/deckarep/golang-set"
+
+type PullRequest struct {
 	Id          int32       `json:"id"`
 	Version     int32       `json:"version"`
 	Title       string      `json:"title"`
@@ -10,7 +12,6 @@ type PR struct {
 }
 
 type Reviewer struct {
-	Order    int  `json:"order"`
 	User     User `json:"user"`
 	Approved bool `json:"approved"`
 }
@@ -26,4 +27,20 @@ type Author struct {
 
 func (a Author) GetAuthorAsReviewer() Reviewer {
 	return Reviewer{User: a.User}
+}
+
+func (pr *PullRequest) IsAssignedAnyReviewer() bool {
+	return len(pr.Reviewers) != 0
+}
+
+func (pr *PullRequest) GetReviewersByUnApproved() mapset.Set {
+	reviewers := mapset.NewSet()
+
+	for _, r := range pr.Reviewers {
+		if !r.Approved {
+			reviewers.Add(r)
+		}
+	}
+
+	return reviewers
 }
