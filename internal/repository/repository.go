@@ -94,7 +94,9 @@ func (repo *Repository) GetReviewersByUnApproved(pr common.PullRequest) mapset.S
 	for _, r := range pr.Reviewers {
 		if !r.Approved {
 			rv := repo.findReviewerByUsernameStage(r.User.Name)
-			reviewers.Add(rv)
+			if rv != nil {
+				reviewers.Add(rv)
+			}
 		}
 	}
 
