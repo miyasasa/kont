@@ -1,7 +1,5 @@
 package common
 
-import "github.com/deckarep/golang-set"
-
 type PullRequest struct {
 	Id          int32       `json:"id"`
 	Version     int32       `json:"version"`
@@ -32,16 +30,4 @@ func (a Author) GetAuthorAsReviewer() Reviewer {
 
 func (pr *PullRequest) IsAssignedAnyReviewer() bool {
 	return len(pr.Reviewers) != 0
-}
-
-func (pr *PullRequest) GetReviewersByUnApproved() mapset.Set {
-	reviewers := mapset.NewSet()
-
-	for _, r := range pr.Reviewers {
-		if !r.Approved {
-			reviewers.Add(r)
-		}
-	}
-
-	return reviewers
 }

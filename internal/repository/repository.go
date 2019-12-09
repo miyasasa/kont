@@ -37,12 +37,12 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
 
-	//repo.filterPullRequestsHasNotReviewer()
+	repo.filterPullRequestsHasNotReviewer()
 
 	log.Printf("LatestPRCount: %v", len(repo.PRs))
 
 	for i, pr := range repo.PRs {
-		ownerAndReviewers := mapset.NewSet(repo.findUserInReviewers(pr.Author.User))
+		ownerAndReviewers := mapset.NewSet(repo.findReviewerByUsernameStage(pr.Author.User.Name))
 		repo.assignReviewer(0, i, busyReviewers, ownerAndReviewers)
 	}
 }
@@ -82,16 +82,29 @@ func (repo *Repository) filterPullRequestsHasNotReviewer() {
 func (repo *Repository) getAssignedAndDoesNotApproveReviewers() mapset.Set {
 	reviewers := mapset.NewSet()
 	for _, pr := range repo.PRs {
-		reviewers = reviewers.Union(pr.GetReviewersByUnApproved())
+		reviewers = reviewers.Union(repo.GetReviewersByUnApproved(pr))
 	}
 
 	return reviewers
 }
 
-func (repo *Repository) findUserInReviewers(user common.User) *common.Reviewer {
+func (repo *Repository) GetReviewersByUnApproved(pr common.PullRequest) mapset.Set {
+	reviewers := mapset.NewSet()
+
+	for _, r := range pr.Reviewers {
+		if !r.Approved {
+			rv := repo.findReviewerByUsernameStage(r.User.Name)
+			reviewers.Add(rv)
+		}
+	}
+
+	return reviewers
+}
+
+func (repo *Repository) findReviewerByUsernameStage(username string) *common.Reviewer {
 
 	for _, s := range repo.Stages {
-		if reviewer := s.getReviewerByUser(user); reviewer != nil {
+		if reviewer := s.getReviewerByUserName(username); reviewer != nil {
 			return reviewer
 		}
 	}
