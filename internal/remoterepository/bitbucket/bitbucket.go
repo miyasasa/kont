@@ -8,17 +8,14 @@ import (
 
 func Listen(repo *repository.Repository) {
 	log.Println("Bitbucket-PR is listening....")
-	prs := fetchPRs(repo, 0)
+	fetchPRs(repo, 0)
 
-	newPrs := filterPullRequestsHasNotReviewer(prs)
-	log.Printf("LatestPRCount: %v", len(newPrs))
-
-	repo.PRs = newPrs
-	repo.Assign()
+	repo.AssignReviewersToPrs()
 
 	updatePRs(repo)
 }
 
+// refactor with set // concat two two slice without duplicates
 func UpdateUsers(repo *repository.Repository) {
 	projectUsers := fetchUsers(repo.FetchProjectUsersUrl, repo.Token, 0)
 	repoUsers := fetchUsers(repo.FetchRepoUsersUrl, repo.Token, 0)
@@ -31,16 +28,4 @@ func UpdateUsers(repo *repository.Repository) {
 	}
 
 	repo.Users = users
-}
-
-func filterPullRequestsHasNotReviewer(prList []common.PullRequest) []common.PullRequest {
-	prs := make([]common.PullRequest, 0)
-
-	for _, v := range prList {
-		if !v.DoesHaveAnyReviewer() {
-			prs = append(prs, v)
-		}
-	}
-
-	return prs
 }

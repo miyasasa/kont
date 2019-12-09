@@ -3,8 +3,9 @@ module kont
 require (
 	github.com/Bowery/prompt v0.0.0-20190916142128-fa8279994f75 // indirect
 	github.com/boltdb/bolt v1.3.1
-	github.com/carlescere/scheduler v0.0.0-20170109141437-ee74d2f83d82 // indirect
+	github.com/carlescere/scheduler v0.0.0-20170109141437-ee74d2f83d82
 	github.com/dchest/safefile v0.0.0-20151022103144-855e8d98f185 // indirect
+	github.com/deckarep/golang-set v1.7.1
 	github.com/foolin/gin-template v0.0.0-20190415034731-41efedfb393b
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
@@ -16,7 +17,7 @@ require (
 	github.com/mattn/go-isatty v0.0.10 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/objx v0.2.0 // indirect
-	github.com/stretchr/testify v1.4.0 // indirect
+	github.com/stretchr/testify v1.4.0
 	github.com/ugorji/go v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20191112222119-e1110fd1c708 // indirect
 	golang.org/x/net v0.0.0-20191112182307-2180aed22343 // indirect
