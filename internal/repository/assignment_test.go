@@ -231,7 +231,7 @@ func TestStage_GetReviewerByUser_GivenUserOfTheReviewer_ExpectReviewer(t *testin
 
 	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers()}
 
-	reviewerByUser := stage.getReviewerByUser(getDummyReviewers()[0].User)
+	reviewerByUser := stage.getReviewerByUserName(getDummyReviewers()[0].User.Name)
 
 	assert.NotNil(t, reviewerByUser)
 	assert.NotEqual(t, getDummyReviewers()[0].User, reviewerByUser)
@@ -241,7 +241,7 @@ func TestStage_GetReviewerByUser_GivenUserNotAReviewer_ExpectNil(t *testing.T) {
 
 	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers()}
 
-	reviewerByUser := stage.getReviewerByUser(common.User{Name: "necip", DisplayName: "Necip Uysal"})
+	reviewerByUser := stage.getReviewerByUserName(common.User{Name: "necip", DisplayName: "Necip Uysal"}.Name)
 
 	assert.Nil(t, reviewerByUser)
 }
