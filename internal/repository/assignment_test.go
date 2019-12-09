@@ -102,6 +102,7 @@ func TestStageGetReviewerByOrderIn0AvailableWith2BusyAnd2ExistReviewerGetReviewe
 	busyReviewers := mapset.NewSet()
 	busyReviewers.Add(reviewers[1])
 	busyReviewers.Add(reviewers[2])
+	busyReviewers.Add(reviewers[4])
 
 	ownerAndReviewers := mapset.NewSet()
 	ownerAndReviewers.Add(reviewers[0])
@@ -135,7 +136,7 @@ func TestStageGetReviewerByOrderIn0AvailableWithTheSameOneBusyAndOneExistReviewe
 	assert.False(t, ownerAndReviewers.Contains(reviewer))
 }
 
-func TestStageGetReviewerByRandomInOneAvailableWith2BusyAndOneExistReviewer(t *testing.T) {
+func TestStageGetReviewerByRandomInOneAvailableWith3BusyAndOneOwner(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: RANDOMINAVAILABLE}
@@ -145,6 +146,7 @@ func TestStageGetReviewerByRandomInOneAvailableWith2BusyAndOneExistReviewer(t *t
 	busyReviewers := mapset.NewSet()
 	busyReviewers.Add(reviewers[0])
 	busyReviewers.Add(reviewers[1])
+	busyReviewers.Add(reviewers[4])
 
 	ownerAndReviewers := mapset.NewSet(reviewers[3])
 
@@ -186,7 +188,9 @@ func TestStageGetReviewerByOrderIn0StageReviewerWithOneBusyAnd3ExistReviewerGetR
 
 	assert.True(t, len(reviewers) > 3)
 
-	busyReviewers := mapset.NewSet(reviewers[1])
+	busyReviewers := mapset.NewSet()
+	busyReviewers.Add(reviewers[1])
+	busyReviewers.Add(reviewers[4])
 
 	ownerAndReviewers := mapset.NewSet()
 	ownerAndReviewers.Add(reviewers[0])
@@ -251,6 +255,7 @@ func getDummyReviewers() []*common.Reviewer {
 	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Order: 2}
 	reviewer3 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Order: 3}
 	reviewer4 := &common.Reviewer{User: common.User{Name: "gokhan", DisplayName: "Gökhan Gönül"}, Order: 4}
+	reviewer5 := &common.Reviewer{User: common.User{Name: "Ozi", DisplayName: "Oğuzhan Özyakup"}, Order: 5}
 
-	return []*common.Reviewer{reviewer1, reviewer2, reviewer3, reviewer4}
+	return []*common.Reviewer{reviewer1, reviewer2, reviewer3, reviewer4, reviewer5}
 }
