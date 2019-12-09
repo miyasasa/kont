@@ -53,7 +53,7 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 			if reviewer != nil {
 				ownerAndReviewers.Add(reviewer)
-				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, *reviewer)
+				repo.PRs[i].Reviewers = append(repo.PRs[i].Reviewers, reviewer)
 			}
 		}
 	}
