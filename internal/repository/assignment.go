@@ -19,10 +19,11 @@ type Stage struct {
 
 // For getting Difference over map-set, items have to same pointer-address to compare
 func (s *Stage) GetReviewer(busyReviewers mapset.Set, ownerAndReviewers mapset.Set) *common.Reviewer {
-	availableReviewers := mapset.NewSetFromSlice(s.getReviewers()).Difference(busyReviewers).Difference(ownerAndReviewers)
+	stageReviewers := mapset.NewSetFromSlice(s.getReviewers())
+	availableReviewers := stageReviewers.Difference(busyReviewers).Difference(ownerAndReviewers)
 
 	if availableReviewers.Cardinality() == 0 {
-		reviewers := busyReviewers.Difference(ownerAndReviewers)
+		reviewers := stageReviewers.Difference(ownerAndReviewers)
 		if reviewers.Cardinality() == 0 {
 			return nil // Reviewers are assigned already PR's reviewer-or-owner
 		}
