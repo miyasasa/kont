@@ -370,8 +370,8 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	assert.NotNil(t, repo.PRs[0].Reviewers)
 	assert.True(t, len(repo.PRs[0].Reviewers) == 3)
 	assert.Equal(t, getDummyReviewers()[0], repo.PRs[0].Reviewers[0])
-	assert.Equal(t, getDummyReviewers()[3], repo.PRs[0].Reviewers[1])
-	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[2])
+	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[1])
+	assert.Equal(t, getDummyReviewers()[3], repo.PRs[0].Reviewers[2])
 }
 
 func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0AvailableReviewer_ExpectNoReviewersToPR(t *testing.T) {
@@ -418,6 +418,38 @@ func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *
 
 	repo.Stages = []Stage{stage1, stage2, stage3}
 	repo.PRs = []common.PullRequest{pr1, pr2}
+
+	repo.AssignReviewersToPrs()
+
+	assert.NotNil(t, repo.PRs)
+	assert.True(t, len(repo.PRs) == 1)
+	assert.NotNil(t, repo.PRs[0].Reviewers)
+	assert.True(t, len(repo.PRs[0].Reviewers) == 3)
+	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[0])
+	assert.Equal(t, getDummyReviewers()[2], repo.PRs[0].Reviewers[1])
+	assert.Equal(t, getDummyReviewers()[3], repo.PRs[0].Reviewers[2])
+
+}
+
+func TestRepository_AssignReviewersToPrs_ExpectAllReviewersOfSecondAndThirdStages(t *testing.T) {
+	repo := new(Repository)
+
+	dummies := getDummyReviewers()
+
+	owner := dummies[0]
+
+	stage1Reviewers := []*common.Reviewer{owner}
+	stage2Reviewers := []*common.Reviewer{dummies[1], dummies[2]}
+	stage3Reviewers := []*common.Reviewer{dummies[3], dummies[4]}
+
+	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
+	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
+	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
+
+	pr := common.PullRequest{Id: 1903, Reviewers: nil, Author: common.Author{User: owner.User}}
+
+	repo.Stages = []Stage{stage1, stage2, stage3}
+	repo.PRs = []common.PullRequest{pr}
 
 	repo.AssignReviewersToPrs()
 

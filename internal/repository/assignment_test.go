@@ -75,7 +75,7 @@ func TestStageGetReviewerByOrderIn1AvailableWithOneBusyAnd2ExistReviewer(t *test
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
 
-	assert.True(t, len(reviewers) > 3)
+	assert.True(t, len(reviewers) > 4)
 
 	busyReviewers := mapset.NewSet(reviewers[0])
 
@@ -123,7 +123,7 @@ func TestStageGetReviewerByOrderIn0AvailableWithTheSameOneBusyAndOneExistReviewe
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: make([]*common.Reviewer, 0), Policy: BYORDERINAVAILABLE}
 
-	assert.True(t, len(reviewers) > 3)
+	assert.True(t, len(reviewers) > 4)
 
 	busyReviewers := mapset.NewSet(reviewers[0])
 	ownerAndReviewers := mapset.NewSet(reviewers[0])
@@ -141,7 +141,7 @@ func TestStageGetReviewerByRandomInOneAvailableWith3BusyAndOneOwner(t *testing.T
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: RANDOMINAVAILABLE}
 
-	assert.True(t, len(reviewers) > 3)
+	assert.True(t, len(reviewers) > 4)
 
 	busyReviewers := mapset.NewSet()
 	busyReviewers.Add(reviewers[0])
@@ -159,17 +159,17 @@ func TestStageGetReviewerByRandomInOneAvailableWith3BusyAndOneOwner(t *testing.T
 	assert.Equal(t, "Domagoj Vida", reviewer.User.DisplayName)
 }
 
-func TestStageGetReviewerRandomlyIn2AvailableWithOneBusyAndOneReviewer(t *testing.T) {
+func TestStageGetReviewerRandomlyIn3AvailableWithOneBusyAndOneReviewer(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: RANDOMINAVAILABLE}
 
-	assert.True(t, len(reviewers) > 3)
+	assert.True(t, len(reviewers) > 4)
 
 	busyReviewers := mapset.NewSet(reviewers[1])
 	ownerAndReviewers := mapset.NewSet(reviewers[2])
 
-	availableReviewers := []*common.Reviewer{reviewers[0], reviewers[3]}
+	availableReviewers := []*common.Reviewer{reviewers[0], reviewers[3], reviewers[4]}
 
 	reviewer := stage.GetReviewer(busyReviewers, ownerAndReviewers)
 
@@ -202,8 +202,6 @@ func TestStageGetReviewerByOrderIn0StageReviewerWithOneBusyAnd3ExistReviewerGetR
 	assert.NotNil(t, stage)
 	assert.NotNil(t, reviewer)
 	assert.NotNil(t, reviewer.User)
-	assert.Equal(t, "nKoudou", reviewer.User.Name)
-	assert.Equal(t, "Kevin NKoudou", reviewer.User.DisplayName)
 	assert.True(t, busyReviewers.Contains(reviewer))
 	assert.False(t, ownerAndReviewers.Contains(reviewer))
 }
@@ -251,11 +249,11 @@ func TestStage_GetReviewerByUser_GivenUserNotAReviewer_ExpectNil(t *testing.T) {
 }
 
 func getDummyReviewers() []*common.Reviewer {
-	reviewer1 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Order: 1}
-	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Order: 2}
-	reviewer3 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Order: 3}
-	reviewer4 := &common.Reviewer{User: common.User{Name: "gokhan", DisplayName: "Gökhan Gönül"}, Order: 4}
-	reviewer5 := &common.Reviewer{User: common.User{Name: "Ozi", DisplayName: "Oğuzhan Özyakup"}, Order: 5}
+	reviewer1 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Order: 0}
+	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Order: 1}
+	reviewer3 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Order: 2}
+	reviewer4 := &common.Reviewer{User: common.User{Name: "gokhan", DisplayName: "Gökhan Gönül"}, Order: 3}
+	reviewer5 := &common.Reviewer{User: common.User{Name: "Ozi", DisplayName: "Oğuzhan Özyakup"}, Order: 4}
 
 	return []*common.Reviewer{reviewer1, reviewer2, reviewer3, reviewer4, reviewer5}
 }
