@@ -45,7 +45,9 @@ func updatePRs(repo *repository.Repository) {
 	for _, pr := range repo.PRs {
 
 		url := repo.FetchPrsUrl + "/" + strconv.FormatInt(int64(pr.Id), 10)
-		body, err := json.Marshal(pr)
+
+		uPR := MapPullRequestToUpdateModel(pr)
+		body, err := json.Marshal(uPR)
 
 		if err != nil {
 			log.Printf("Pull-Request can not convert to json string")
