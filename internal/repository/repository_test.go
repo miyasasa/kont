@@ -78,7 +78,7 @@ func TestRepository_FilterPullRequestsHasNotReviewer_WithAllPRHasReviewer_GetNoP
 	assert.True(t, len(repo.PRs) == 0)
 }
 
-func TestRepository_FilterPullRequestsHasNotReviewer_GetOnePR(t *testing.T) {
+func TestRepository_FilterPRsHasNotReviewer_GetOnePR(t *testing.T) {
 	repo := new(Repository)
 
 	pr1 := common.PullRequest{Id: 1903, Reviewers: getDummyReviewers()}
@@ -94,7 +94,7 @@ func TestRepository_FilterPullRequestsHasNotReviewer_GetOnePR(t *testing.T) {
 	assert.Equal(t, repo.PRs[0], pr3)
 }
 
-func TestRepository_FilterPullRequestsHasNotReviewer_WithAllPRHasNotReviewer_Get3PR(t *testing.T) {
+func TestRepository_FilterPRsHaveNotReviewer_WithAllPRsHaveNotReviewer_Get3PR(t *testing.T) {
 	repo := new(Repository)
 
 	pr1 := common.PullRequest{Id: 1903}
@@ -107,6 +107,9 @@ func TestRepository_FilterPullRequestsHasNotReviewer_WithAllPRHasNotReviewer_Get
 
 	assert.NotNil(t, repo.PRs)
 	assert.True(t, len(repo.PRs) == 3)
+	assert.Equal(t, repo.PRs[0], pr1)
+	assert.Equal(t, repo.PRs[1], pr2)
+	assert.Equal(t, repo.PRs[2], pr3)
 }
 
 func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAndAllReviewersApproved_ExpectEmptyArray(t *testing.T) {
@@ -127,7 +130,7 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAndAllReview
 	assert.True(t, busyReviewers.Cardinality() == 0)
 }
 
-func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAnd2ReviewersApprovedAndThirdReviewerNotAvailableInTheStage_ExpectEmptyArray(t *testing.T) {
+func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAnd2ReviewersApprovedAndThirdReviewerNotExistInTheStage_ExpectEmptyArray(t *testing.T) {
 	repo := new(Repository)
 
 	rev1 := &common.Reviewer{Order: 1, Approved: true, User: common.User{Name: "rev1"}}
@@ -175,7 +178,6 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAndAllRevie
 
 	rev4 := &common.Reviewer{Order: 4, Approved: true, User: common.User{Name: "rev4"}}
 	rev5 := &common.Reviewer{Order: 5, Approved: true, User: common.User{Name: "rev5"}}
-
 	pr2 := common.PullRequest{Id: 116, Reviewers: []*common.Reviewer{rev1, rev4, rev5}}
 
 	repo.PRs = []common.PullRequest{pr1, pr2}
@@ -211,8 +213,8 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAnd2Reviewe
 	assert.True(t, busyReviewers.Contains(rev5))
 }
 
-// In case of the reviewer available in the two PR, in one of them with approved and in the other non-approved
-func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAnd2ReviewersApprovedAndHaveOneCommonReviewer_Expect3BusyReviewerInArray(t *testing.T) {
+// In case of one reviewer available in two PR, one of them approved and the other one non-approved
+func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRAndThreeReviewerApprovedAndHaveOneCommonReviewer_ExpectThreeBusyReviewerInArray(t *testing.T) {
 	repo := new(Repository)
 
 	rev1 := common.Reviewer{Order: 1, Approved: true, User: common.User{Name: "rev1"}}
@@ -224,8 +226,8 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAnd2Reviewe
 	rev5 := &common.Reviewer{Order: 5, Approved: false, User: common.User{Name: "rev5"}}
 	rev6 := rev1
 	rev6.Approved = false
-
 	pr2 := common.PullRequest{Id: 116, Reviewers: []*common.Reviewer{rev4, rev5, &rev6}}
+
 	repo.Stages = []Stage{{Reviewers: []*common.Reviewer{rev2, rev4, rev5, &rev6}}, {Reviewers: []*common.Reviewer{&rev1, rev3}}}
 
 	repo.PRs = []common.PullRequest{pr1, pr2}
@@ -254,7 +256,7 @@ func Test_FindUserInReviewers_ExpectTheReviewer(t *testing.T) {
 	assert.Equal(t, getDummyReviewers()[2], rv)
 }
 
-func Test_FindUserInReviewers_WithUnAvailableReviewerGivenUserInStages_ExpectNil(t *testing.T) {
+func Test_FindUserInReviewers_WithBusyReviewerGivenUserInStages_ExpectNil(t *testing.T) {
 
 	repo := new(Repository)
 
@@ -268,9 +270,9 @@ func Test_FindUserInReviewers_WithUnAvailableReviewerGivenUserInStages_ExpectNil
 	assert.Nil(t, rv)
 }
 
-// AssignReviewersToPrs area
-//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: second-reviewer), BusyReviewers: 0
-func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing.T) {
+// AssignReviewersToPrs
+//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: second reviewer), BusyReviewers: 0
+func TestRepository_AssignReviewersToPrs_ExpectFirstOneAsReviewerInStage(t *testing.T) {
 	repo := new(Repository)
 
 	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers(), Policy: BYORDERINAVAILABLE}
@@ -289,7 +291,7 @@ func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing
 	assert.Equal(t, getDummyReviewers()[0], repo.PRs[0].Reviewers[0])
 }
 
-//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: first-reviewer), BusyReviewers: 1(second reviewer)
+//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: first reviewer), BusyReviewers: 1(second reviewer)
 func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 	repo := new(Repository)
 
@@ -315,7 +317,7 @@ func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 	assert.Equal(t, getDummyReviewers()[2], repo.PRs[0].Reviewers[0])
 }
 
-func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstStageAnd1ReviewerInSecondAsAlsoOwner_ExpectFirstStagesReviewersToPR(t *testing.T) {
+func TestRepository_AssignReviewersToPrs_With3Stage_ExpectFirstStageReviewersToPR(t *testing.T) {
 	repo := new(Repository)
 
 	dummies := getDummyReviewers()
@@ -344,7 +346,7 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[1])
 }
 
-func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstStageAnd1ReviewerInSecondAsAlsoOwnerAndAvailableInTheLast_ExpectFirstStagesReviewersToPR(t *testing.T) {
+func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstStageAnd1ReviewerInSecondAsAlsoOwnerAnd2AvailableInThirdStage_ExpectFirstStagesReviewersToPR(t *testing.T) {
 	repo := new(Repository)
 
 	dummies := getDummyReviewers()
@@ -374,7 +376,7 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	assert.Equal(t, getDummyReviewers()[3], repo.PRs[0].Reviewers[2])
 }
 
-func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0AvailableReviewer_ExpectNoReviewersToPR(t *testing.T) {
+func TestRepository_AssignReviewersToPrs_With1Stage_1ReviewerAsOwner_ExpectNoReviewersToPR(t *testing.T) {
 	repo := new(Repository)
 
 	dummies := getDummyReviewers()
@@ -396,7 +398,7 @@ func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0Avai
 	assert.Nil(t, repo.PRs[0].Reviewers)
 }
 
-func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *testing.T) {
+func TestRepository_AssignReviewersToPrs_ExpectBusyReviewerInSecondStage(t *testing.T) {
 	repo := new(Repository)
 
 	dummies := getDummyReviewers()
@@ -428,7 +430,6 @@ func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *
 	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[0])
 	assert.Equal(t, getDummyReviewers()[2], repo.PRs[0].Reviewers[1])
 	assert.Equal(t, getDummyReviewers()[3], repo.PRs[0].Reviewers[2])
-
 }
 
 func TestRepository_AssignReviewersToPrs_ExpectAllReviewersOfSecondAndThirdStages(t *testing.T) {
@@ -460,7 +461,6 @@ func TestRepository_AssignReviewersToPrs_ExpectAllReviewersOfSecondAndThirdStage
 	assert.Equal(t, getDummyReviewers()[1], repo.PRs[0].Reviewers[0])
 	assert.Equal(t, getDummyReviewers()[2], repo.PRs[0].Reviewers[1])
 	assert.Equal(t, getDummyReviewers()[3], repo.PRs[0].Reviewers[2])
-
 }
 
 func setMockEnvironmentVariables() {
