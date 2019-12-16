@@ -37,6 +37,7 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
 
+	repo.filterPullRequestByBranch()
 	repo.filterPullRequestsHasNotReviewer()
 
 	log.Printf("LatestPRCount: %v", len(repo.PRs))
@@ -69,6 +70,19 @@ func (repo *Repository) getReviewer(index int, busyReviewers mapset.Set, ownerAn
 		}
 	}
 	return nil
+}
+
+// refactor: get stages dynamically related branch name
+func (repo *Repository) filterPullRequestByBranch() {
+	prs := make([]common.PullRequest, 0)
+
+	for _, p := range repo.PRs {
+		if p.ToRef.DisplayId == "develop" {
+			prs = append(prs, p)
+		}
+	}
+
+	repo.PRs = prs
 }
 
 func (repo *Repository) filterPullRequestsHasNotReviewer() {
