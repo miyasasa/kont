@@ -16,7 +16,7 @@ import (
 )
 
 func TestHttpClient_GET_Given200StatusCodeWithExpectedBody_ExpectToBindGivenInterface(t *testing.T) {
-	assert := assert.New(t)
+	assertion := assert.New(t)
 
 	prUrl := "http://localhost:7990/rest/api/1.0/projects/BESG/repos/core-network/pull-requests?start=0"
 	req, _ := http.NewRequest("GET", prUrl, nil)
@@ -30,15 +30,15 @@ func TestHttpClient_GET_Given200StatusCodeWithExpectedBody_ExpectToBindGivenInte
 	page := common.PRPagination{}
 	c.GET(req, &page)
 
-	assert.NotNil(page)
-	assert.Equal(10, page.Size)
-	assert.Equal(10, page.Limit)
-	assert.True(page.IsLastPage)
+	assertion.NotNil(page)
+	assertion.Equal(10, page.Size)
+	assertion.Equal(10, page.Limit)
+	assertion.True(page.IsLastPage)
 }
 
 func TestHttpClient_GET_Given200StatusCodeWithUnExpectedBody_ExpectEmptyGivenInterfaceAndErrorLog(t *testing.T) {
 
-	assert := assert.New(t)
+	assertion := assert.New(t)
 	prUrl := "http://localhost:7990/rest/api/1.0/projects/BESG/repos/core-network/pull-requests?start=0"
 	req, _ := http.NewRequest("GET", prUrl, nil)
 	expected := "{\"repo:\":\"core-network\"}"
@@ -53,18 +53,18 @@ func TestHttpClient_GET_Given200StatusCodeWithUnExpectedBody_ExpectEmptyGivenInt
 		c.GET(req, &page)
 	})
 
-	assert.NotNil(page)
-	assert.Equal(0, page.Size)
-	assert.Equal(0, page.Limit)
-	assert.False(page.IsLastPage)
+	assertion.NotNil(page)
+	assertion.Equal(0, page.Size)
+	assertion.Equal(0, page.Limit)
+	assertion.False(page.IsLastPage)
 
-	assert.NotNil(output)
-	assert.Contains(output, fmt.Sprintf("client::GET::Response Body can not be converted to desired type-struct, Req-Url: %s", prUrl))
-	assert.Contains(output, "Error: json: cannot unmarshal string into Go value of type common.PRPagination")
+	assertion.NotNil(output)
+	assertion.Contains(output, fmt.Sprintf("client::GET::Response Body can not be converted to desired type-struct, Req-Url: %s", prUrl))
+	assertion.Contains(output, "Error: json: cannot unmarshal string into Go value of type common.PRPagination")
 }
 
 func TestHttpClient_GET_Given404StatusCode_ExpectEmptyInterfaceAndErrorLog(t *testing.T) {
-	assert := assert.New(t)
+	assertion := assert.New(t)
 
 	prUrl := "http://localhost:7990/rest/api/1.0/projects/BESG/repos/core-network1/pull-requests?start=0"
 	req, _ := http.NewRequest("GET", prUrl, nil)
@@ -80,17 +80,17 @@ func TestHttpClient_GET_Given404StatusCode_ExpectEmptyInterfaceAndErrorLog(t *te
 		c.GET(req, &page)
 	})
 
-	assert.NotNil(page)
-	assert.Equal(0, page.Size)
-	assert.Equal(0, page.Limit)
-	assert.False(page.IsLastPage)
+	assertion.NotNil(page)
+	assertion.Equal(0, page.Size)
+	assertion.Equal(0, page.Limit)
+	assertion.False(page.IsLastPage)
 
-	assert.NotNil(output)
-	assert.Contains(output, fmt.Sprintf("client::GET::Unexpected response; StatusCode: 404, Req-Url: %s", prUrl))
+	assertion.NotNil(output)
+	assertion.Contains(output, fmt.Sprintf("client::GET::Unexpected response; StatusCode: 404, Req-Url: %s", prUrl))
 }
 
 func TestHttpClient_GET_GivenNilByDispatcher_ExpectEmptyPrPagination(t *testing.T) {
-	assert := assert.New(t)
+	assertion := assert.New(t)
 
 	prUrl := "http://localhost:7990/rest/api/1.0/projects/BESG/repos/core-network1/pull-requests?start=0"
 	req, _ := http.NewRequest("GET", prUrl, nil)
@@ -105,16 +105,16 @@ func TestHttpClient_GET_GivenNilByDispatcher_ExpectEmptyPrPagination(t *testing.
 		c.GET(req, &page)
 	})
 
-	assert.NotNil(page)
-	assert.Equal(0, page.Size)
-	assert.Equal(0, page.Limit)
-	assert.False(page.IsLastPage)
+	assertion.NotNil(page)
+	assertion.Equal(0, page.Size)
+	assertion.Equal(0, page.Limit)
+	assertion.False(page.IsLastPage)
 
-	assert.Empty(output)
+	assertion.Empty(output)
 }
 
 func TestHttpClient_PUT_Given200ResponseMock_NotExpectError(t *testing.T) {
-	assert := assert.New(t)
+	assertion := assert.New(t)
 
 	prUrl := "http://localhost:7990/rest/api/1.0/projects/BESG/repos/core-network1/pull-requests/1903"
 	req, _ := http.NewRequest("PUT", prUrl, nil)
@@ -127,12 +127,12 @@ func TestHttpClient_PUT_Given200ResponseMock_NotExpectError(t *testing.T) {
 		c.PUT(req)
 	})
 
-	assert.Empty(output)
+	assertion.Empty(output)
 
 }
 
 func TestHttpClient_PUT_Given500ResponseMock_ExpectErrorLog(t *testing.T) {
-	assert := assert.New(t)
+	assertion := assert.New(t)
 
 	prUrl := "http://localhost:7990/rest/api/1.0/projects/BESG/repos/core-network1/pull-requests/1903"
 	req, _ := http.NewRequest("PUT", prUrl, nil)
@@ -145,12 +145,12 @@ func TestHttpClient_PUT_Given500ResponseMock_ExpectErrorLog(t *testing.T) {
 		c.PUT(req)
 	})
 
-	assert.NotNil(output)
-	assert.Contains(output, fmt.Sprintf("client::PUT:: PR can not updated URL: %s StatusCode: 500", prUrl))
+	assertion.NotNil(output)
+	assertion.Contains(output, fmt.Sprintf("client::PUT:: PR can not updated URL: %s StatusCode: 500", prUrl))
 }
 
 func TestHttpClient_PUT_GivenNilResponseMock_NotExpectError(t *testing.T) {
-	assert := assert.New(t)
+	assertion := assert.New(t)
 
 	prUrl := "http://localhost:7990/rest/api/1.0/projects/BESG/repos/core-network1/pull-requests/1903"
 	req, _ := http.NewRequest("PUT", prUrl, nil)
@@ -163,7 +163,7 @@ func TestHttpClient_PUT_GivenNilResponseMock_NotExpectError(t *testing.T) {
 		c.PUT(req)
 	})
 
-	assert.Empty(output)
+	assertion.Empty(output)
 }
 
 type HttpDispatcherMock struct {
