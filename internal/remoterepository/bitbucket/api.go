@@ -16,7 +16,8 @@ func fetchUsers(url string, token string, start int) []common.User {
 	req.Header.Add("Authorization", token)
 
 	page := common.UserPagination{}
-	client.GET(req, &page)
+	c := client.NewHttpClient(client.NewHttpDispatcher())
+	c.GET(req, &page)
 
 	if page.IsLastPage || page.NextPageStart == 0 {
 		return page.GetUsers()
@@ -30,7 +31,8 @@ func fetchPRs(repo *repository.Repository, start int) {
 	req.Header.Add("Authorization", repo.Token)
 
 	page := common.PRPagination{}
-	client.GET(req, &page)
+	c := client.NewHttpClient(client.NewHttpDispatcher())
+	c.GET(req, &page)
 
 	repo.PRs = append(repo.PRs, page.Values...)
 
@@ -57,7 +59,8 @@ func updatePRs(repo *repository.Repository) {
 		req.Header.Add("Authorization", repo.Token)
 		req.Header.Add("Content-Type", "application/json")
 
-		client.PUT(req)
+		c := client.NewHttpClient(client.NewHttpDispatcher())
+		c.PUT(req)
 
 		log.Printf("%+v\n", pr)
 	}
