@@ -15,6 +15,16 @@ import (
 	"testing"
 )
 
+func TestNewHttpClient_ExpectNewHttpClient(t *testing.T) {
+	assertion := assert.New(t)
+
+	d := NewHttpDispatcher()
+	c := NewHttpClient(d)
+
+	assertion.NotNil(c)
+	assertion.NotNil(c.dispatcher)
+}
+
 func TestHttpClient_GET_Given200StatusCodeWithExpectedBody_ExpectToBindGivenInterface(t *testing.T) {
 	assertion := assert.New(t)
 

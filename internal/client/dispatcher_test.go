@@ -11,6 +11,14 @@ import (
 	"testing"
 )
 
+func TestNewHttpDispatcher_ExpectNewDispatcher(t *testing.T) {
+	assertion := assert.New(t)
+
+	d := NewHttpDispatcher()
+
+	assertion.NotNil(d)
+}
+
 func TestGET_Given200ResponseToResponder_Expect200AsResponse(t *testing.T) {
 	assertion := assert.New(t)
 
