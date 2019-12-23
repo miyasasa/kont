@@ -41,7 +41,7 @@ func (repo *Repository) AssignReviewersToPrs() {
 	repo.filterPullRequestByBranch()
 	repo.filterPullRequestsHasNotReviewer()
 
-	log.Printf("LatestPRCount: %v", len(repo.PRs))
+	log.Printf("Repo: %s --> LatestPRCount: %v", repo.Name, len(repo.PRs))
 
 	for i, pr := range repo.PRs {
 		ownerAndReviewers := mapset.NewSet(repo.findReviewerByUsernameStage(pr.Author.User.Name))
