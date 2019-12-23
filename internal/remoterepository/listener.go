@@ -9,8 +9,8 @@ import (
 func ListenRemoteRepositories() {
 	repositories := storage.Storage.GetAllRepositories()
 
-	for _, repo := range repositories {
-		listenRepo(&repo)
+	for i := range repositories {
+		go listenRepo(&repositories[i])
 	}
 
 }
