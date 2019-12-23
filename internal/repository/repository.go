@@ -2,8 +2,8 @@ package repository
 
 import (
 	"github.com/deckarep/golang-set"
-	"kont/init/env"
 	"kont/internal/common"
+	"kont/internal/util"
 	"log"
 )
 
@@ -14,6 +14,7 @@ const (
 )
 
 type Repository struct {
+	Host                 string                 `json:"host"`
 	FetchRepoUsersUrl    string                 `json:"fetchRepoUsersUrl"`
 	FetchProjectUsersUrl string                 `json:"fetchProjectUsersUrl"`
 	FetchPrsUrl          string                 `json:"fetchPrsUrl"`
@@ -28,9 +29,9 @@ type Repository struct {
 
 func (repo *Repository) Initialize() {
 	// choose according provider Bitbucket
-	repo.FetchRepoUsersUrl = env.BitbucketFetchRepoUsersURL(repo.ProjectName, repo.Name)
-	repo.FetchProjectUsersUrl = env.BitbucketFetchProjectUsersURL(repo.ProjectName)
-	repo.FetchPrsUrl = env.BitbucketFetchPrListURL(repo.ProjectName, repo.Name)
+	repo.FetchRepoUsersUrl = util.BitbucketFetchRepoUsersURL(repo.Host, repo.ProjectName, repo.Name)
+	repo.FetchProjectUsersUrl = util.BitbucketFetchProjectUsersURL(repo.Host, repo.ProjectName)
+	repo.FetchPrsUrl = util.BitbucketFetchPrListURL(repo.Host, repo.ProjectName, repo.Name)
 }
 
 func (repo *Repository) AssignReviewersToPrs() {
@@ -40,7 +41,7 @@ func (repo *Repository) AssignReviewersToPrs() {
 	repo.filterPullRequestByBranch()
 	repo.filterPullRequestsHasNotReviewer()
 
-	log.Printf("LatestPRCount: %v", len(repo.PRs))
+	log.Printf("Repo: %s --> LatestPRCount: %v", repo.Name, len(repo.PRs))
 
 	for i, pr := range repo.PRs {
 		ownerAndReviewers := mapset.NewSet(repo.findReviewerByUsernameStage(pr.Author.User.Name))

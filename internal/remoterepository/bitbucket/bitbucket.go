@@ -7,7 +7,7 @@ import (
 )
 
 func Listen(repo *repository.Repository) {
-	log.Println("Bitbucket-PR is listening....")
+	log.Printf("Repo: %s --> is listening ...", repo.Name)
 	fetchPRs(repo, 0)
 
 	repo.AssignReviewersToPrs()
