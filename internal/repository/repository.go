@@ -2,7 +2,6 @@ package repository
 
 import (
 	"github.com/deckarep/golang-set"
-	"kont/init/env"
 	"kont/internal/common"
 	"log"
 )
@@ -14,6 +13,7 @@ const (
 )
 
 type Repository struct {
+	Host                 string                 `json:"host"`
 	FetchRepoUsersUrl    string                 `json:"fetchRepoUsersUrl"`
 	FetchProjectUsersUrl string                 `json:"fetchProjectUsersUrl"`
 	FetchPrsUrl          string                 `json:"fetchPrsUrl"`
@@ -28,9 +28,9 @@ type Repository struct {
 
 func (repo *Repository) Initialize() {
 	// choose according provider Bitbucket
-	repo.FetchRepoUsersUrl = env.BitbucketFetchRepoUsersURL(repo.ProjectName, repo.Name)
-	repo.FetchProjectUsersUrl = env.BitbucketFetchProjectUsersURL(repo.ProjectName)
-	repo.FetchPrsUrl = env.BitbucketFetchPrListURL(repo.ProjectName, repo.Name)
+	repo.FetchRepoUsersUrl = bitbucketFetchRepoUsersURL(repo.Host, repo.ProjectName, repo.Name)
+	repo.FetchProjectUsersUrl = bitbucketFetchProjectUsersURL(repo.Host, repo.ProjectName)
+	repo.FetchPrsUrl = bitbucketFetchPrListURL(repo.Host, repo.ProjectName, repo.Name)
 }
 
 func (repo *Repository) AssignReviewersToPrs() {
