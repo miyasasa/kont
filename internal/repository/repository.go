@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/deckarep/golang-set"
 	"kont/internal/common"
+	"kont/internal/util"
 	"log"
 )
 
@@ -28,9 +29,9 @@ type Repository struct {
 
 func (repo *Repository) Initialize() {
 	// choose according provider Bitbucket
-	repo.FetchRepoUsersUrl = bitbucketFetchRepoUsersURL(repo.Host, repo.ProjectName, repo.Name)
-	repo.FetchProjectUsersUrl = bitbucketFetchProjectUsersURL(repo.Host, repo.ProjectName)
-	repo.FetchPrsUrl = bitbucketFetchPrListURL(repo.Host, repo.ProjectName, repo.Name)
+	repo.FetchRepoUsersUrl = util.BitbucketFetchRepoUsersURL(repo.Host, repo.ProjectName, repo.Name)
+	repo.FetchProjectUsersUrl = util.BitbucketFetchProjectUsersURL(repo.Host, repo.ProjectName)
+	repo.FetchPrsUrl = util.BitbucketFetchPrListURL(repo.Host, repo.ProjectName, repo.Name)
 }
 
 func (repo *Repository) AssignReviewersToPrs() {

@@ -1,4 +1,4 @@
-package repository
+package util
 
 const (
 	BitbucketBasePath       = "/rest/api/1.0"
@@ -9,7 +9,7 @@ const (
 )
 
 // get project name & repo name dynamically from repo
-func bitbucketFetchRepoUsersURL(host string, projectName string, repoName string) string {
+func BitbucketFetchRepoUsersURL(host string, projectName string, repoName string) string {
 	return host +
 		BitbucketBasePath +
 		BitbucketProjectPath +
@@ -21,7 +21,7 @@ func bitbucketFetchRepoUsersURL(host string, projectName string, repoName string
 }
 
 // get project name dynamically from repo
-func bitbucketFetchProjectUsersURL(host string, projectName string) string {
+func BitbucketFetchProjectUsersURL(host string, projectName string) string {
 	return host +
 		BitbucketBasePath +
 		BitbucketProjectPath +
@@ -29,7 +29,7 @@ func bitbucketFetchProjectUsersURL(host string, projectName string) string {
 		BitbucketUserPath
 }
 
-func bitbucketFetchPrListURL(host string, projectName string, repoName string) string {
+func BitbucketFetchPrListURL(host string, projectName string, repoName string) string {
 	return host +
 		BitbucketBasePath +
 		BitbucketProjectPath +
