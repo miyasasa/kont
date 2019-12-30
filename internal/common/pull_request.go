@@ -7,6 +7,7 @@ type PullRequest struct {
 	Description string      `json:"description"`
 	Reviewers   []*Reviewer `json:"reviewers"`
 	Author      Author      `json:"author"`
+	ToRef       ToRef       `json:"toRef"`
 }
 
 type Reviewer struct {
@@ -22,6 +23,10 @@ type User struct {
 
 type Author struct {
 	User User `json:"user"`
+}
+
+type ToRef struct {
+	DisplayId string `json:"displayId"`
 }
 
 func (a Author) GetAuthorAsReviewer() Reviewer {

@@ -63,6 +63,35 @@ func TestRepository_Initialize_ExpectSuccess(t *testing.T) {
 	assert.Equal(t, expectFetchPrsUrl, repo.FetchPrsUrl)
 }
 
+func TestRepository_filterPullRequestByBranch_Given2PRToStagingTarget_ExpectEmptyPrInRepo(t *testing.T) {
+	repo := new(Repository)
+
+	pr1 := common.PullRequest{Id: 1903, ToRef: common.ToRef{DisplayId: "staging"}}
+	pr2 := common.PullRequest{Id: 116, ToRef: common.ToRef{DisplayId: "staging"}}
+
+	repo.PRs = []common.PullRequest{pr1, pr2}
+
+	repo.filterPullRequestByBranch()
+
+	assert.NotNil(t, repo.PRs)
+	assert.True(t, len(repo.PRs) == 0)
+}
+
+func TestRepository_filterPullRequestByBranch_Given2PRToStagingTargetAnd1PRToDevelop_Expect2PRToDevelopBranch(t *testing.T) {
+	repo := new(Repository)
+
+	pr1 := common.PullRequest{Id: 1903, ToRef: common.ToRef{DisplayId: "develop"}}
+	pr2 := common.PullRequest{Id: 116, ToRef: common.ToRef{DisplayId: "staging"}}
+	pr3 := common.PullRequest{Id: 19032, ToRef: common.ToRef{DisplayId: "develop"}}
+
+	repo.PRs = []common.PullRequest{pr1, pr2, pr3}
+
+	repo.filterPullRequestByBranch()
+
+	assert.NotNil(t, repo.PRs)
+	assert.True(t, len(repo.PRs) == 2)
+}
+
 func TestRepository_FilterPullRequestsHasNotReviewer_WithAllPRHasReviewer_GetNoPR(t *testing.T) {
 	repo := new(Repository)
 

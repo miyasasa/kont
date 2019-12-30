@@ -5,7 +5,7 @@ LABEL maintainer="Yasin Kızılkaya <vyasinw@gmail.com>"
 
 WORKDIR $GOPATH/src/kont
 
-# Exclude .env file
+# Exclude .db file
 COPY . .
 
 RUN export GO111MODULE=on

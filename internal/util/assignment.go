@@ -14,7 +14,7 @@ func GetReviewerRandomly(reviewers mapset.Set) *common.Reviewer {
 		return nil
 	}
 
-	rand.Seed(time.Now().UnixNano())
+	rand.Seed(time.Now().Unix())
 	index := rand.Intn(cardinality)
 	return reviewers.ToSlice()[index].(*common.Reviewer)
 }
