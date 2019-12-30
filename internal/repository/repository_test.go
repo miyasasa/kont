@@ -3,7 +3,6 @@ package repository
 import (
 	"github.com/stretchr/testify/assert"
 	"kont/internal/common"
-	"os"
 	"testing"
 )
 
@@ -23,29 +22,22 @@ func TestRepositoryInstance(t *testing.T) {
 	assert.Empty(t, repo.PRs)
 }
 
-func TestRepository_Initialize_WithoutEnvVariables(t *testing.T) {
+func TestRepository_Initialize_ExpectEmptyUrls(t *testing.T) {
 	repo := new(Repository)
-	repo.ProjectName = "BJK"
-	repo.Name = "transfer"
 
 	repo.Initialize()
 
 	assert.NotNil(t, repo)
-	assert.NotEmpty(t, repo.FetchRepoUsersUrl)
-	assert.NotEmpty(t, repo.FetchProjectUsersUrl)
-	assert.NotEmpty(t, repo.FetchPrsUrl)
-
-	assert.Equal(t, "BJKtransfer", repo.FetchRepoUsersUrl)
-	assert.Equal(t, "BJK", repo.FetchProjectUsersUrl)
-	assert.Equal(t, "BJKtransfer", repo.FetchPrsUrl)
+	assert.Equal(t, "/rest/api/1.0/projects//repos//permissions/users", repo.FetchRepoUsersUrl)
+	assert.Equal(t, "/rest/api/1.0/projects//permissions/users", repo.FetchProjectUsersUrl)
+	assert.Equal(t, "/rest/api/1.0/projects//repos//pull-requests", repo.FetchPrsUrl)
 }
 
 func TestRepository_Initialize_ExpectSuccess(t *testing.T) {
 	repo := new(Repository)
+	repo.Host = "http://localhost"
 	repo.ProjectName = "BJK"
 	repo.Name = "transfer"
-
-	setMockEnvironmentVariables()
 
 	repo.Initialize()
 
@@ -304,7 +296,7 @@ func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing
 
 	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers(), Policy: BYORDERINAVAILABLE}
 
-	pr := common.PullRequest{Id: 1903, Author: common.Author{User: getDummyReviewers()[1].User}}
+	pr := common.PullRequest{Id: 1903, Author: common.Author{User: getDummyReviewers()[1].User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
 	repo.Stages = []Stage{stage}
 	repo.PRs = []common.PullRequest{pr}
@@ -329,8 +321,8 @@ func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 
 	stage := Stage{Name: "TestStage", Reviewers: dummies, Policy: BYORDERINAVAILABLE}
 
-	pr1 := common.PullRequest{Id: 1903, Reviewers: reviewers, Author: common.Author{User: owner}}
-	pr2 := common.PullRequest{Id: 116, Author: common.Author{User: owner}}
+	pr1 := common.PullRequest{Id: 1903, Reviewers: reviewers, Author: common.Author{User: owner}, ToRef: common.ToRef{DisplayId: "develop"}}
+	pr2 := common.PullRequest{Id: 116, Author: common.Author{User: owner}, ToRef: common.ToRef{DisplayId: "develop"}}
 
 	repo.Stages = []Stage{stage}
 	repo.PRs = []common.PullRequest{pr1, pr2}
@@ -358,7 +350,7 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
 	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
 
-	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}}
+	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
 	repo.Stages = []Stage{stage1, stage2, stage3}
 	repo.PRs = []common.PullRequest{pr}
@@ -387,7 +379,7 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
 	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
 
-	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}}
+	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
 	repo.Stages = []Stage{stage1, stage2, stage3}
 	repo.PRs = []common.PullRequest{pr}
@@ -413,7 +405,7 @@ func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0Avai
 
 	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
 
-	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}}
+	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
 	repo.Stages = []Stage{stage1}
 	repo.PRs = []common.PullRequest{pr}
@@ -442,8 +434,8 @@ func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *
 
 	pr1Reviewers := []*common.Reviewer{dummies[2]}
 
-	pr1 := common.PullRequest{Id: 1903, Reviewers: pr1Reviewers, Author: common.Author{User: dummies[3].User}}
-	pr2 := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}}
+	pr1 := common.PullRequest{Id: 1903, Reviewers: pr1Reviewers, Author: common.Author{User: dummies[3].User}, ToRef: common.ToRef{DisplayId: "develop"}}
+	pr2 := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
 	repo.Stages = []Stage{stage1, stage2, stage3}
 	repo.PRs = []common.PullRequest{pr1, pr2}
@@ -475,7 +467,7 @@ func TestRepository_AssignReviewersToPrs_ExpectAllReviewersOfSecondAndThirdStage
 	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
 	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
 
-	pr := common.PullRequest{Id: 1903, Reviewers: nil, Author: common.Author{User: owner.User}}
+	pr := common.PullRequest{Id: 1903, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
 	repo.Stages = []Stage{stage1, stage2, stage3}
 	repo.PRs = []common.PullRequest{pr}
@@ -490,12 +482,4 @@ func TestRepository_AssignReviewersToPrs_ExpectAllReviewersOfSecondAndThirdStage
 	assert.Equal(t, getDummyReviewers()[2], repo.PRs[0].Reviewers[1])
 	assert.Equal(t, getDummyReviewers()[3], repo.PRs[0].Reviewers[2])
 
-}
-
-func setMockEnvironmentVariables() {
-	_ = os.Setenv("BITBUCKET_BASE_URL", "http://localhost/rest/api/1.0")
-	_ = os.Setenv("BITBUCKET_PROJECT_PATH", "/projects/")
-	_ = os.Setenv("BITBUCKET_REPOSITORY_PATH", "/repos/")
-	_ = os.Setenv("BITBUCKET_PR_PATH", "/pull-requests")
-	_ = os.Setenv("BITBUCKET_USER_PATH", "/permissions/users")
 }
