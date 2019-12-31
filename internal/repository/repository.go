@@ -21,6 +21,7 @@ type Repository struct {
 	Token                string                 `json:"token"`
 	ProjectName          string                 `json:"projectName"`
 	Name                 string                 `json:"name"`
+	DevelopmentBranch    string                 `json:"developmentBranch"`
 	Provider             string                 `json:"provider"`
 	Users                map[string]common.User `json:"users"`
 	Stages               []Stage                `json:"stages"`
@@ -38,7 +39,7 @@ func (repo *Repository) AssignReviewersToPrs() {
 
 	busyReviewers := repo.getAssignedAndDoesNotApproveReviewers()
 
-	repo.filterPullRequestByBranch()
+	repo.filterPullRequestByDevelopmentBranch()
 	repo.filterPullRequestsHasNotReviewer()
 
 	log.Printf("Repo: %s --> LatestPRCount: %v", repo.Name, len(repo.PRs))
@@ -73,12 +74,11 @@ func (repo *Repository) getReviewer(index int, busyReviewers mapset.Set, ownerAn
 	return nil
 }
 
-// refactor: get stages dynamically related branch name
-func (repo *Repository) filterPullRequestByBranch() {
+func (repo *Repository) filterPullRequestByDevelopmentBranch() {
 	prs := make([]common.PullRequest, 0)
 
 	for _, p := range repo.PRs {
-		if p.ToRef.DisplayId == "develop" {
+		if repo.DevelopmentBranch == p.ToRef.DisplayId {
 			prs = append(prs, p)
 		}
 	}
