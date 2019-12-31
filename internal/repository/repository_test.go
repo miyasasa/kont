@@ -57,13 +57,14 @@ func TestRepository_Initialize_ExpectSuccess(t *testing.T) {
 
 func TestRepository_filterPullRequestByBranch_Given2PRToStagingTarget_ExpectEmptyPrInRepo(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	pr1 := common.PullRequest{Id: 1903, ToRef: common.ToRef{DisplayId: "staging"}}
 	pr2 := common.PullRequest{Id: 116, ToRef: common.ToRef{DisplayId: "staging"}}
 
 	repo.PRs = []common.PullRequest{pr1, pr2}
 
-	repo.filterPullRequestByBranch()
+	repo.filterPullRequestByDevelopmentBranch()
 
 	assert.NotNil(t, repo.PRs)
 	assert.True(t, len(repo.PRs) == 0)
@@ -71,6 +72,7 @@ func TestRepository_filterPullRequestByBranch_Given2PRToStagingTarget_ExpectEmpt
 
 func TestRepository_filterPullRequestByBranch_Given2PRToStagingTargetAnd1PRToDevelop_Expect2PRToDevelopBranch(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	pr1 := common.PullRequest{Id: 1903, ToRef: common.ToRef{DisplayId: "develop"}}
 	pr2 := common.PullRequest{Id: 116, ToRef: common.ToRef{DisplayId: "staging"}}
@@ -78,7 +80,7 @@ func TestRepository_filterPullRequestByBranch_Given2PRToStagingTargetAnd1PRToDev
 
 	repo.PRs = []common.PullRequest{pr1, pr2, pr3}
 
-	repo.filterPullRequestByBranch()
+	repo.filterPullRequestByDevelopmentBranch()
 
 	assert.NotNil(t, repo.PRs)
 	assert.True(t, len(repo.PRs) == 2)
@@ -293,6 +295,7 @@ func Test_FindUserInReviewers_WithUnAvailableReviewerGivenUserInStages_ExpectNil
 //When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: second-reviewer), BusyReviewers: 0
 func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers(), Policy: BYORDERINAVAILABLE}
 
@@ -313,6 +316,7 @@ func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing
 //When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: first-reviewer), BusyReviewers: 1(second reviewer)
 func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	dummies := getDummyReviewers()
 
@@ -338,6 +342,7 @@ func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 
 func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstStageAnd1ReviewerInSecondAsAlsoOwner_ExpectFirstStagesReviewersToPR(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	dummies := getDummyReviewers()
 
@@ -367,6 +372,7 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 
 func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstStageAnd1ReviewerInSecondAsAlsoOwnerAndAvailableInTheLast_ExpectFirstStagesReviewersToPR(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	dummies := getDummyReviewers()
 
@@ -397,6 +403,7 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 
 func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0AvailableReviewer_ExpectNoReviewersToPR(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	dummies := getDummyReviewers()
 
@@ -419,6 +426,7 @@ func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0Avai
 
 func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	dummies := getDummyReviewers()
 
@@ -454,6 +462,7 @@ func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *
 
 func TestRepository_AssignReviewersToPrs_ExpectAllReviewersOfSecondAndThirdStages(t *testing.T) {
 	repo := new(Repository)
+	repo.DevelopmentBranch = "develop"
 
 	dummies := getDummyReviewers()
 
