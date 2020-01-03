@@ -14,15 +14,15 @@ const (
 )
 
 type Repository struct {
-	Host                 string                 `json:"host"`
+	Host                 string                 `json:"host" binding:"required"`
 	FetchRepoUsersUrl    string                 `json:"fetchRepoUsersUrl"`
 	FetchProjectUsersUrl string                 `json:"fetchProjectUsersUrl"`
 	FetchPrsUrl          string                 `json:"fetchPrsUrl"`
-	Token                string                 `json:"token"`
-	ProjectName          string                 `json:"projectName"`
-	Name                 string                 `json:"name"`
-	DevelopmentBranch    string                 `json:"developmentBranch"`
-	Provider             string                 `json:"provider"`
+	Token                string                 `json:"token"` // required, don't map/mask in response
+	ProjectName          string                 `json:"projectName" binding:"required"`
+	Name                 string                 `json:"name" binding:"required"`
+	DevelopmentBranch    string                 `json:"developmentBranch" binding:"required"`
+	Provider             string                 `json:"provider" binding:"required"`
 	Users                map[string]common.User `json:"users"`
 	Stages               []Stage                `json:"stages"`
 	PRs                  []common.PullRequest   `json:"prs"`
