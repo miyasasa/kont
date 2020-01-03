@@ -5,7 +5,6 @@ import (
 	"kont/internal/remoterepository/bitbucket"
 	"kont/internal/repository"
 	"kont/storage"
-	"log"
 )
 
 func init() {
@@ -19,15 +18,12 @@ func init() {
 func saveRepository(c *gin.Context) {
 	var repo = &repository.Repository{}
 
-	err := c.BindJSON(&repo)
-	if err != nil {
-		log.Printf("repository::saveRepository bind exception")
-	}
+	_ = c.BindJSON(repo)
 
 	repo.Initialize()
 	bitbucket.UpdateUsers(repo)
 
-	err = storage.Storage.PUT(repo.Name, repo)
+	err := storage.Storage.PUT(repo.Name, repo)
 
 	okOrElse500(err, c, repo)
 }
