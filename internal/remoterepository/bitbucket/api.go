@@ -45,23 +45,47 @@ func fetchPRs(repo *repository.Repository, start int) {
 func updatePRs(repo *repository.Repository) {
 
 	for _, pr := range repo.PRs {
-
-		url := repo.FetchPrsUrl + "/" + strconv.FormatInt(int64(pr.Id), 10)
-
-		uPR := MapPullRequestToUpdateModel(pr)
-		body, err := json.Marshal(uPR)
-
-		if err != nil {
-			log.Printf("Pull-Request can not convert to json string")
-		}
-
-		req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(body))
-		req.Header.Add("Authorization", repo.Token)
-		req.Header.Add("Content-Type", "application/json")
-
-		c := client.NewHttpClient(client.NewHttpDispatcher())
-		c.PUT(req)
-
-		log.Printf("%+v\n", pr)
+		go addReviewersToPR(pr, repo)
+		go addDefaultCommentToPR(pr, repo)
 	}
+}
+
+func addReviewersToPR(pr common.PullRequest, repo *repository.Repository) {
+	url := repo.FetchPrsUrl + "/" + strconv.FormatInt(int64(pr.Id), 10)
+
+	uPR := MapPullRequestToUpdateModel(pr)
+	body, err := json.Marshal(uPR)
+
+	if err != nil {
+		log.Printf("api::addReviewersToPR, Pull-Request can not convert to json string")
+	}
+
+	req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(body))
+	req.Header.Add("Authorization", repo.Token)
+	req.Header.Add("Content-Type", "application/json")
+
+	c := client.NewHttpClient(client.NewHttpDispatcher())
+	c.UPDATE(req)
+
+	log.Printf("%+v\n", pr)
+}
+
+func addDefaultCommentToPR(pr common.PullRequest, repo *repository.Repository) {
+	url := repo.FetchPrsUrl + "/" + strconv.FormatInt(int64(pr.Id), 10) + "/comments"
+
+	dC := NewPullRequestDefaultCommentUpdateModel(repo.DefaultComment, pr.Author.User.Name)
+	body, err := json.Marshal(dC)
+
+	if err != nil {
+		log.Printf("api::addDefaultCommentToPR, default-comment can not convert to json string")
+	}
+
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	req.Header.Add("Authorization", repo.Token)
+	req.Header.Add("Content-Type", "application/json")
+
+	c := client.NewHttpClient(client.NewHttpDispatcher())
+	c.UPDATE(req)
+
+	log.Printf("Added default-comment to %d, Default-Comment: %s \n", pr.Id, dC)
 }
