@@ -134,7 +134,7 @@ func TestHttpClient_PUT_Given200ResponseMock_NotExpectError(t *testing.T) {
 
 	c := NewHttpClient(dispatcherMock)
 	output := captureOutput(func() {
-		c.PUT(req)
+		c.UPDATE(req)
 	})
 
 	assertion.Empty(output)
@@ -152,7 +152,7 @@ func TestHttpClient_PUT_Given500ResponseMock_ExpectErrorLog(t *testing.T) {
 
 	c := NewHttpClient(dispatcherMock)
 	output := captureOutput(func() {
-		c.PUT(req)
+		c.UPDATE(req)
 	})
 
 	assertion.NotNil(output)
@@ -170,7 +170,7 @@ func TestHttpClient_PUT_GivenNilResponseMock_NotExpectError(t *testing.T) {
 
 	c := NewHttpClient(dispatcherMock)
 	output := captureOutput(func() {
-		c.PUT(req)
+		c.UPDATE(req)
 	})
 
 	assertion.Empty(output)
