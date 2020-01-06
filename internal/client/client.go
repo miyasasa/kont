@@ -8,7 +8,7 @@ import (
 
 type Client interface {
 	GET(req *http.Request, i interface{})
-	PUT(req *http.Request)
+	UPDATE(req *http.Request)
 }
 
 type HttpClient struct {
@@ -35,10 +35,10 @@ func (c *HttpClient) GET(req *http.Request, i interface{}) {
 	}
 }
 
-func (c HttpClient) PUT(req *http.Request) {
+func (c HttpClient) UPDATE(req *http.Request) {
 	resp := c.dispatcher.dispatch(req)
 
-	if resp != nil && resp.StatusCode != 200 {
+	if resp != nil && (resp.StatusCode < 200 || resp.StatusCode >= 300) {
 		log.Printf("client::PUT:: PR can not updated URL: %s StatusCode: %v", req.URL, resp.StatusCode)
 	}
 }

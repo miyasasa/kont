@@ -23,6 +23,7 @@ type Repository struct {
 	Name                 string                 `json:"name" binding:"required"`
 	DevelopmentBranch    string                 `json:"developmentBranch" binding:"required"`
 	Provider             string                 `json:"provider" binding:"required"`
+	DefaultComment       string                 `json:"defaultComment"`
 	Users                map[string]common.User `json:"users"`
 	Stages               []Stage                `json:"stages"`
 	PRs                  []common.PullRequest   `json:"prs"`
