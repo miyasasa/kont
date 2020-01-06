@@ -38,7 +38,7 @@ func TestHttpClient_GET_Given200StatusCodeWithExpectedBody_ExpectToBindGivenInte
 	c := NewHttpClient(dispatcherMock)
 
 	page := common.PRPagination{}
-	c.GET(req, &page)
+	c.HandleToInterface(req, &page)
 
 	assertion.NotNil(page)
 	assertion.Equal(10, page.Size)
@@ -60,7 +60,7 @@ func TestHttpClient_GET_Given200StatusCodeWithUnExpectedBody_ExpectEmptyGivenInt
 
 	page := common.PRPagination{}
 	output := captureOutput(func() {
-		c.GET(req, &page)
+		c.HandleToInterface(req, &page)
 	})
 
 	assertion.NotNil(page)
@@ -87,7 +87,7 @@ func TestHttpClient_GET_Given404StatusCode_ExpectEmptyInterfaceAndErrorLog(t *te
 
 	page := common.PRPagination{}
 	output := captureOutput(func() {
-		c.GET(req, &page)
+		c.HandleToInterface(req, &page)
 	})
 
 	assertion.NotNil(page)
@@ -112,7 +112,7 @@ func TestHttpClient_GET_GivenNilByDispatcher_ExpectEmptyPrPagination(t *testing.
 
 	page := common.PRPagination{}
 	output := captureOutput(func() {
-		c.GET(req, &page)
+		c.HandleToInterface(req, &page)
 	})
 
 	assertion.NotNil(page)
@@ -134,7 +134,7 @@ func TestHttpClient_PUT_Given200ResponseMock_NotExpectError(t *testing.T) {
 
 	c := NewHttpClient(dispatcherMock)
 	output := captureOutput(func() {
-		c.UPDATE(req)
+		c.Handle(req)
 	})
 
 	assertion.Empty(output)
@@ -152,7 +152,7 @@ func TestHttpClient_PUT_Given500ResponseMock_ExpectErrorLog(t *testing.T) {
 
 	c := NewHttpClient(dispatcherMock)
 	output := captureOutput(func() {
-		c.UPDATE(req)
+		c.Handle(req)
 	})
 
 	assertion.NotNil(output)
@@ -170,7 +170,7 @@ func TestHttpClient_PUT_GivenNilResponseMock_NotExpectError(t *testing.T) {
 
 	c := NewHttpClient(dispatcherMock)
 	output := captureOutput(func() {
-		c.UPDATE(req)
+		c.Handle(req)
 	})
 
 	assertion.Empty(output)

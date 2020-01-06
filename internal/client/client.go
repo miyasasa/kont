@@ -7,8 +7,8 @@ import (
 )
 
 type Client interface {
-	GET(req *http.Request, i interface{})
-	UPDATE(req *http.Request)
+	HandleToInterface(req *http.Request, i interface{})
+	Handle(req *http.Request)
 }
 
 type HttpClient struct {
@@ -19,7 +19,7 @@ func NewHttpClient(dispatcher Dispatcher) *HttpClient {
 	return &HttpClient{dispatcher: dispatcher}
 }
 
-func (c *HttpClient) GET(req *http.Request, i interface{}) {
+func (c *HttpClient) HandleToInterface(req *http.Request, i interface{}) {
 
 	resp := c.dispatcher.dispatch(req)
 
@@ -35,7 +35,7 @@ func (c *HttpClient) GET(req *http.Request, i interface{}) {
 	}
 }
 
-func (c HttpClient) UPDATE(req *http.Request) {
+func (c HttpClient) Handle(req *http.Request) {
 	resp := c.dispatcher.dispatch(req)
 
 	if resp != nil && (resp.StatusCode < 200 || resp.StatusCode >= 300) {

@@ -17,7 +17,7 @@ func fetchUsers(url string, token string, start int) []common.User {
 
 	page := common.UserPagination{}
 	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.GET(req, &page)
+	c.HandleToInterface(req, &page)
 
 	if page.IsLastPage || page.NextPageStart == 0 {
 		return page.GetUsers()
@@ -32,7 +32,7 @@ func fetchPRs(repo *repository.Repository, start int) {
 
 	page := common.PRPagination{}
 	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.GET(req, &page)
+	c.HandleToInterface(req, &page)
 
 	repo.PRs = append(repo.PRs, page.Values...)
 
@@ -65,7 +65,7 @@ func addReviewersToPR(pr common.PullRequest, repo *repository.Repository) {
 	req.Header.Add("Content-Type", "application/json")
 
 	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.UPDATE(req)
+	c.Handle(req)
 
 	log.Printf("%+v\n", pr)
 }
@@ -85,7 +85,7 @@ func addDefaultCommentToPR(pr common.PullRequest, repo *repository.Repository) {
 	req.Header.Add("Content-Type", "application/json")
 
 	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.UPDATE(req)
+	c.Handle(req)
 
 	log.Printf("Added default-comment to %d, Default-Comment: %s \n", pr.Id, dC)
 }
