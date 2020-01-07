@@ -15,6 +15,4 @@ func main() {
 
 	runtime.Goexit()
 
-	//remoterepository.ListenRemoteRepositories()
-
 }
