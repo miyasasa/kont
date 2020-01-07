@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"kont/api"
+	"kont/init/env"
 	"kont/internal/scheduler"
 	"runtime"
 )
@@ -9,7 +11,7 @@ import (
 func main() {
 
 	scheduler.ScheduleRemoteRepositories()
-	api.Router.Run()
+	_ = api.Router.Run(fmt.Sprintf(":%s", env.ServerPort))
 
 	runtime.Goexit()
 
