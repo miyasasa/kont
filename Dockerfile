@@ -2,7 +2,6 @@ FROM golang:alpine3.10
 LABEL maintainer="Yasin Kızılkaya <vyasinw@gmail.com>"
 WORKDIR $GOPATH/src/kont
 
-# Exclude .db file
 COPY . .
 
 RUN export GO111MODULE=on \
@@ -11,6 +10,7 @@ RUN export GO111MODULE=on \
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
-WORKDIR /root/
+WORKDIR /code/
+RUN mkdir /var/lib/kont
 COPY --from=0 /go/src/kont .
 CMD ["./kont"]
