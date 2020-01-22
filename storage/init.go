@@ -14,7 +14,8 @@ type Store struct {
 }
 
 func initStorage() *Store {
-	db, err := bolt.Open("kont.db", 0755, &bolt.Options{Timeout: 1 * time.Second})
+
+	db, err := bolt.Open("/var/lib/kont/kont.db", 0755, &bolt.Options{Timeout: 1 * time.Second})
 
 	if err != nil {
 		log.Fatalf("DB connection can not opened %v", err)
