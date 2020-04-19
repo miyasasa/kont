@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"kont/api/model"
 	"kont/internal/remoterepository/bitbucket"
 	"kont/internal/repository"
 	"kont/storage"
@@ -25,7 +26,8 @@ func saveRepository(c *gin.Context) {
 
 	err := storage.Storage.PUT(repo.Name, repo)
 
-	okOrElse500(err, c, repo)
+	repoModel := model.ConvertRepositoryToRepositoryModel(repo)
+	okOrElse500(err, c, repoModel)
 }
 
 func getRepository(c *gin.Context) {
@@ -47,5 +49,12 @@ func deleteRepository(c *gin.Context) {
 
 func getRepositories(c *gin.Context) {
 	repos := storage.Storage.GetAllRepositories()
-	ok(c, repos)
+
+	var responseModels = make([]*model.RepositoryModel, 0)
+	for _, repo := range repos {
+		repoModel := model.ConvertRepositoryToRepositoryModel(&repo)
+		responseModels = append(responseModels, repoModel)
+	}
+
+	ok(c, responseModels)
 }
