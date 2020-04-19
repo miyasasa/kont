@@ -36,7 +36,8 @@ func getRepository(c *gin.Context) {
 	var repo repository.Repository
 	err := storage.Storage.GET(name, &repo)
 
-	okOrElse404(err, c, repo)
+	repoModel := model.ConvertRepositoryToRepositoryModel(&repo)
+	okOrElse404(err, c, repoModel)
 }
 
 func deleteRepository(c *gin.Context) {
