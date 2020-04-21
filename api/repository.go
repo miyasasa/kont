@@ -26,7 +26,7 @@ func saveRepository(c *gin.Context) {
 
 	err := storage.Storage.PUT(repo.Name, repo)
 
-	repoModel := model.ConvertRepositoryToRepositoryModel(repo)
+	repoModel := model.MapRepositoryToRepositoryModel(repo)
 	okOrElse500(err, c, repoModel)
 }
 
@@ -36,7 +36,7 @@ func getRepository(c *gin.Context) {
 	var repo repository.Repository
 	err := storage.Storage.GET(name, &repo)
 
-	repoModel := model.ConvertRepositoryToRepositoryModel(&repo)
+	repoModel := model.MapRepositoryToRepositoryModel(&repo)
 	okOrElse404(err, c, repoModel)
 }
 
@@ -53,7 +53,7 @@ func getRepositories(c *gin.Context) {
 
 	var responseModels = make([]*model.RepositoryModel, 0)
 	for _, repo := range repos {
-		repoModel := model.ConvertRepositoryToRepositoryModel(&repo)
+		repoModel := model.MapRepositoryToRepositoryModel(&repo)
 		responseModels = append(responseModels, repoModel)
 	}
 

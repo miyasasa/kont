@@ -2,7 +2,7 @@ package model
 
 import "kont/internal/repository"
 
-func ConvertRepositoryToRepositoryModel(repo *repository.Repository) *RepositoryModel {
+func MapRepositoryToRepositoryModel(repo *repository.Repository) *RepositoryModel {
 	var repoModel = &RepositoryModel{}
 	repoModel.Host = repo.Host
 	repoModel.ProjectName = repo.ProjectName
