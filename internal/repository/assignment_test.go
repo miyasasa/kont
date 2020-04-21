@@ -27,7 +27,7 @@ func TestStageFields(t *testing.T) {
 	assert.Equal(t, stage.Policy, BYORDERINAVAILABLE)
 }
 
-func TestStageGetReviewerByOrderIn2AvailableWithOneBusyAndOneReviewer(t *testing.T) {
+func TestStageGetReviewerByPriorityIn2AvailableWithOneBusyAndOneReviewer(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
@@ -48,7 +48,7 @@ func TestStageGetReviewerByOrderIn2AvailableWithOneBusyAndOneReviewer(t *testing
 	assert.False(t, ownerAndReviewers.Contains(reviewer))
 }
 
-func TestStageGetReviewerByOrderInOneAvailableWith2BusyAndOneExistReviewer(t *testing.T) {
+func TestStageGetReviewerByPriorityInOneAvailableWith2BusyAndOneExistReviewer(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
@@ -70,7 +70,7 @@ func TestStageGetReviewerByOrderInOneAvailableWith2BusyAndOneExistReviewer(t *te
 	assert.Equal(t, "Domagoj Vida", reviewer.User.DisplayName)
 }
 
-func TestStageGetReviewerByOrderIn1AvailableWithOneBusyAnd2ExistReviewer(t *testing.T) {
+func TestStageGetReviewerByPriorityIn1AvailableWithOneBusyAnd2ExistReviewer(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
@@ -92,7 +92,7 @@ func TestStageGetReviewerByOrderIn1AvailableWithOneBusyAnd2ExistReviewer(t *test
 	assert.Equal(t, "Gökhan Gönül", reviewer.User.DisplayName)
 }
 
-func TestStageGetReviewerByOrderIn0AvailableWith2BusyAnd2ExistReviewerGetReviewerFromBusiesRandomly(t *testing.T) {
+func TestStageGetReviewerByPriorityIn0AvailableWith2BusyAnd2ExistReviewerGetReviewerFromBusiesRandomly(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
@@ -118,7 +118,7 @@ func TestStageGetReviewerByOrderIn0AvailableWith2BusyAnd2ExistReviewerGetReviewe
 }
 
 // in case of zero available reviewer and one busy reviewer is also owner
-func TestStageGetReviewerByOrderIn0AvailableWithTheSameOneBusyAndOneExistReviewerGetNil(t *testing.T) {
+func TestStageGetReviewerByPriorityIn0AvailableWithTheSameOneBusyAndOneExistReviewerGetNil(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: make([]*common.Reviewer, 0), Policy: BYORDERINAVAILABLE}
@@ -181,7 +181,7 @@ func TestStageGetReviewerRandomlyIn3AvailableWithOneBusyAndOneReviewer(t *testin
 	assert.False(t, ownerAndReviewers.Contains(reviewer))
 }
 
-func TestStageGetReviewerByOrderIn0StageReviewerWithOneBusyAnd3ExistReviewerGetReviewerFromBusiesRandomly(t *testing.T) {
+func TestStageGetReviewerByPriorityIn0StageReviewerWithOneBusyAnd3ExistReviewerGetReviewerFromBusiesRandomly(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: RANDOMINAVAILABLE}
@@ -206,7 +206,7 @@ func TestStageGetReviewerByOrderIn0StageReviewerWithOneBusyAnd3ExistReviewerGetR
 	assert.False(t, ownerAndReviewers.Contains(reviewer))
 }
 
-func TestStageGetReviewerByOrderIn2StageReviewer2BusiesAlsoTheSame2ExistReviewerGetNil(t *testing.T) {
+func TestStageGetReviewerByPriorityIn2StageReviewer2BusiesAlsoTheSame2ExistReviewerGetNil(t *testing.T) {
 
 	reviewers := getDummyReviewers()
 	stage := &Stage{Name: "TestStage", Reviewers: []*common.Reviewer{reviewers[0], reviewers[1]}, Policy: RANDOMINAVAILABLE}
@@ -249,11 +249,11 @@ func TestStage_GetReviewerByUser_GivenUserNotAReviewer_ExpectNil(t *testing.T) {
 }
 
 func getDummyReviewers() []*common.Reviewer {
-	reviewer1 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Order: 0}
-	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Order: 1}
-	reviewer3 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Order: 2}
-	reviewer4 := &common.Reviewer{User: common.User{Name: "gokhan", DisplayName: "Gökhan Gönül"}, Order: 3}
-	reviewer5 := &common.Reviewer{User: common.User{Name: "Ozi", DisplayName: "Oğuzhan Özyakup"}, Order: 4}
+	reviewer1 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Priority: 0}
+	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Priority: 1}
+	reviewer3 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Priority: 2}
+	reviewer4 := &common.Reviewer{User: common.User{Name: "gokhan", DisplayName: "Gökhan Gönül"}, Priority: 3}
+	reviewer5 := &common.Reviewer{User: common.User{Name: "Ozi", DisplayName: "Oğuzhan Özyakup"}, Priority: 4}
 
 	return []*common.Reviewer{reviewer1, reviewer2, reviewer3, reviewer4, reviewer5}
 }

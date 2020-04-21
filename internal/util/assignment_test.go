@@ -12,7 +12,7 @@ func TestGetReviewerFirstAvailableIntoSetConsistOneElement(t *testing.T) {
 
 	reviewers := mapset.NewSet(reviewer1)
 
-	reviewer := GetFirstAvailableReviewerByOrder(reviewers)
+	reviewer := GetFirstAvailableReviewerByPriority(reviewers)
 
 	assert.NotNil(t, reviewer)
 	assert.NotNil(t, reviewer.User)
@@ -21,14 +21,14 @@ func TestGetReviewerFirstAvailableIntoSetConsistOneElement(t *testing.T) {
 }
 
 func TestGetReviewerFirstAvailableIntoSetConsistTwoElement(t *testing.T) {
-	reviewer1 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Order: 2}
-	reviewer2 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Order: 1}
+	reviewer1 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Priority: 2}
+	reviewer2 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Priority: 1}
 
 	reviewers := mapset.NewSet()
 	reviewers.Add(reviewer1)
 	reviewers.Add(reviewer2)
 
-	reviewer := GetFirstAvailableReviewerByOrder(reviewers)
+	reviewer := GetFirstAvailableReviewerByPriority(reviewers)
 
 	assert.NotNil(t, reviewer)
 	assert.NotNil(t, reviewer.User)
@@ -39,7 +39,7 @@ func TestGetReviewerFirstAvailableIntoSetConsistTwoElement(t *testing.T) {
 func TestGetReviewerFirstAvailableWithEmptySet(t *testing.T) {
 	reviewers := mapset.NewSet()
 
-	reviewer := GetFirstAvailableReviewerByOrder(reviewers)
+	reviewer := GetFirstAvailableReviewerByPriority(reviewers)
 
 	assert.Nil(t, reviewer)
 }
