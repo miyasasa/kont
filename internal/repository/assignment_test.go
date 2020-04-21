@@ -18,19 +18,19 @@ func TestStageNotNilAndNilFields(t *testing.T) {
 
 func TestStageFields(t *testing.T) {
 	reviewers := make([]*common.Reviewer, 0)
-	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
+	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	assert.NotNil(t, stage)
 	assert.Equal(t, "TestStage", stage.Name)
 	assert.NotNil(t, stage.Reviewers)
 	assert.Equal(t, 0, len(stage.Reviewers))
-	assert.Equal(t, stage.Policy, BYORDERINAVAILABLE)
+	assert.Equal(t, stage.Policy, BYPRIORITYINAVAILABLE)
 }
 
 func TestStageGetReviewerByPriorityIn2AvailableWithOneBusyAndOneReviewer(t *testing.T) {
 
 	reviewers := getDummyReviewers()
-	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
+	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	assert.True(t, len(reviewers) > 3)
 
@@ -51,7 +51,7 @@ func TestStageGetReviewerByPriorityIn2AvailableWithOneBusyAndOneReviewer(t *test
 func TestStageGetReviewerByPriorityInOneAvailableWith2BusyAndOneExistReviewer(t *testing.T) {
 
 	reviewers := getDummyReviewers()
-	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
+	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	assert.True(t, len(reviewers) > 3)
 
@@ -73,7 +73,7 @@ func TestStageGetReviewerByPriorityInOneAvailableWith2BusyAndOneExistReviewer(t 
 func TestStageGetReviewerByPriorityIn1AvailableWithOneBusyAnd2ExistReviewer(t *testing.T) {
 
 	reviewers := getDummyReviewers()
-	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
+	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	assert.True(t, len(reviewers) > 4)
 
@@ -95,7 +95,7 @@ func TestStageGetReviewerByPriorityIn1AvailableWithOneBusyAnd2ExistReviewer(t *t
 func TestStageGetReviewerByPriorityIn0AvailableWith2BusyAnd2ExistReviewerGetReviewerFromBusiesRandomly(t *testing.T) {
 
 	reviewers := getDummyReviewers()
-	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYORDERINAVAILABLE}
+	stage := &Stage{Name: "TestStage", Reviewers: reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	assert.True(t, len(reviewers) > 3)
 
@@ -121,7 +121,7 @@ func TestStageGetReviewerByPriorityIn0AvailableWith2BusyAnd2ExistReviewerGetRevi
 func TestStageGetReviewerByPriorityIn0AvailableWithTheSameOneBusyAndOneExistReviewerGetNil(t *testing.T) {
 
 	reviewers := getDummyReviewers()
-	stage := &Stage{Name: "TestStage", Reviewers: make([]*common.Reviewer, 0), Policy: BYORDERINAVAILABLE}
+	stage := &Stage{Name: "TestStage", Reviewers: make([]*common.Reviewer, 0), Policy: BYPRIORITYINAVAILABLE}
 
 	assert.True(t, len(reviewers) > 4)
 
