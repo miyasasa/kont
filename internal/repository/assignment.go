@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	BYORDERINAVAILABLE = "BYORDERINAVAILABLE"
-	RANDOMINAVAILABLE  = "RANDOMINAVAILABLE"
+	BYPRIORITYINAVAILABLE = "BYPRIORITYINAVAILABLE"
+	RANDOMINAVAILABLE     = "RANDOMINAVAILABLE"
 )
 
 type Stage struct {
@@ -31,8 +31,8 @@ func (s *Stage) GetReviewer(busyReviewers mapset.Set, ownerAndReviewers mapset.S
 		return util.GetReviewerRandomly(reviewers)
 	}
 
-	if s.Policy == BYORDERINAVAILABLE {
-		return util.GetFirstAvailableReviewerByOrder(availableReviewers)
+	if s.Policy == BYPRIORITYINAVAILABLE {
+		return util.GetFirstAvailableReviewerByPriority(availableReviewers)
 	}
 
 	return util.GetReviewerRandomly(availableReviewers)

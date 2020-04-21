@@ -19,14 +19,14 @@ func GetReviewerRandomly(reviewers mapset.Set) *common.Reviewer {
 	return reviewers.ToSlice()[index].(*common.Reviewer)
 }
 
-func GetFirstAvailableReviewerByOrder(reviewers mapset.Set) *common.Reviewer {
+func GetFirstAvailableReviewerByPriority(reviewers mapset.Set) *common.Reviewer {
 	if reviewers.Cardinality() == 0 {
 		return nil
 	}
 
 	rev := reviewers.ToSlice()
 	sort.Slice(rev, func(i, j int) bool {
-		return rev[i].(*common.Reviewer).Order < rev[j].(*common.Reviewer).Order
+		return rev[i].(*common.Reviewer).Priority < rev[j].(*common.Reviewer).Priority
 	})
 
 	return rev[0].(*common.Reviewer)

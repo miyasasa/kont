@@ -135,9 +135,9 @@ func TestRepository_FilterPullRequestsHasNotReviewer_WithAllPRHasNotReviewer_Get
 func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAndAllReviewersApproved_ExpectEmptyArray(t *testing.T) {
 	repo := new(Repository)
 
-	rev1 := &common.Reviewer{Order: 1, Approved: true, User: common.User{Name: "rev1"}}
-	rev2 := &common.Reviewer{Order: 2, Approved: true, User: common.User{Name: "rev2"}}
-	rev3 := &common.Reviewer{Order: 3, Approved: true, User: common.User{Name: "rev3"}}
+	rev1 := &common.Reviewer{Priority: 1, Approved: true, User: common.User{Name: "rev1"}}
+	rev2 := &common.Reviewer{Priority: 2, Approved: true, User: common.User{Name: "rev2"}}
+	rev3 := &common.Reviewer{Priority: 3, Approved: true, User: common.User{Name: "rev3"}}
 
 	pr := common.PullRequest{Id: 1903, Reviewers: []*common.Reviewer{rev1, rev2, rev3}}
 
@@ -153,9 +153,9 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAndAllReview
 func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAnd2ReviewersApprovedAndThirdReviewerNotAvailableInTheStage_ExpectEmptyArray(t *testing.T) {
 	repo := new(Repository)
 
-	rev1 := &common.Reviewer{Order: 1, Approved: true, User: common.User{Name: "rev1"}}
-	rev2 := &common.Reviewer{Order: 2, Approved: true, User: common.User{Name: "rev2"}}
-	rev3 := &common.Reviewer{Order: 3, Approved: false, User: common.User{Name: "rev3"}}
+	rev1 := &common.Reviewer{Priority: 1, Approved: true, User: common.User{Name: "rev1"}}
+	rev2 := &common.Reviewer{Priority: 2, Approved: true, User: common.User{Name: "rev2"}}
+	rev3 := &common.Reviewer{Priority: 3, Approved: false, User: common.User{Name: "rev3"}}
 
 	pr := common.PullRequest{Id: 1903, Reviewers: []*common.Reviewer{rev1, rev2, rev3}}
 
@@ -171,9 +171,9 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAnd2Reviewer
 func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAnd2ReviewersApproved_ExpectOneReviewerInArray(t *testing.T) {
 	repo := new(Repository)
 
-	rev1 := &common.Reviewer{Order: 1, Approved: true, User: common.User{Name: "rev1"}}
-	rev2 := &common.Reviewer{Order: 2, Approved: false, User: common.User{Name: "rev2"}}
-	rev3 := &common.Reviewer{Order: 3, Approved: true, User: common.User{Name: "rev3"}}
+	rev1 := &common.Reviewer{Priority: 1, Approved: true, User: common.User{Name: "rev1"}}
+	rev2 := &common.Reviewer{Priority: 2, Approved: false, User: common.User{Name: "rev2"}}
+	rev3 := &common.Reviewer{Priority: 3, Approved: true, User: common.User{Name: "rev3"}}
 
 	pr := common.PullRequest{Id: 1903, Reviewers: []*common.Reviewer{rev1, rev2, rev3}}
 
@@ -185,19 +185,19 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenOnePRAnd2Reviewer
 	assert.NotNil(t, busyReviewers)
 	assert.True(t, busyReviewers.Cardinality() == 1)
 	assert.NotNil(t, busyReviewers.ToSlice()[0].(*common.Reviewer))
-	assert.Equal(t, 2, busyReviewers.ToSlice()[0].(*common.Reviewer).Order)
+	assert.Equal(t, 2, busyReviewers.ToSlice()[0].(*common.Reviewer).Priority)
 }
 
 func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAndAllReviewersApproved_ExpectEmptyArray(t *testing.T) {
 	repo := new(Repository)
 
-	rev1 := &common.Reviewer{Order: 1, Approved: true, User: common.User{Name: "rev1"}}
-	rev2 := &common.Reviewer{Order: 2, Approved: true, User: common.User{Name: "rev2"}}
-	rev3 := &common.Reviewer{Order: 3, Approved: true, User: common.User{Name: "rev3"}}
+	rev1 := &common.Reviewer{Priority: 1, Approved: true, User: common.User{Name: "rev1"}}
+	rev2 := &common.Reviewer{Priority: 2, Approved: true, User: common.User{Name: "rev2"}}
+	rev3 := &common.Reviewer{Priority: 3, Approved: true, User: common.User{Name: "rev3"}}
 	pr1 := common.PullRequest{Id: 1903, Reviewers: []*common.Reviewer{rev1, rev2, rev3}}
 
-	rev4 := &common.Reviewer{Order: 4, Approved: true, User: common.User{Name: "rev4"}}
-	rev5 := &common.Reviewer{Order: 5, Approved: true, User: common.User{Name: "rev5"}}
+	rev4 := &common.Reviewer{Priority: 4, Approved: true, User: common.User{Name: "rev4"}}
+	rev5 := &common.Reviewer{Priority: 5, Approved: true, User: common.User{Name: "rev5"}}
 
 	pr2 := common.PullRequest{Id: 116, Reviewers: []*common.Reviewer{rev1, rev4, rev5}}
 
@@ -213,13 +213,13 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAndAllRevie
 func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAnd2ReviewersApproved_Expect3BusyReviewerInArray(t *testing.T) {
 	repo := new(Repository)
 
-	rev1 := &common.Reviewer{Order: 1, Approved: false, User: common.User{Name: "rev1"}}
-	rev2 := &common.Reviewer{Order: 2, Approved: true, User: common.User{Name: "rev2"}}
-	rev3 := &common.Reviewer{Order: 3, Approved: false, User: common.User{Name: "rev3"}}
+	rev1 := &common.Reviewer{Priority: 1, Approved: false, User: common.User{Name: "rev1"}}
+	rev2 := &common.Reviewer{Priority: 2, Approved: true, User: common.User{Name: "rev2"}}
+	rev3 := &common.Reviewer{Priority: 3, Approved: false, User: common.User{Name: "rev3"}}
 	pr1 := common.PullRequest{Id: 1903, Reviewers: []*common.Reviewer{rev1, rev2, rev3}}
 
-	rev4 := &common.Reviewer{Order: 4, Approved: true, User: common.User{Name: "rev4"}}
-	rev5 := &common.Reviewer{Order: 5, Approved: false, User: common.User{Name: "rev5"}}
+	rev4 := &common.Reviewer{Priority: 4, Approved: true, User: common.User{Name: "rev4"}}
+	rev5 := &common.Reviewer{Priority: 5, Approved: false, User: common.User{Name: "rev5"}}
 	pr2 := common.PullRequest{Id: 116, Reviewers: []*common.Reviewer{rev1, rev4, rev5}}
 
 	repo.PRs = []common.PullRequest{pr1, pr2}
@@ -238,13 +238,13 @@ func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAnd2Reviewe
 func TestRepository_GetAssignedAndDoesNotApproveReviewers_GivenTwoPRsAnd2ReviewersApprovedAndHaveOneCommonReviewer_Expect3BusyReviewerInArray(t *testing.T) {
 	repo := new(Repository)
 
-	rev1 := common.Reviewer{Order: 1, Approved: true, User: common.User{Name: "rev1"}}
-	rev2 := &common.Reviewer{Order: 2, Approved: true, User: common.User{Name: "rev2"}}
-	rev3 := &common.Reviewer{Order: 3, Approved: false, User: common.User{Name: "rev3"}}
+	rev1 := common.Reviewer{Priority: 1, Approved: true, User: common.User{Name: "rev1"}}
+	rev2 := &common.Reviewer{Priority: 2, Approved: true, User: common.User{Name: "rev2"}}
+	rev3 := &common.Reviewer{Priority: 3, Approved: false, User: common.User{Name: "rev3"}}
 	pr1 := common.PullRequest{Id: 1903, Reviewers: []*common.Reviewer{&rev1, rev2, rev3}}
 
-	rev4 := &common.Reviewer{Order: 4, Approved: true, User: common.User{Name: "rev4"}}
-	rev5 := &common.Reviewer{Order: 5, Approved: false, User: common.User{Name: "rev5"}}
+	rev4 := &common.Reviewer{Priority: 4, Approved: true, User: common.User{Name: "rev4"}}
+	rev5 := &common.Reviewer{Priority: 5, Approved: false, User: common.User{Name: "rev5"}}
 	rev6 := rev1
 	rev6.Approved = false
 
@@ -292,12 +292,12 @@ func Test_FindUserInReviewers_WithUnAvailableReviewerGivenUserInStages_ExpectNil
 }
 
 // AssignReviewersToPrs area
-//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: second-reviewer), BusyReviewers: 0
+//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYPRIORITYINAVAILABLE), 1 PR(Owner: second-reviewer), BusyReviewers: 0
 func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing.T) {
 	repo := new(Repository)
 	repo.DevelopmentBranch = "develop"
 
-	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers(), Policy: BYORDERINAVAILABLE}
+	stage := Stage{Name: "TestStage", Reviewers: getDummyReviewers(), Policy: BYPRIORITYINAVAILABLE}
 
 	pr := common.PullRequest{Id: 1903, Author: common.Author{User: getDummyReviewers()[1].User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
@@ -313,7 +313,7 @@ func TestRepository_AssignReviewersToPrs_ExpectFirstAsReviewerInStage(t *testing
 	assert.Equal(t, getDummyReviewers()[0], repo.PRs[0].Reviewers[0])
 }
 
-//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYORDERINAVAILABLE), 1 PR(Owner: first-reviewer), BusyReviewers: 1(second reviewer)
+//When: 1 stage(Reviewer: 4 dummy reviewer, Policy: BYPRIORITYINAVAILABLE), 1 PR(Owner: first-reviewer), BusyReviewers: 1(second reviewer)
 func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 	repo := new(Repository)
 	repo.DevelopmentBranch = "develop"
@@ -323,7 +323,7 @@ func TestRepository_AssignReviewersToPrs_ExpectThirdInStage(t *testing.T) {
 	owner := dummies[0].User
 	reviewers := []*common.Reviewer{dummies[1]}
 
-	stage := Stage{Name: "TestStage", Reviewers: dummies, Policy: BYORDERINAVAILABLE}
+	stage := Stage{Name: "TestStage", Reviewers: dummies, Policy: BYPRIORITYINAVAILABLE}
 
 	pr1 := common.PullRequest{Id: 1903, Reviewers: reviewers, Author: common.Author{User: owner}, ToRef: common.ToRef{DisplayId: "develop"}}
 	pr2 := common.PullRequest{Id: 116, Author: common.Author{User: owner}, ToRef: common.ToRef{DisplayId: "develop"}}
@@ -351,9 +351,9 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	stage2Reviewers := []*common.Reviewer{owner}
 	stage3Reviewers := []*common.Reviewer{dummies[0]}
 
-	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
-	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
-	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
+	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
@@ -381,9 +381,9 @@ func TestRepository_AssignReviewersToPrs_With3Stage_2AvailableReviewerInFirstSta
 	stage2Reviewers := []*common.Reviewer{owner}
 	stage3Reviewers := []*common.Reviewer{dummies[0], dummies[3]}
 
-	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
-	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
-	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
+	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
@@ -410,7 +410,7 @@ func TestRepository_AssignReviewersToPrs_With1StageHasOneReviewerAsOwnerAnd0Avai
 	owner := dummies[2]
 	stage1Reviewers := []*common.Reviewer{owner}
 
-	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
+	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	pr := common.PullRequest{Id: 116, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 
@@ -436,9 +436,9 @@ func TestRepository_AssignReviewersToPrs_ExpectWithBusyReviewerInSecondStage(t *
 	stage2Reviewers := []*common.Reviewer{owner, dummies[2]}
 	stage3Reviewers := []*common.Reviewer{dummies[3]}
 
-	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
-	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
-	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
+	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	pr1Reviewers := []*common.Reviewer{dummies[2]}
 
@@ -472,9 +472,9 @@ func TestRepository_AssignReviewersToPrs_ExpectAllReviewersOfSecondAndThirdStage
 	stage2Reviewers := []*common.Reviewer{dummies[1], dummies[2]}
 	stage3Reviewers := []*common.Reviewer{dummies[3], dummies[4]}
 
-	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYORDERINAVAILABLE}
-	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYORDERINAVAILABLE}
-	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYORDERINAVAILABLE}
+	stage1 := Stage{Name: "TestStage1", Reviewers: stage1Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage2 := Stage{Name: "TestStage2", Reviewers: stage2Reviewers, Policy: BYPRIORITYINAVAILABLE}
+	stage3 := Stage{Name: "TestStage3", Reviewers: stage3Reviewers, Policy: BYPRIORITYINAVAILABLE}
 
 	pr := common.PullRequest{Id: 1903, Reviewers: nil, Author: common.Author{User: owner.User}, ToRef: common.ToRef{DisplayId: "develop"}}
 

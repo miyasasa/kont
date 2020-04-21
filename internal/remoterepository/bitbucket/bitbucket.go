@@ -15,7 +15,6 @@ func Listen(repo *repository.Repository) {
 	updatePRs(repo)
 }
 
-// refactor with set // concat two two slice without duplicates
 func UpdateUsers(repo *repository.Repository) {
 	projectUsers := fetchUsers(repo.FetchProjectUsersUrl, repo.Token, 0)
 	repoUsers := fetchUsers(repo.FetchRepoUsersUrl, repo.Token, 0)
