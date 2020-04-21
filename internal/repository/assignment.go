@@ -32,7 +32,7 @@ func (s *Stage) GetReviewer(busyReviewers mapset.Set, ownerAndReviewers mapset.S
 	}
 
 	if s.Policy == BYORDERINAVAILABLE {
-		return util.GetFirstAvailableReviewerByOrder(availableReviewers)
+		return util.GetFirstAvailableReviewerByPriority(availableReviewers)
 	}
 
 	return util.GetReviewerRandomly(availableReviewers)
