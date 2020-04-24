@@ -1,23 +1,27 @@
 package bitbucket
 
 import (
+	"kont/internal/client"
 	"kont/internal/common"
 	"kont/internal/repository"
 	"log"
 )
 
+var bitbucketApi = NewBitbucketApi(client.HttpClientInstance)
+
 func Listen(repo *repository.Repository) {
 	log.Printf("Repo: %s --> is listening ...", repo.Name)
-	fetchPRs(repo, 0)
+
+	bitbucketApi.fetchPRs(repo, 0)
 
 	repo.AssignReviewersToPrs()
 
-	updatePRs(repo)
+	bitbucketApi.updatePRs(repo)
 }
 
 func UpdateUsers(repo *repository.Repository) {
-	projectUsers := fetchUsers(repo.FetchProjectUsersUrl, repo.Token, 0)
-	repoUsers := fetchUsers(repo.FetchRepoUsersUrl, repo.Token, 0)
+	projectUsers := bitbucketApi.fetchUsers(repo.FetchProjectUsersUrl, repo.Token, 0)
+	repoUsers := bitbucketApi.fetchUsers(repo.FetchRepoUsersUrl, repo.Token, 0)
 
 	projectUsers = append(projectUsers, repoUsers...)
 
