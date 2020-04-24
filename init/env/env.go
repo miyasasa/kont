@@ -2,7 +2,6 @@ package env
 
 import (
 	"github.com/joho/godotenv"
-	"log"
 	"os"
 	"sync"
 )
@@ -22,8 +21,6 @@ func getEnv(key string, defaultVal string) string {
 
 func loadEnv() {
 	doOnce.Do(func() {
-		if err := godotenv.Load(); err != nil {
-			log.Print("No .env file found")
-		}
+		_ = godotenv.Load()
 	})
 }
