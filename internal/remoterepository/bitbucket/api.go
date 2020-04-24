@@ -11,46 +11,62 @@ import (
 	"strconv"
 )
 
-func fetchUsers(url string, token string, start int) []common.User {
+type Api interface {
+	fetchUsers(url string, token string, start int) []common.User
+	fetchPRs(repo *repository.Repository, start int)
+	updatePRs(repo *repository.Repository)
+}
+
+type BitbucketApi struct {
+	client client.Client
+}
+
+func NewBitbucketApi(client client.Client) *BitbucketApi {
+	return &BitbucketApi{client: client}
+}
+
+func (b *BitbucketApi) fetchUsers(url string, token string, start int) []common.User {
 	req, _ := http.NewRequest("GET", url+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", token)
 
 	page := common.UserPagination{}
-	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.HandleToInterface(req, &page)
+	b.client.HandleToInterface(req, &page)
 
 	if page.IsLastPage || page.NextPageStart == 0 {
 		return page.GetUsers()
 	}
 
-	return append(fetchUsers(url, token, page.NextPageStart), page.GetUsers()...)
+	return append(b.fetchUsers(url, token, page.NextPageStart), page.GetUsers()...)
 }
 
-func fetchPRs(repo *repository.Repository, start int) {
+func (b *BitbucketApi) fetchPRs(repo *repository.Repository, start int) {
 	req, _ := http.NewRequest("GET", repo.FetchPrsUrl+"?start="+strconv.Itoa(start), nil)
 	req.Header.Add("Authorization", repo.Token)
 
 	page := common.PRPagination{}
-	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.HandleToInterface(req, &page)
+	b.client.HandleToInterface(req, &page)
 
 	repo.PRs = append(repo.PRs, page.Values...)
 
 	if !page.IsLastPage && page.NextPageStart != 0 {
-		fetchPRs(repo, page.NextPageStart)
+		b.fetchPRs(repo, page.NextPageStart)
 	}
 
 }
 
-func updatePRs(repo *repository.Repository) {
+func (b *BitbucketApi) updatePRs(repo *repository.Repository) {
 
-	for _, pr := range repo.PRs {
-		go addReviewersToPR(pr, repo)
-		go addDefaultCommentToPR(pr, repo)
+	for i := range repo.PRs {
+		go b.addReviewersToPR(i, repo)
+
+		if len(repo.DefaultComment) > 0 {
+			go b.addDefaultCommentToPR(i, repo)
+		}
 	}
 }
 
-func addReviewersToPR(pr common.PullRequest, repo *repository.Repository) {
+func (b *BitbucketApi) addReviewersToPR(i int, repo *repository.Repository) {
+	pr := repo.PRs[i]
 	url := repo.FetchPrsUrl + "/" + strconv.FormatInt(int64(pr.Id), 10)
 
 	uPR := MapPullRequestToUpdateModel(pr)
@@ -64,13 +80,13 @@ func addReviewersToPR(pr common.PullRequest, repo *repository.Repository) {
 	req.Header.Add("Authorization", repo.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.Handle(req)
+	b.client.Handle(req)
 
-	log.Printf("%+v\n", pr)
+	log.Printf("%+v\n", uPR)
 }
 
-func addDefaultCommentToPR(pr common.PullRequest, repo *repository.Repository) {
+func (b *BitbucketApi) addDefaultCommentToPR(i int, repo *repository.Repository) {
+	pr := repo.PRs[i]
 	url := repo.FetchPrsUrl + "/" + strconv.FormatInt(int64(pr.Id), 10) + "/comments"
 
 	dC := NewPullRequestDefaultCommentUpdateModel(repo.DefaultComment, pr.Author.User.Name)
@@ -84,8 +100,7 @@ func addDefaultCommentToPR(pr common.PullRequest, repo *repository.Repository) {
 	req.Header.Add("Authorization", repo.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	c := client.NewHttpClient(client.NewHttpDispatcher())
-	c.Handle(req)
+	b.client.Handle(req)
 
 	log.Printf("Added default-comment to %d, Default-Comment: %s \n", pr.Id, dC)
 }
