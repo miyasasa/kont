@@ -10,7 +10,7 @@ import (
 var bitbucketApi = NewBitbucketApi(client.HttpClientInstance)
 
 func Listen(repo *repository.Repository) {
-	log.Printf("Repo: %s --> is listening ...", repo.Name)
+	log.Printf("Repo: %s --> start to observe ...", repo.Name)
 
 	bitbucketApi.fetchPRs(repo, 0)
 
