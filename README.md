@@ -48,7 +48,8 @@ must consist of below parameters:
 	"name": "core-network",        
 	"developmentBranch": "develop",
     "provider": "BITBUCKET",
-    "defaultComment": "Merhaba @{{name}} \n ## **Reviewer koda bakmadan evvel, kendin bir kez daha review etmeye ne dersin? Eminim ELF gözlerin bişeyler görecektir.** \n Bunun için aşağıdaki maddeleri kontrol edebilirsin \n * Reformat \n * SonarLint \n * Analyze -> Inspect code \n * Mimari olarak düzgün mü? (heryer heryerde olmasın lütfen) \n * Test isimlerini daha anlaşılır yapabilirsin(given-when-then) \n * Fazla test, göz çıkarmaz \n\n Kolay Gelsin Hacım :) ",	"stages": [
+    "defaultComment": "Merhaba @{{name}} \n ## **Reviewer koda bakmadan evvel, kendin bir kez daha review etmeye ne dersin? Eminim ELF gözlerin bişeyler görecektir.** \n Bunun için aşağıdaki maddeleri kontrol edebilirsin \n * Reformat \n * SonarLint \n * Analyze -> Inspect code \n * Mimari olarak düzgün mü? (heryer heryerde olmasın lütfen) \n * Test isimlerini daha anlaşılır yapabilirsin(given-when-then) \n * Fazla test, göz çıkarmaz \n\n Kolay Gelsin Hacım :) ",
+    "stages": [
 		{
 		"name":"Stage1",
 		"policy":"RANDOMINAVAILABLE",
