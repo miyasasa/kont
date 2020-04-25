@@ -27,6 +27,7 @@ docker run -p 9090:9090 -e SERVER_PORT=9090  -v /var/lib/kont:/var/lib/kont vyas
 For now, only available with The API which is generally RESTFUL and returns results in JSON.
 
 #### Resource components and identifiers
+Resource components can be used in conjunction with identifiers to do CRUD operation for that identifier on repositories.
 
 | resource          | method        | description  |
 | -------------     |:-------------:|:-------------|
