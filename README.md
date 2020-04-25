@@ -55,14 +55,14 @@ must consist of below parameters for **Bitbucket** repository:
 **defaultComment**(Optional): Default comment text for each new pull/merge request
 
 **stage**: Each stage consists of name, policy and list of reviewer parameters. 
-kont selects a "available" reviewer in the given reviewer list based "policy type".
+kont selects a *available reviewer* in the given reviewer list based *policy type*.
 
-* availability is that, The reviewer has not been assigned to any pull/merge request or 
-The reviewer has approved all pull/merge requests which he/she had been assigned.
+* ```availability``` is that, The reviewer has not been assigned to any pull/merge request or 
+the reviewer has approved all pull/merge requests which he/she had been assigned.
 
-* policy: 
-    * RANDOMINAVAILABLE: Selects a random reviewer in available reviewers in stage.
-    * BYPRIORITYINAVAILABLE: Sorts available reviewers and select first which has high priority value.
+* ```policy``` type can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE"): 
+    * ```RANDOMINAVAILABLE```: Selects a random reviewer in available reviewers in the stage.
+    * ```BYPRIORITYINAVAILABLE```: Sorts available reviewers and select first which has high priority value.
 
 ```
 {
