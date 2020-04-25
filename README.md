@@ -40,7 +40,7 @@ Resource components can be used in conjunction with identifiers to do CRUD opera
 kont needs some information about the remote repository for starting to observe pull/merge requests. So, a repository record
 must consist of below parameters:
 
-```json
+```json5
 {
 	"host":"http://10.120.0.145:7990",
 	"token": "Bearer AB...",
