@@ -14,7 +14,7 @@ func GetReviewerRandomly(reviewers mapset.Set) *common.Reviewer {
 		return nil
 	}
 
-	rand.Seed(time.Now().Unix())
+	rand.Seed(time.Now().UnixNano())
 	index := rand.Intn(cardinality)
 	return reviewers.ToSlice()[index].(*common.Reviewer)
 }
@@ -26,7 +26,7 @@ func GetFirstAvailableReviewerByPriority(reviewers mapset.Set) *common.Reviewer 
 
 	rev := reviewers.ToSlice()
 	sort.Slice(rev, func(i, j int) bool {
-		return rev[i].(*common.Reviewer).Priority < rev[j].(*common.Reviewer).Priority
+		return rev[i].(*common.Reviewer).Priority > rev[j].(*common.Reviewer).Priority
 	})
 
 	return rev[0].(*common.Reviewer)
