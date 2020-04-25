@@ -40,7 +40,7 @@ Resource components can be used in conjunction with identifiers to do CRUD opera
 kont needs some information about the remote repository for starting to observe pull/merge requests. So, a repository record
 must consist of below parameters:
 
-```
+<pre>
 {
 	"host":"http://10.120.0.145:7990",
 	"token": "Bearer MDkwODMyMzkyNzYzOiPIkgh+s1+tqnXmJPzoDUMfOib7a",
@@ -150,7 +150,7 @@ must consist of below parameters:
 	]
 }
 
-```  
+</pre> 
 
 **host**: Scheme and host of the provider for your Git repository.
 
@@ -164,7 +164,7 @@ must consist of below parameters:
 
 **provider**: String Upper-case provider name, any of ("GITHUB", "BITBUCKET", "GITLAB")
 
-**defaultComment**(Optional): Default comment text for each new pull/merge request
+**defaultComment**(Optional): Default comment text for each new pull/merge request(Markdown syntax in string)
 
 **stage**: Each stage consists of name, policy and list of reviewer parameters. 
 kont selects a *available reviewer* in the given reviewer list based *policy type*.
