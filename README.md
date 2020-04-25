@@ -26,7 +26,7 @@ docker run -p 9090:9090 -e SERVER_PORT=9090  -v /var/lib/kont:/var/lib/kont vyas
 ## Usage
 For now, only available with The API which is generally RESTFUL and returns results in JSON.
 
-#### Resource components and identifiers
+### Resource components and identifiers
 Resource components can be used in conjunction with identifiers to do CRUD operations for that identifier on repositories.
 
 | resource          | method        | description  |
@@ -36,7 +36,7 @@ Resource components can be used in conjunction with identifiers to do CRUD opera
 | /repositories/:name | GET           | returns the repository named |
 | /repositories/:name | DELETE        | deletes the repository named |
 
-##### Create repository in kont
+#### Create repository in kont
 kont needs some information about the remote repository for starting to observe pull/merge requests. So, a repository record
 must consist of below parameters for **Bitbucket** repository:
 
