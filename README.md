@@ -23,6 +23,9 @@ You can change the port by set **SERVER_PORT** environment variable and add volu
 ```
 docker run -p 9090:9090 -e SERVER_PORT=9090  -v /var/lib/kont:/var/lib/kont vyasinw/kont
 ```
+## Usage
+For now, only available with The API which is generally RESTFUL and returns results in JSON.
+
 ## Notes
 1. kont just has integration with **Bitbucket-Server(based on Rest Api v1)** currently
 
