@@ -36,33 +36,9 @@ Resource components can be used in conjunction with identifiers to do CRUD opera
 | /repositories/:name | GET           | returns the repository named |
 | /repositories/:name | DELETE        | deletes the repository named |
 
-#### Create repository in kont
+#### Sample Bitbucket Repository in kont
 kont needs some information about the remote repository for starting to observe pull/merge requests. So, a repository record
-must consist of below parameters for **Bitbucket** repository:
-
-**host**: Scheme and host of the provider for your Git repository.
-
-**token**: Personal access bearer token which has necessary permissions(repository write/admin)
-
-**projectName**: Key of the project which contains the repository
-
-**name**: Name of the remote repository
-
-**developmentBranch**: Development branch of the remote repository for observing pull/merge requests to this branch.
-
-**provider**: String Upper-case provider name, any of ("GITHUB", "BITBUCKET", "GITLAB")
-
-**defaultComment**(Optional): Default comment text for each new pull/merge request
-
-**stage**: Each stage consists of name, policy and list of reviewer parameters. 
-kont selects a *available reviewer* in the given reviewer list based *policy type*.
-
-* ```availability``` is that, The reviewer has not been assigned to any pull/merge request or 
-the reviewer has approved all pull/merge requests which he/she had been assigned.
-
-* ```policy``` type can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE"): 
-    * ```RANDOMINAVAILABLE```: Selects a random reviewer in available reviewers in the stage.
-    * ```BYPRIORITYINAVAILABLE```: Sorts available reviewers and select first which has high priority value.
+must consist of below parameters:
 
 ```
 {
@@ -170,6 +146,31 @@ the reviewer has approved all pull/merge requests which he/she had been assigned
 }
 
 ```  
+
+**host**: Scheme and host of the provider for your Git repository.
+
+**token**: Personal access bearer token which has necessary permissions(repository write/admin)
+
+**projectName**: Key of the project which contains the repository
+
+**name**: Name of the remote repository
+
+**developmentBranch**: Development branch of the remote repository for observing pull/merge requests to this branch.
+
+**provider**: String Upper-case provider name, any of ("GITHUB", "BITBUCKET", "GITLAB")
+
+**defaultComment**(Optional): Default comment text for each new pull/merge request
+
+**stage**: Each stage consists of name, policy and list of reviewer parameters. 
+kont selects a *available reviewer* in the given reviewer list based *policy type*.
+
+* ```availability``` is that, The reviewer has not been assigned to any pull/merge request or 
+the reviewer has approved all pull/merge requests which he/she had been assigned.
+
+* ```policy``` type can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE"): 
+    * ```RANDOMINAVAILABLE```: Selects a random reviewer in available reviewers in the stage.
+    * ```BYPRIORITYINAVAILABLE```: Sorts available reviewers and select first which has high priority value.
+
 
 
 ## Notes
