@@ -29,11 +29,11 @@ For now, only available with The API which is generally RESTFUL and returns resu
 #### Resource components and identifiers
 
 | resource          | method        | description  |
-| -------------     |:-------------:|:-------------:
-| /repository       | POST          | create/update the given repository, by name
-| /repository       | GET           | returns a list of all repositories
-| /repository/:name | GET           | returns the repository named
-| /repository/:name | DELETE        | deletes the repository named
+| -------------     |:-------------:|:-------------|
+| /repository       | POST          | create/update the given repository, by name |
+| /repository       | GET           | returns a list of all repositories |
+| /repository/:name | GET           | returns the repository named |
+| /repository/:name | DELETE        | deletes the repository named |
 
 ## Notes
 1. kont just has integration with **Bitbucket-Server(based on Rest Api v1)** currently
