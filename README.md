@@ -41,9 +41,10 @@ kont needs some information about the remote repository for starting to observe 
 must consist of below parameters:
 
 ```json
+
 {
 	"host":"http://10.120.0.145:7990",
-	"token": "Bearer MDkwODMyMzkyNzYzOiPIkgh+s1+tqnXmJPzoDUMfOib7a",
+	"token": "Bearer AB...",
 	"projectName": "BESG",
 	"name": "core-network",        
 	"developmentBranch": "develop",
@@ -75,7 +76,6 @@ must consist of below parameters:
 				"user": {
 						"name":"mcil",
 				        "displayName": "Mevlüt Mert ÇİL"
-
 				}
 			},
 			{
@@ -83,7 +83,6 @@ must consist of below parameters:
 				"user": {
 						"name":"nkoc",
 				        "displayName": "Nilgün KOÇ"
-
 				}
 			},
 			{
@@ -91,7 +90,6 @@ must consist of below parameters:
 				"user": {
 						"name":"tunsal",
 				        "displayName": "Tuğba ÜNSAL"
-
 				}
 			}
 		
@@ -144,7 +142,6 @@ must consist of below parameters:
 	  }
 	]
 }
-
 ```
 
 **host**: Scheme and host of the provider for your Git repository.
