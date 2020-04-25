@@ -40,7 +40,7 @@ Resource components can be used in conjunction with identifiers to do CRUD opera
 kont needs some information about the remote repository for starting to observe pull/merge requests. So, a repository record
 must consist of below parameters:
 
-<pre>
+```json
 {
 	"host":"http://10.120.0.145:7990",
 	"token": "Bearer MDkwODMyMzkyNzYzOiPIkgh+s1+tqnXmJPzoDUMfOib7a",
@@ -48,13 +48,7 @@ must consist of below parameters:
 	"name": "core-network",        
 	"developmentBranch": "develop",
     "provider": "BITBUCKET",
-    "defaultComment": "Merhaba @{{name}} \n ## **Reviewer koda bakmadan evvel, 
-    kendin bir kez daha review etmeye ne dersin? Eminim ELF gözlerin bişeyler görecektir.** \n 
-    Bunun için aşağıdaki maddeleri kontrol edebilirsin \n * Reformat \n * SonarLint \n * Analyze -> 
-    Inspect code \n * Mimari olarak düzgün mü? (heryer heryerde olmasın lütfen) \n * 
-    Test isimlerini daha anlaşılır yapabilirsin(given-when-then) \n * 
-    Fazla test, göz çıkarmaz \n\n Kolay Gelsin Hacım :) ",
-	"stages": [
+    "defaultComment": "Merhaba @{{name}} \n ## **Reviewer koda bakmadan evvel, kendin bir kez daha review etmeye ne dersin? Eminim ELF gözlerin bişeyler görecektir.** \n Bunun için aşağıdaki maddeleri kontrol edebilirsin \n * Reformat \n * SonarLint \n * Analyze -> Inspect code \n * Mimari olarak düzgün mü? (heryer heryerde olmasın lütfen) \n * Test isimlerini daha anlaşılır yapabilirsin(given-when-then) \n * Fazla test, göz çıkarmaz \n\n Kolay Gelsin Hacım :) ",	"stages": [
 		{
 		"name":"Stage1",
 		"policy":"RANDOMINAVAILABLE",
@@ -150,7 +144,7 @@ must consist of below parameters:
 	]
 }
 
-</pre> 
+```
 
 **host**: Scheme and host of the provider for your Git repository.
 
