@@ -117,7 +117,7 @@ must consist of below parameters in JSON format.
 ```
 **Keys Description**
 
-**host**: Scheme and host of the provider for your Git repository.
+**host**: Consists of scheme and host of the provider for your Git repository.
 
 **token**: Personal access bearer token which has necessary permissions(repository write/admin)
 
@@ -129,10 +129,12 @@ must consist of below parameters in JSON format.
 
 **provider**: String Upper-case provider name, any of ("GITHUB", "BITBUCKET", "GITLAB")
 
-**defaultComment**(Optional): Default comment text for each new pull/merge request(Markdown syntax in string)
+**defaultComment**(Optional): Default comment text for a new pull/merge request(Markdown syntax in string), 
+```{{name}}``` statement will replaced by the Author name of the pull request 
 
-**stage**: Each stage consists of name, policy and list of reviewer parameters. 
-kont selects a *available reviewer* in the given reviewer list based *policy type*.
+**stage**: Each stage consists of name, policy and list of reviewer keys. 
+kont selects a *available reviewer* in the given reviewer list based *policy type*. 
+So, reviewers will be assigned as many as the number of stages.
 
 * ```availability``` is that, The reviewer has not been assigned to any pull/merge request or 
 the reviewer has approved all pull/merge requests which he/she had been assigned.
