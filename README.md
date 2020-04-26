@@ -145,7 +145,7 @@ a reviewer has approved all pull/merge requests which he/she had been assigned.
 
     if there is no available reviewer in stage, kont will ignore policy-type and assign a reviewer randomly
 
-Stage-Notes:
+Notes:
 * An author of the pull request can not be assigned
 * If a stage contains only one reviewer who is author of a pull request at the same time, kont select one more reviewer from next stage
 (All stages compose a circle)
