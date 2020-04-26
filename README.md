@@ -136,10 +136,10 @@ must consist of below parameters in JSON format.
 kont selects a *available reviewer* in the given reviewer list based *policy type*. 
 So, reviewers will be assigned as many as the number of stages.
 
-* ```availability``` is that, The reviewer has not been assigned to any pull/merge request or 
-the reviewer has approved all pull/merge requests which he/she had been assigned.
+* ```availability``` is that, a reviewer has not been assigned to any pull/merge request or 
+a reviewer has approved all pull/merge requests which he/she had been assigned.
 
-* ```policy``` type can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE"): 
+* ```policy``` is the strategy to select a reviewer,it can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE")
     * ```RANDOMINAVAILABLE```: Selects a random reviewer in available reviewers in the stage.
     * ```BYPRIORITYINAVAILABLE```: Sorts available reviewers and select first which has high priority value.
 
