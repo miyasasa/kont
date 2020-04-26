@@ -36,9 +36,9 @@ Resource components can be used in conjunction with identifiers to do CRUD opera
 | /repositories/:name | GET           | returns the repository named |
 | /repositories/:name | DELETE        | deletes the repository named |
 
-#### Sample Bitbucket Repository in kont
+#### Sample Repository in kont
 kont needs some information about the remote repository for starting to observe pull/merge requests. So, a repository record
-must consist of below parameters:
+must consist of below parameters in JSON format.
 
 ```json
 
