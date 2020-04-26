@@ -5,7 +5,7 @@
 ## Overview
 
 kont is the application developed by Go as open-source. It provides you ability that assigns as many reviewers as given
-to pull/merge request to the protected branch by based some algorithms. It aims to improve code quality in code-review process of 5G project at Havelsan.
+to pull/merge request to the protected branch by based some algorithms. It aims to improve code quality in code-review process.
 
 ## Getting Started
 
@@ -36,11 +36,11 @@ Resource components can be used in conjunction with identifiers to do CRUD opera
 | /repositories/:name | GET           | returns the repository named |
 | /repositories/:name | DELETE        | deletes the repository named |
 
-#### Sample Bitbucket Repository in kont
+#### Sample Repository in kont
 kont needs some information about the remote repository for starting to observe pull/merge requests. So, a repository record
-must consist of below parameters:
+must consist of below parameters in JSON format.
 
-```json
+```json5
 
 {
   "host": "http://10.120.0.145:7990",
@@ -115,8 +115,9 @@ must consist of below parameters:
 }
 
 ```
+**Keys Description**
 
-**host**: Scheme and host of the provider for your Git repository.
+**host**: Consists of scheme and host of the provider for your Git repository.
 
 **token**: Personal access bearer token which has necessary permissions(repository write/admin)
 
@@ -128,19 +129,26 @@ must consist of below parameters:
 
 **provider**: String Upper-case provider name, any of ("GITHUB", "BITBUCKET", "GITLAB")
 
-**defaultComment**(Optional): Default comment text for each new pull/merge request(Markdown syntax in string)
+**defaultComment**(Optional): Default comment text for a new pull/merge request(Markdown syntax in string), 
+```{{name}}``` statement will replaced by the Author name of the pull request 
 
-**stage**: Each stage consists of name, policy and list of reviewer parameters. 
-kont selects a *available reviewer* in the given reviewer list based *policy type*.
+**stage**: Each stage consists of name, policy and list of reviewer keys. 
+kont selects a *available reviewer* in the given reviewer list based *policy type*. 
+So, reviewers will be assigned as many as the number of stages.
 
-* ```availability``` is that, The reviewer has not been assigned to any pull/merge request or 
-the reviewer has approved all pull/merge requests which he/she had been assigned.
+* ```availability``` is that, a reviewer has not been assigned to any pull/merge request or 
+a reviewer has approved all pull/merge requests which he/she had been assigned.
 
-* ```policy``` type can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE"): 
+* ```policy``` is the strategy to select a reviewer, it can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE")
     * ```RANDOMINAVAILABLE```: Selects a random reviewer in available reviewers in the stage.
     * ```BYPRIORITYINAVAILABLE```: Sorts available reviewers and select first which has high priority value.
 
+    if there is no available reviewer in stage, kont will ignore policy-type and assign a reviewer randomly
 
+Stage-Notes:
+* An author of the pull request can not be assigned
+* If a stage contains only one reviewer who is author of a pull request at the same time, kont select one more reviewer from next stage
+(All stages compose a circle)
 
 ## Notes
 1. kont just has integration with **Bitbucket-Server(based on Rest Api v1)** currently
