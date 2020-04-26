@@ -4,8 +4,8 @@
 
 ## Overview
 
-kont is the application developed by Go as open-source. It provides you ability that assigns as many reviewers as given
-to pull/merge request to the protected branch by based some algorithms. It aims to improve code quality in code-review process.
+kont is the application developed by Go as open-source. It aims to improve code quality in code-review process by assigning as many reviewers as given
+to pull/merge request to the protected branch based on some algorithms.
 
 ## Getting Started
 
