@@ -52,7 +52,7 @@ must consist of below parameters in JSON format.
   "stages": [
     {
       "name": "Stage1",
-      "policy": "RANDOMINAVAILABLE",
+      "policy": "BYPRIORITYINAVAILABLE",
       "reviewers": [
         {
           "priority": 3,
