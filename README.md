@@ -153,6 +153,11 @@ Notes:
 * If a stage contains only one reviewer who is author of a pull request at the same time, kont select one more reviewer from next stage
 (All stages compose a circle)
 
+### kont Scheduler
+Retrieve the pull requests for each stored repository once in a minutes.
+After that, it updates pull requests on remote repository after assigning reviewers to the pull requests which have not any reviewer.
+ ```kont scheduler``` does all above operations with separately and asynchronous at repository level
+
 ## Notes
 1. kont just has integration with **Bitbucket-Server(based on Rest Api v1)** currently
 
