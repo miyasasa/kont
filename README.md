@@ -115,7 +115,8 @@ must consist of below parameters in JSON format.
 }
 
 ```
-##### Keys Description
+**Keys Description**
+
 **host**: Scheme and host of the provider for your Git repository.
 
 **token**: Personal access bearer token which has necessary permissions(repository write/admin)
