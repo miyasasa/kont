@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	group := Router.Group("/repository")
+	group := Router.Group("/repositories")
 	group.POST("/", saveRepository)
 	group.GET("/:name", getRepository)
 	group.GET("/", getRepositories)
