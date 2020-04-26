@@ -144,6 +144,9 @@ a reviewer has approved all pull/merge requests which he/she had been assigned.
     * ```BYPRIORITYINAVAILABLE```: Sorts available reviewers and select first which has high priority value.
 
     if there is no available reviewer in stage, kont will ignore policy-type and assign a reviewer randomly
+* ```reviewer``` is a standard remote repository's user who also has a priority value. When you create/update a repository in kont,
+ all related users of remote repository will be retrieved and displayed under "users" key in response.
+ You can find necessary user info to create reviewers for stage easily. By updating kont's repository, all changes will be applied.
 
 Notes:
 * An author of the pull request can not be assigned
