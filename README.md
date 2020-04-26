@@ -119,18 +119,18 @@ must consist of below parameters in JSON format.
 
 **host**: Consists of scheme and host of the provider for your Git repository.
 
-**token**: Personal access bearer token which has necessary permissions(repository write/admin)
+**token**: Personal access bearer token which has necessary permissions(repository write/admin).
 
-**projectName**: Key of the project which contains the repository
+**projectName**: Key of the project which contains the repository.
 
-**name**: Name of the remote repository
+**name**: Name of the remote repository.
 
 **developmentBranch**: Development branch of the remote repository for observing pull/merge requests to this branch.
 
-**provider**: String Upper-case provider name, any of ("GITHUB", "BITBUCKET", "GITLAB")
+**provider**: String Upper-case provider name, any of ("GITHUB", "BITBUCKET", "GITLAB").
 
 **defaultComment**(Optional): Default comment text for a new pull/merge request(Markdown syntax in string), 
-```{{name}}``` statement will replaced by the Author name of the pull request 
+```{{name}}``` statement will replaced by the Author name of the pull request.
 
 **stage**: Each stage consists of name, policy and list of reviewer keys. 
 kont selects a *available reviewer* in the given reviewer list based *policy type*. 
@@ -139,29 +139,29 @@ So, reviewers will be assigned as many as the number of stages.
 * ```availability``` is that, a reviewer has not been assigned to any pull/merge request or 
 a reviewer has approved all pull/merge requests which he/she had been assigned.
 
-* ```policy``` is the strategy to select a reviewer, it can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE")
+* ```policy``` is the strategy to select a reviewer, it can be any of ("RANDOMINAVAILABLE","BYPRIORITYINAVAILABLE"):
     * ```RANDOMINAVAILABLE```: Selects a random reviewer in available reviewers in the stage.
     * ```BYPRIORITYINAVAILABLE```: Sorts available reviewers and select first which has high priority value.
 
-    if there is no available reviewer in stage, kont will ignore policy-type and assign a reviewer randomly
+    if there is no available reviewer in stage, kont will ignore policy-type and assign a reviewer randomly.
 * ```reviewer``` is a standard remote repository's user who also has a priority value. When you create/update a repository in kont,
  all related users of remote repository will be retrieved and displayed under "users" key in response.
  You can find necessary user info to create reviewers for stage easily. By updating kont's repository, all changes will be applied.
 
 Notes:
-* An author of the pull request can not be assigned
+* An author of the pull request can not be assigned.
 * If a stage contains only one reviewer who is author of a pull request at the same time, kont select one more reviewer from next stage
-(All stages compose a circle)
+(All stages compose a circle).
 
 ### kont Scheduler
 Retrieve the pull requests for each stored repository once in a minutes.
 After that, it updates pull requests on remote repository after assigning reviewers to the pull requests which have not any reviewer.
- ```kont scheduler``` does all above operations with separately and asynchronous at repository level
+ ```kont scheduler``` does all these operations with separately and asynchronous at repository level.
 
 ## Notes
-1. kont just has integration with **Bitbucket-Server(based on Rest Api v1)** currently
+1. kont just has integration with **Bitbucket-Server(based on Rest Api v1)** currently.
 
 ## How to Contribute
 1. Clone repo and create a new branch: ```$ git checkout -b name_for_new_branch```.
-2. Make changes and test
-3. Submit Pull Request with comprehensive description of changes
+2. Make changes and test.
+3. Submit Pull Request with comprehensive description of changes.
