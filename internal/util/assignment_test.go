@@ -32,8 +32,8 @@ func TestGetReviewerFirstAvailableIntoSetConsistTwoElement(t *testing.T) {
 
 	assert.NotNil(t, reviewer)
 	assert.NotNil(t, reviewer.User)
-	assert.Equal(t, "atiba", reviewer.User.Name)
-	assert.Equal(t, "Atiba Hutchinson", reviewer.User.DisplayName)
+	assert.Equal(t, "vida", reviewer.User.Name)
+	assert.Equal(t, "Domagoj Vida", reviewer.User.DisplayName)
 }
 
 func TestGetReviewerFirstAvailableWithEmptySet(t *testing.T) {
