@@ -249,11 +249,11 @@ func TestStage_GetReviewerByUser_GivenUserNotAReviewer_ExpectNil(t *testing.T) {
 }
 
 func getDummyReviewers() []*common.Reviewer {
-	reviewer1 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Priority: 0}
-	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Priority: 1}
+	reviewer1 := &common.Reviewer{User: common.User{Name: "atiba", DisplayName: "Atiba Hutchinson"}, Priority: 4}
+	reviewer2 := &common.Reviewer{User: common.User{Name: "nKoudou", DisplayName: "Kevin NKoudou"}, Priority: 3}
 	reviewer3 := &common.Reviewer{User: common.User{Name: "vida", DisplayName: "Domagoj Vida"}, Priority: 2}
-	reviewer4 := &common.Reviewer{User: common.User{Name: "gokhan", DisplayName: "Gökhan Gönül"}, Priority: 3}
-	reviewer5 := &common.Reviewer{User: common.User{Name: "Ozi", DisplayName: "Oğuzhan Özyakup"}, Priority: 4}
+	reviewer4 := &common.Reviewer{User: common.User{Name: "gokhan", DisplayName: "Gökhan Gönül"}, Priority: 1}
+	reviewer5 := &common.Reviewer{User: common.User{Name: "Ozi", DisplayName: "Oğuzhan Özyakup"}, Priority: 0}
 
 	return []*common.Reviewer{reviewer1, reviewer2, reviewer3, reviewer4, reviewer5}
 }
